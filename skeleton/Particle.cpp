@@ -6,7 +6,7 @@ Particle::Particle(Vector3 Pos, Vector3 Vel)
 	pose = physx::PxTransform(Pos.x, Pos.y, Pos.z);
 
 	renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(1.0)), &pose, { 0.5,0.4,0,1 });
-
+	RegisterRenderItem(renderItem);
 
 }
 
