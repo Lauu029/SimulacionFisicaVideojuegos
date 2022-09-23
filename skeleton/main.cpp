@@ -29,7 +29,11 @@ PxDefaultCpuDispatcher* gDispatcher = NULL;
 PxScene* gScene = NULL;
 ContactReportCallback gContactReportCallback;
 
-Particle* p = NULL;
+
+//vector de partículas
+std::vector<Particle*> sceneParticles;
+
+//Vector3  const inipos = GetCamera()->getEye();
 // Initialize physics engine
 void initPhysics(bool interactive)
 {
@@ -53,9 +57,6 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
-
-	//Particle
-	p = new Particle({ 0,0,0 }, { .5,.5,0 });
 }
 
 
@@ -69,7 +70,16 @@ void stepPhysics(bool interactive, double t)
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 
-	p->integrate(.3);
+	for (int i = 0; i < sceneParticles.size(); i++)
+	{
+		if (sceneParticles[i]->getPos().y < 0) {
+			delete sceneParticles[i];
+			sceneParticles.erase(sceneParticles.begin() + i);
+		}
+		else
+			sceneParticles[i]->integrate(t);
+
+	}
 }
 
 // Function to clean data
@@ -95,9 +105,12 @@ void keyPress(unsigned char key, const PxTransform& camera)
 {
 	PX_UNUSED(camera);
 
-	switch (toupper(key))
+	switch (tolower(key))
 	{
-		//case 'B': break;
+	case 'b':
+
+		sceneParticles.push_back(new Particle(GetCamera()->getEye(), GetCamera()->getDir(), { -1,-1,-1 }, 0.95));
+		break;
 		//case ' ':	break;
 	case ' ':
 	{
