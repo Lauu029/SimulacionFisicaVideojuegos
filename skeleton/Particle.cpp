@@ -7,10 +7,9 @@ Particle::Particle(Vector3 Pos, Vector3 Vel, Vector3 acceleration, double dampli
 	damp = dampling;
 	pose = physx::PxTransform(Pos.x, Pos.y, Pos.z);
 
-	renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(1.0)), &pose, { 0.5,0.4,0,1 });
-	RegisterRenderItem(renderItem);
-
 }
+
+
 
 Particle::~Particle()
 {
@@ -19,7 +18,7 @@ Particle::~Particle()
 
 void Particle::integrate(double t)
 {
-	pose = physx::PxTransform (pose.p.x + vel.x * t, pose.p.y + vel.y * t, pose.p.z + vel.z * t);
+	pose = physx::PxTransform(pose.p.x + vel.x * t, pose.p.y + vel.y * t, pose.p.z + vel.z * t);
 
 	vel += ac * t;
 
@@ -30,4 +29,10 @@ void Particle::integrate(double t)
 Vector3 Particle::getPos()
 {
 	return{ pose.p.x,pose.p.y,pose.p.z };
+}
+
+void Particle::setRender(Vector4 color)
+{
+	renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(1.0)), &pose,color);
+	RegisterRenderItem(renderItem);
 }

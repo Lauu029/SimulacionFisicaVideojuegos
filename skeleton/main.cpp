@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include "Particle.h"
+#include "Proyectile.h"
 
 
 using namespace physx;
@@ -31,7 +32,7 @@ ContactReportCallback gContactReportCallback;
 
 
 //vector de partículas
-std::vector<Particle*> sceneParticles;
+std::vector<Proyectile*> sceneParticles;
 
 //Vector3  const inipos = GetCamera()->getEye();
 // Initialize physics engine
@@ -105,17 +106,33 @@ void keyPress(unsigned char key, const PxTransform& camera)
 {
 	PX_UNUSED(camera);
 
+	/*Vector3 p = GetCamera()->getTransform().p + GetCamera()->getDir() * 10;
+	switch(toupper(key))
+	{
+	case 'B': 
+		
+		bullets.push_back(new Proyectil(TipoBalas::Balacanyon, p, GetCamera()->getDir()));
+		break;
+	//case ' ':	break;*/
+
+	Vector3 pos= GetCamera()->getTransform().p + GetCamera()->getDir() * 5;
+	
 	switch (tolower(key))
 	{
-	case 'b':
-
-		sceneParticles.push_back(new Particle(GetCamera()->getEye(), GetCamera()->getDir(), { -1,-1,-1 }, 0.95));
+	case 'z':
+		sceneParticles.push_back(new Proyectile(ShotType::PISTOL, pos, GetCamera()->getDir()));
 		break;
 		//case ' ':	break;
-	case ' ':
-	{
+	case 'x':
+		sceneParticles.push_back(new Proyectile(ShotType::ARTILLERY, pos, GetCamera()->getDir()));
 		break;
-	}
+	case 'c':
+		sceneParticles.push_back(new Proyectile(ShotType::FIREBALL, pos, GetCamera()->getDir()));
+		break;
+	case 'v':
+		sceneParticles.push_back(new Proyectile(ShotType::LASER, pos, GetCamera()->getDir()));
+		break;
+	
 	default:
 		break;
 	}
