@@ -30,8 +30,9 @@ PxDefaultCpuDispatcher* gDispatcher = NULL;
 PxScene* gScene = NULL;
 ContactReportCallback gContactReportCallback;
 
-
-//vector de partículas
+physx::PxTransform floorPose = { 0,0,0 };
+Particle* suelo;
+Particle* diana;
 std::vector<Proyectile*> sceneParticles;
 
 //Vector3  const inipos = GetCamera()->getEye();
@@ -57,6 +58,11 @@ void initPhysics(bool interactive)
 	sceneDesc.cpuDispatcher = gDispatcher;
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
+	
+	suelo = new Particle();
+	suelo->setPosition({ 0,0,0 });
+	suelo->setRender(particleType::box, 100, 0.5, 100, { .65,.4,0,1 });
+
 	gScene = gPhysics->createScene(sceneDesc);
 }
 
@@ -97,7 +103,11 @@ void cleanupPhysics(bool interactive)
 	PxPvdTransport* transport = gPvd->getTransport();
 	gPvd->release();
 	transport->release();
-
+	for (auto g: sceneParticles)
+	{
+		delete g;
+	}
+	sceneParticles.clear();
 	gFoundation->release();
 }
 
@@ -106,16 +116,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 {
 	PX_UNUSED(camera);
 
-	/*Vector3 p = GetCamera()->getTransform().p + GetCamera()->getDir() * 10;
-	switch(toupper(key))
-	{
-	case 'B': 
-		
-		bullets.push_back(new Proyectil(TipoBalas::Balacanyon, p, GetCamera()->getDir()));
-		break;
-	//case ' ':	break;*/
-
-	Vector3 pos= GetCamera()->getTransform().p + GetCamera()->getDir() * 5;
+	Vector3 pos= GetCamera()->getTransform().p ;
 	
 	switch (tolower(key))
 	{

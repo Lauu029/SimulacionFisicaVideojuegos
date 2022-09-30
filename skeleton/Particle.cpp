@@ -31,8 +31,21 @@ Vector3 Particle::getPos()
 	return{ pose.p.x,pose.p.y,pose.p.z };
 }
 
-void Particle::setRender(Vector4 color)
+void Particle::setRender(particleType t, float sizeX,float sizeY,float sizeZ,  Vector4 color)
 {
-	renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(1.0)), &pose,color);
+	switch (t)
+	{
+	case Sphere:
+		renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(sizeX)), &pose, color);
+		break;
+	case box:
+		renderItem = new RenderItem(CreateShape(physx::PxBoxGeometry(sizeX,sizeY,sizeZ)), &pose, color);
+		break;
+	case capsule:
+		renderItem = new RenderItem(CreateShape(physx::PxCapsuleGeometry(sizeX,sizeY)), &pose, color);
+		break;
+	default:
+		break;
+	}
 	RegisterRenderItem(renderItem);
 }
