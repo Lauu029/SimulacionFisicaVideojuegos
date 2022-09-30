@@ -64,6 +64,9 @@ void initPhysics(bool interactive)
 	suelo->setPosition({ 0,0,0 });
 	suelo->setRender(particleType::box, 100, 0.5, 100, { .65,.4,0,1 });
 
+	diana = new Particle();
+	diana->setPosition({ -50, 20,0 });
+	diana->setRender(particleType::Sphere, 10, .50, 0, { 0,1,0,1 });
 	gScene = gPhysics->createScene(sceneDesc);
 }
 
@@ -109,6 +112,8 @@ void cleanupPhysics(bool interactive)
 		delete g;
 	}
 	sceneParticles.clear();
+	delete suelo;
+	delete diana;
 	gFoundation->release();
 }
 

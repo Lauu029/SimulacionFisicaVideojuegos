@@ -12,7 +12,7 @@ Proyectile::Proyectile(ShotType currentShotType, Vector3 pos, Vector3 dir)
 		break;
 	case ARTILLERY:
 		setMass(200.0f); // 200.0 Kg
-		setVelocity(dir * 40);
+		setVelocity(dir * 100);
 		setAcceleration({ 0.0f, -200.0f, 0.0f });
 		setDamping(0.99f);
 		setRender(particleType::Sphere, 3.0, 0.0, 0.0,  { 0,0,0,1 });
