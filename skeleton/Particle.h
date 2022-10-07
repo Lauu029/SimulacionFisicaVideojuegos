@@ -21,6 +21,7 @@ private:
 	Vector3 ac;
 	double damp;
 	double mass;
+	double remainingTime;
 	physx::PxTransform pose;
 	RenderItem* renderItem;
 
