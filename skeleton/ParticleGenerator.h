@@ -1,6 +1,7 @@
 
 #include <string>
 #include <list>
+#include <random>
 
 #include "Particle.h"
 using namespace std;
@@ -12,12 +13,8 @@ protected:
 	double generationProb;
 	int numParticles;
 	Particle* model;
-
-	void setParticle(Particle* _m);
-	virtual list <Particle*> generateParticles()=0;
 public:
-	ParticleGenerator();
-	~ParticleGenerator();
-	void update(double t);
+	void setParticle(Particle* _m) { model = _m; };
+	virtual list <Particle*> generateParticles() = 0;
 };
 

@@ -257,7 +257,6 @@
     <ClCompile Include="GaussianParticleGenerator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
-    <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Proyectile.cpp" />
     <ClCompile Include="RenderUtils.cpp" />

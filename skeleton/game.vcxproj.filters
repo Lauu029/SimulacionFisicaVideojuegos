@@ -13,7 +13,6 @@
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Proyectile.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
-    <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="GaussianParticleGenerator.cpp" />
     <ClCompile Include="UniformParticleGenerator.cpp" />
   </ItemGroup>

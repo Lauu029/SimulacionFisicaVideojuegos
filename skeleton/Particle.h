@@ -15,6 +15,8 @@ public:
 	void setAcceleration(Vector3 a) { ac = a; }
 	void setPosition(Vector3 p) { pose = physx::PxTransform(p.x, p.y, p.z); }
 	void setRender(particleType t, float sizeX, float sizeY, float sizeZ, Vector4 color);
+	Vector3 getAcceleration() { return vel; };
+	double getDamping() { return damp; };
 private:
 	Vector3 vel;
 	Vector3 ac;

@@ -7,8 +7,8 @@ class ParticleSystem
 {
 protected:
 	list <Particle*> particles;
-	list <ParticleGenerator*> particleGenerators;
 public:
+	list <ParticleGenerator*> particleGenerators;
 	ParticleSystem();
 	void update(double t);
 	ParticleGenerator* getParticleGenerator(string name);

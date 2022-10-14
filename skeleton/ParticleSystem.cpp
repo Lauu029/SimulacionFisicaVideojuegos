@@ -10,6 +10,13 @@ void ParticleSystem::update(double t)
 		else
 			p->integrate(t);
 	}
+	for (auto pg: particleGenerators)
+	{
+		list<Particle*> newParticles = pg->generateParticles();
+		for (auto a: newParticles)
+			particles.push_back(a);
+		newParticles.clear();20.
+	}
 }
 
 ParticleSystem::~ParticleSystem()
