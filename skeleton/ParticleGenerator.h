@@ -14,6 +14,10 @@ protected:
 	Particle* model;
 
 	void setParticle(Particle* _m);
-	virtual list <Particle*> generateParticles() = 0;
+	virtual list <Particle*> generateParticles()=0;
+public:
+	ParticleGenerator();
+	~ParticleGenerator();
+	void update(double t);
 };
 

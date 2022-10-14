@@ -49,3 +49,4 @@ void Particle::setRender(particleType t, float sizeX,float sizeY,float sizeZ,  V
 	}
 	RegisterRenderItem(renderItem);
 }
+
