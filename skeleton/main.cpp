@@ -9,9 +9,7 @@
 #include "callbacks.hpp"
 
 #include <iostream>
-
-#include "Particle.h"
-#include "Proyectile.h"
+#include "ParticleSystem.h"
 #include "checkML.h"
 
 
@@ -33,10 +31,8 @@ PxDefaultCpuDispatcher* gDispatcher = NULL;
 PxScene* gScene = NULL;
 ContactReportCallback gContactReportCallback;
 
+ParticleSystem* partSys = NULL;
 physx::PxTransform floorPose = { 0,0,0 };
-Particle* suelo;
-Particle* diana;
-std::vector<Proyectile*> sceneParticles;
 
 //Vector3  const inipos = GetCamera()->getEye();
 // Initialize physics engine
@@ -62,13 +58,7 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	
-	suelo = new Particle();
-	suelo->setPosition({ 0,0,0 });
-	suelo->setRender(particleType::box, 100, 0.5, 100, { .65,.4,0,1 });
-
-	diana = new Particle();
-	diana->setPosition({ -50, 20,0 });
-	diana->setRender(particleType::Sphere, 10, .50, 0, { 0,1,0,1 });
+	partSys = new ParticleSystem();
 	gScene = gPhysics->createScene(sceneDesc);
 }
 
@@ -80,19 +70,9 @@ void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
 
+	partSys->update(0.5);
 	gScene->simulate(t);
 	gScene->fetchResults(true);
-
-	for (int i = 0; i < sceneParticles.size(); i++)
-	{
-		if (sceneParticles[i]->getPos().y < 0) {
-			delete sceneParticles[i];
-			sceneParticles.erase(sceneParticles.begin() + i);
-		}
-		else
-			sceneParticles[i]->integrate(t);
-
-	}
 }
 
 // Function to clean data
@@ -109,13 +89,7 @@ void cleanupPhysics(bool interactive)
 	PxPvdTransport* transport = gPvd->getTransport();
 	gPvd->release();
 	transport->release();
-	for (auto g: sceneParticles)
-	{
-		delete g;
-	}
-	sceneParticles.clear();
-	delete suelo;
-	delete diana;
+	
 	gFoundation->release();
 }
 
@@ -123,25 +97,11 @@ void cleanupPhysics(bool interactive)
 void keyPress(unsigned char key, const PxTransform& camera)
 {
 	PX_UNUSED(camera);
-
-	Vector3 pos= GetCamera()->getTransform().p ;
 	
 	switch (tolower(key))
 	{
-	case 'z':
-		sceneParticles.push_back(new Proyectile(ShotType::PISTOL, pos, GetCamera()->getDir()));
-		break;
-		//case ' ':	break;
-	case 'x':
-		sceneParticles.push_back(new Proyectile(ShotType::ARTILLERY, pos, GetCamera()->getDir()));
-		break;
-	case 'c':
-		sceneParticles.push_back(new Proyectile(ShotType::FIREBALL, pos, GetCamera()->getDir()));
-		break;
-	case 'v':
-		sceneParticles.push_back(new Proyectile(ShotType::LASER, pos, GetCamera()->getDir()));
-		break;
-	
+	case 'p':
+		partSys->addParticleGenerator();
 	default:
 		break;
 	}

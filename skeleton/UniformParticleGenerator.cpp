@@ -10,7 +10,7 @@ UniformParticleGenerator::UniformParticleGenerator(Vector3 _meanPos, Vector3 _me
 
 
 	model = new Particle({ 0,0,0 }, { 0.1, 0.1, 0.1 }, { 0,-.5,0 }, 0.9);
-	model->setRender(particleType::Sphere, 0.4, { 0.94, 0.97,1,0.6 });
+	model->setRender(particleType::Sphere, 0.4, 0, 0, { 0.94, 0.97,1,0.6 });
 
 
 

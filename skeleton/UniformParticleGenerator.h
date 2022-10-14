@@ -1,3 +1,5 @@
+#pragma once
+
 #include "ParticleGenerator.h"
 
 class UniformParticleGenerator : public ParticleGenerator
@@ -9,6 +11,6 @@ public:
 protected:
 
 	std::default_random_engine gen;
-	std::uniform_real_distribution<> distribution{}
+	std::uniform_real_distribution<> distribution{};
 };
 

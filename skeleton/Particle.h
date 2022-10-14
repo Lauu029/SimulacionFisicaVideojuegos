@@ -1,4 +1,5 @@
 #pragma once
+
 #include "core.hpp"
 #include "RenderUtils.hpp"
 enum particleType { Sphere, box, capsule };

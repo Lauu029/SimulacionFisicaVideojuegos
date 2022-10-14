@@ -15,8 +15,13 @@ void ParticleSystem::update(double t)
 		list<Particle*> newParticles = pg->generateParticles();
 		for (auto a: newParticles)
 			particles.push_back(a);
-		newParticles.clear();20.
+		newParticles.clear();
 	}
+}
+
+void ParticleSystem::addParticleGenerator()
+{
+	particleGenerators.push_back(new UniformParticleGenerator({ 0,0,0 }, { 1,1,0 }));
 }
 
 ParticleSystem::~ParticleSystem()
