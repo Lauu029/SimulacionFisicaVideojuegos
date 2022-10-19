@@ -6,14 +6,8 @@ UniformParticleGenerator::UniformParticleGenerator(Vector3 _meanPos, Vector3 _me
 	meanPos = _meanPos;
 	meanVel = _meanVel;
 	generationProb = 0.5;
-	numParticles = 5;
-
-
-	model = new Particle({ 0,0,0 }, { 0.1, 0.1, 0.1 }, { 0,-.5,0 }, 0.9);
-	model->setRender(particleType::Sphere, 0.4, 0, 0, { 0.94, 0.97,1,0.6 });
-
-
-
+	numParticles = 10;
+	active = false;
 }
 
 list<Particle*> UniformParticleGenerator::generateParticles()
@@ -24,23 +18,23 @@ list<Particle*> UniformParticleGenerator::generateParticles()
 
 	for (size_t i = 0; i < numParticles; i++)
 	{
-		if (distribution(gen) <= generationProb) {
-			auto p = model;
 
-			Vector3 newPos = meanPos;
-			newPos.x += distribution(gen);
-			newPos.y += distribution(gen);
-			newPos.z += distribution(gen);
+		auto p = model;
 
-			Vector3 newVel = meanVel;
-			newVel.x += distribution(gen);
-			newVel.y += distribution(gen);
-			newVel.z += distribution(gen);
+		Vector3 newPos = meanPos;
+		newPos.x += distribution(gen)*.1;
+		newPos.y += distribution(gen);
+		newPos.z += distribution(gen)*.1;
 
-			Particle* newP = new Particle(newPos, newVel, p->getAcceleration(), p->getDamping());
+		Vector3 newVel = meanVel;
+		newVel.x += distribution(gen);
+		newVel.y += distribution(gen)*10;
+		newVel.z += distribution(gen);
 
-			listParticles.push_back(newP);
-		}
+		Particle* newP = new Particle(newPos, newVel, p->getAcceleration(), p->getDamping(), 
+			p->getParticleType(),p->getSize(),p->getColor());
+
+		listParticles.push_back(newP);
 	}
 	return listParticles;
 }

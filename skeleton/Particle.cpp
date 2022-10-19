@@ -1,12 +1,16 @@
 #include "Particle.h"
 
-Particle::Particle(Vector3 Pos, Vector3 Vel, Vector3 acceleration, double dampling)
+Particle::Particle(Vector3 Pos, Vector3 Vel, Vector3 acceleration, double dampling, particleType t, Vector3 _size, Vector4 _color)
 {
 	vel = Vel;
 	ac = acceleration;
 	damp = dampling;
 	pose = physx::PxTransform(Pos.x, Pos.y, Pos.z);
-
+	remainingTime = 200;
+	type = t;
+	size = _size;
+	color = _color;
+	setRender(t, size, color);
 }
 
 
@@ -23,7 +27,7 @@ void Particle::integrate(double t)
 	vel += ac * t;
 
 	vel *= powf(damp, t);
-
+	remainingTime--;
 }
 
 Vector3 Particle::getPos()
@@ -31,18 +35,18 @@ Vector3 Particle::getPos()
 	return{ pose.p.x,pose.p.y,pose.p.z };
 }
 
-void Particle::setRender(particleType t, float sizeX,float sizeY,float sizeZ,  Vector4 color)
+void Particle::setRender(particleType t, Vector3 size, Vector4 color)
 {
 	switch (t)
 	{
 	case Sphere:
-		renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(sizeX)), &pose, color);
+		renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(size.x)), &pose, color);
 		break;
 	case box:
-		renderItem = new RenderItem(CreateShape(physx::PxBoxGeometry(sizeX,sizeY,sizeZ)), &pose, color);
+		renderItem = new RenderItem(CreateShape(physx::PxBoxGeometry(size.x, size.y, size.z)), &pose, color);
 		break;
 	case capsule:
-		renderItem = new RenderItem(CreateShape(physx::PxCapsuleGeometry(sizeX,sizeY)), &pose, color);
+		renderItem = new RenderItem(CreateShape(physx::PxCapsuleGeometry(size.x, size.y)), &pose, color);
 		break;
 	default:
 		break;

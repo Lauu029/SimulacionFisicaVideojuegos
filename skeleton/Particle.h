@@ -6,7 +6,7 @@ enum particleType { Sphere, box, capsule };
 class Particle
 {
 public:
-	Particle(Vector3 Pos = { 0,0,0 }, Vector3 Vel = { 0,0,0 }, Vector3 acceleration = { 0,0,0 }, double dampling = 0.0);
+	Particle(Vector3 Pos, Vector3 Vel, Vector3 acceleration, double dampling, particleType t, Vector3 size, Vector4 color);
 	~Particle();
 	void integrate(double t);
 	Vector3 getPos();
@@ -15,9 +15,13 @@ public:
 	void setDamping(double d) { damp = d; }
 	void setAcceleration(Vector3 a) { ac = a; }
 	void setPosition(Vector3 p) { pose = physx::PxTransform(p.x, p.y, p.z); }
-	void setRender(particleType t, float sizeX, float sizeY, float sizeZ, Vector4 color);
-	Vector3 getAcceleration() { return vel; };
-	double getDamping() { return damp; };
+	void setRender(particleType t, Vector3 size, Vector4 color);
+	Vector3 getAcceleration() { return ac; }
+	double getDamping() { return damp; }
+	double getRemainingTime() { return remainingTime; }
+	particleType getParticleType() { return type; }
+	Vector3 getSize() { return size; }
+	Vector4 getColor() { return color; }
 private:
 	Vector3 vel;
 	Vector3 ac;
@@ -27,5 +31,8 @@ private:
 	physx::PxTransform pose;
 	RenderItem* renderItem;
 
+	particleType type;
+	Vector3 size;
+	Vector4 color;
 };
 

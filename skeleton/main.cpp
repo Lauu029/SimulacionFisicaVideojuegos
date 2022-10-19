@@ -57,7 +57,7 @@ void initPhysics(bool interactive)
 	sceneDesc.cpuDispatcher = gDispatcher;
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
-	
+
 	partSys = new ParticleSystem();
 	gScene = gPhysics->createScene(sceneDesc);
 }
@@ -89,7 +89,7 @@ void cleanupPhysics(bool interactive)
 	PxPvdTransport* transport = gPvd->getTransport();
 	gPvd->release();
 	transport->release();
-	
+	delete partSys;
 	gFoundation->release();
 }
 
@@ -97,11 +97,11 @@ void cleanupPhysics(bool interactive)
 void keyPress(unsigned char key, const PxTransform& camera)
 {
 	PX_UNUSED(camera);
-	
+
 	switch (tolower(key))
 	{
 	case 'p':
-		partSys->addParticleGenerator();
+			partSys->activateParticleGenerators(typeParticleSystem::font);
 	default:
 		break;
 	}

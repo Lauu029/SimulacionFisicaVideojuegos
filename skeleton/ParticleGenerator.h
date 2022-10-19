@@ -14,6 +14,7 @@ protected:
 	double generationProb;
 	int numParticles;
 	Particle* model;
+	
 public:
 	void setParticle(Particle* _m) { model = _m; };
 	virtual list <Particle*> generateParticles() = 0;
