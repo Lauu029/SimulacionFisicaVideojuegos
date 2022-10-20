@@ -6,7 +6,8 @@ enum particleType { Sphere, box, capsule };
 class Particle
 {
 public:
-	Particle(Vector3 Pos, Vector3 Vel, Vector3 acceleration, double dampling, particleType t, Vector3 size, Vector4 color);
+	Particle(Vector3 Pos, Vector3 Vel, Vector3 acceleration, double dampling, 
+		particleType t, Vector3 size, Vector4 color, double time);
 	~Particle();
 	void integrate(double t);
 	Vector3 getPos();
@@ -22,6 +23,7 @@ public:
 	particleType getParticleType() { return type; }
 	Vector3 getSize() { return size; }
 	Vector4 getColor() { return color; }
+	void setColor(Vector4 _color);
 private:
 	Vector3 vel;
 	Vector3 ac;

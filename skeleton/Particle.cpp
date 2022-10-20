@@ -1,15 +1,17 @@
 #include "Particle.h"
 
-Particle::Particle(Vector3 Pos, Vector3 Vel, Vector3 acceleration, double dampling, particleType t, Vector3 _size, Vector4 _color)
+Particle::Particle(Vector3 Pos, Vector3 Vel, Vector3 acceleration, double dampling, 
+	particleType t, Vector3 _size, Vector4 _color, double time)
 {
 	vel = Vel;
 	ac = acceleration;
 	damp = dampling;
 	pose = physx::PxTransform(Pos.x, Pos.y, Pos.z);
-	remainingTime = 200;
+	remainingTime = time;
 	type = t;
 	size = _size;
 	color = _color;
+
 	setRender(t, size, color);
 }
 
@@ -28,6 +30,7 @@ void Particle::integrate(double t)
 
 	vel *= powf(damp, t);
 	remainingTime--;
+	setColor({ color.x +(float) .01,color.y,color.z,color.w});
 }
 
 Vector3 Particle::getPos()
@@ -52,5 +55,9 @@ void Particle::setRender(particleType t, Vector3 size, Vector4 color)
 		break;
 	}
 	RegisterRenderItem(renderItem);
+}
+void Particle::setColor(Vector4 _color) {
+	color = _color;
+	renderItem->color = color;
 }
 

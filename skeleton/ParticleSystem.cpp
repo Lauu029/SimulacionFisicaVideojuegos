@@ -3,8 +3,9 @@
 ParticleSystem::ParticleSystem()
 {
 	//fuente = nullptr;
-	fuente = new UniformParticleGenerator({ 0,0,0 }, { 1,1,0 });
-	fuente->setParticle(new Particle({ 0,0,0 }, { 0.1, 0.1, 0.1 }, { 0,-.5,0 }, 0.9, particleType::Sphere, { 0.4, 0, 0 }, { 0, 0.97,1,.9 }));
+	fuente = new UniformParticleGenerator({ 0,0,0 }, { 0,10,0 });
+	fuente->setParticle(new Particle({ 0,0,0 }, { 0.1, 0.1, 0.1 }, { 0,-.5,0 }, 0.9,
+		particleType::Sphere, { 0.1, 0, 0 }, { 0, 0.97,1,.9 },60));
 
 }
 
