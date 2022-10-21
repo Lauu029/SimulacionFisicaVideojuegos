@@ -6,7 +6,7 @@ UniformParticleGenerator::UniformParticleGenerator(Vector3 _meanPos, Vector3 _me
 	meanPos = _meanPos;
 	meanVel = _meanVel;
 	generationProb = 1;
-	numParticles = 1;
+	numParticles = 10;
 	active = false;
 }
 
@@ -21,12 +21,12 @@ list<Particle*> UniformParticleGenerator::generateParticles()
 		Vector3 newPos = meanPos;
 		newPos.x += distribution(gen);
 		newPos.y += distribution(gen);
-		newPos.z += distribution(gen) ;
+		newPos.z += distribution(gen);
 
 		Vector3 newVel = meanVel;
-		newVel.x += distribution(gen);
+		newVel.x += distribution(gen)*2;
 		newVel.y += distribution(gen);
-		newVel.z += distribution(gen);
+		newVel.z += distribution(gen)*2;
 
 		float ac = model->getAcceleration().y;
 		ac += distribution(gen) * .3;
@@ -47,7 +47,7 @@ GaussianParticleGenerator::GaussianParticleGenerator(Vector3 _meanPos, Vector3 _
 	meanPos = _meanPos;
 	meanVel = _meanVel;
 	generationProb = 1;
-	numParticles = 1;
+	numParticles =200;
 	active = false;
 }
 
@@ -61,7 +61,7 @@ list<Particle*> GaussianParticleGenerator::generateParticles()
 	{
 		Vector3 newPos = meanPos;
 		newPos.x += dist(ran)*10;
-		newPos.y += dist(ran)*10;
+		newPos.y += dist(ran)*5;
 		newPos.z += dist(ran)*10;
 
 		Vector3 newVel = meanVel;

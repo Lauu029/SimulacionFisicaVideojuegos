@@ -2,11 +2,11 @@
 
 ParticleSystem::ParticleSystem()
 {
-	fuente = new UniformParticleGenerator({ 0,0,0 }, { 0,5,0 });
+	fuente = new UniformParticleGenerator({ 0,0,0 }, { 0,10,0 });
 
 	fuente->setParticle(new Particle(Agua()));
 
-	niebla = new GaussianParticleGenerator({ 20,10,10 }, { 0,0,0 });
+	niebla = new GaussianParticleGenerator({ 10,50,10 }, { 0,0,0 });
 	niebla->setParticle(new Particle(Nube()));
 }
 
