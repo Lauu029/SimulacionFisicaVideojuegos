@@ -9,9 +9,9 @@
 #include "callbacks.hpp"
 
 #include <iostream>
-
-#include "Particle.h"
-#include "Proyectile.h"
+#include "ParticleSystem.h"
+#include "EjesRGB.h"
+#include "ParticleType.h"
 #include "checkML.h"
 
 
@@ -33,12 +33,11 @@ PxDefaultCpuDispatcher* gDispatcher = NULL;
 PxScene* gScene = NULL;
 ContactReportCallback gContactReportCallback;
 
+ParticleSystem* partSys = NULL;
 physx::PxTransform floorPose = { 0,0,0 };
-Particle* suelo;
-Particle* diana;
-std::vector<Proyectile*> sceneParticles;
+vector <Particle*> sceneParticles;
 
-//Vector3  const inipos = GetCamera()->getEye();
+Particle* suelo_ = nullptr;
 // Initialize physics engine
 void initPhysics(bool interactive)
 {
@@ -61,14 +60,9 @@ void initPhysics(bool interactive)
 	sceneDesc.cpuDispatcher = gDispatcher;
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
-	
-	suelo = new Particle();
-	suelo->setPosition({ 0,0,0 });
-	suelo->setRender(particleType::box, 100, 0.5, 100, { .65,.4,0,1 });
 
-	diana = new Particle();
-	diana->setPosition({ -50, 20,0 });
-	diana->setRender(particleType::Sphere, 10, .50, 0, { 0,1,0,1 });
+	partSys = new ParticleSystem();
+	suelo_ = new Particle(Suelo());
 	gScene = gPhysics->createScene(sceneDesc);
 }
 
@@ -79,20 +73,20 @@ void initPhysics(bool interactive)
 void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
-
-	gScene->simulate(t);
-	gScene->fetchResults(true);
-
 	for (int i = 0; i < sceneParticles.size(); i++)
 	{
-		if (sceneParticles[i]->getPos().y < 0) {
+		if (sceneParticles[i]->getPos().y < 0 || sceneParticles[i]->getRemainingTime() < 0) {
 			delete sceneParticles[i];
+			sceneParticles[i] = nullptr;
 			sceneParticles.erase(sceneParticles.begin() + i);
 		}
 		else
 			sceneParticles[i]->integrate(t);
 
 	}
+	partSys->update(0.5);
+	gScene->simulate(t);
+	gScene->fetchResults(true);
 }
 
 // Function to clean data
@@ -100,7 +94,14 @@ void stepPhysics(bool interactive, double t)
 void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
-
+	delete partSys;
+	partSys = nullptr;
+	for (auto s: sceneParticles)
+	{
+		delete s;
+	}
+	delete suelo_;
+	sceneParticles.clear();
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
 	gDispatcher->release();
@@ -109,13 +110,6 @@ void cleanupPhysics(bool interactive)
 	PxPvdTransport* transport = gPvd->getTransport();
 	gPvd->release();
 	transport->release();
-	for (auto g: sceneParticles)
-	{
-		delete g;
-	}
-	sceneParticles.clear();
-	delete suelo;
-	delete diana;
 	gFoundation->release();
 }
 
@@ -124,24 +118,28 @@ void keyPress(unsigned char key, const PxTransform& camera)
 {
 	PX_UNUSED(camera);
 
-	Vector3 pos= GetCamera()->getTransform().p ;
-	
+	Vector3 pos = GetCamera()->getTransform().p;
 	switch (tolower(key))
 	{
+	case 'p':
+		partSys->getParticleGenerator(typeParticleSystem::font)->setActive();
+		break;
+	case 'o':
+		partSys->getParticleGenerator(typeParticleSystem::fog)->setActive();
+		break;
 	case 'z':
-		sceneParticles.push_back(new Proyectile(ShotType::PISTOL, pos, GetCamera()->getDir()));
+		sceneParticles.push_back(new Particle(Pistol( GetCamera()->getDir(),pos)));
 		break;
 		//case ' ':	break;
 	case 'x':
-		sceneParticles.push_back(new Proyectile(ShotType::ARTILLERY, pos, GetCamera()->getDir()));
+		sceneParticles.push_back(new Particle(Artillery( GetCamera()->getDir(),pos)));
 		break;
 	case 'c':
-		sceneParticles.push_back(new Proyectile(ShotType::FIREBALL, pos, GetCamera()->getDir()));
+		sceneParticles.push_back(new Particle(Fireball( GetCamera()->getDir(),pos)));
 		break;
 	case 'v':
-		sceneParticles.push_back(new Proyectile(ShotType::LASER, pos, GetCamera()->getDir()));
+		sceneParticles.push_back(new Particle(Laser( GetCamera()->getDir(),pos)));
 		break;
-	
 	default:
 		break;
 	}
