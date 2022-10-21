@@ -2,11 +2,12 @@
 
 ParticleSystem::ParticleSystem()
 {
-	//fuente = nullptr;
-	fuente = new UniformParticleGenerator({ 0,0,0 }, { 0,10,0 });
+	fuente = new UniformParticleGenerator({ 0,0,0 }, { 0,5,0 });
 	fuente->setParticle(new Particle({ 0,0,0 }, { 0.1, 0.1, 0.1 }, { 0,-.5,0 }, 0.9,
-		particleType::Sphere, { 0.1, 0, 0 }, { 0, 0.97,1,.9 },60));
-
+		particleType::Sphere, { 0.5, 0, 0 }, { 0, 0.97,1,.9 }, 60));
+	niebla = new GaussianParticleGenerator({ 10,10,10 }, { 0,0,0 });
+	niebla->setParticle(new Particle({ 10,10,10 }, { 0,0,0 }, { 0,0,0 }, 0.8,
+		particleType::Sphere, { 0.2,0,0 }, { 1,1,.3,1 }, 20));
 }
 
 void ParticleSystem::update(double t)
@@ -16,14 +17,14 @@ void ParticleSystem::update(double t)
 	{
 		if (particles[i]->getPos().y < 0 || particles[i]->getRemainingTime() < 0) {
 			delete particles[i];
+			particles[i] = nullptr;
 			particles.erase(particles.begin() + i);
 		}
 		else
 			particles[i]->integrate(t);
 
 	}
-	/*for (auto pg : particleGenerators)
-	{*/
+	
 	if (fuente != nullptr && fuente->isActive()) {
 
 		list<Particle*> newParticles = fuente->generateParticles();
@@ -31,43 +32,24 @@ void ParticleSystem::update(double t)
 			particles.push_back(a);
 		newParticles.clear();
 	}
-	//}
-}
-
-void ParticleSystem::setParticleGenerators(typeParticleSystem type)
-{
-	switch (type)
-	{
-	case font:
-		if (!fuente->isActive())
-			for (int i = 0; i < particles.size(); i++)
-			{
-				delete particles[i];
-				particles.erase(particles.begin() + i);
-			}
-		//fuente = nullptr;
-		break;
-	case fog:
-		break;
-	default:
-		break;
+	if (niebla != nullptr && niebla->isActive()) {
+		list<Particle*> newParticles = niebla->generateParticles();
+		for (auto a : newParticles)
+			particles.push_back(a);
+		newParticles.clear();
 	}
 
-	//particleGenerators.push_back(fuente);
-
-	//fuente
 }
 
-void ParticleSystem::activateParticleGenerators(typeParticleSystem type)
+ParticleGenerator* ParticleSystem::getParticleGenerator(typeParticleSystem t)
 {
-	switch (type)
+	switch (t)
 	{
 	case font:
-
-		setParticleGenerators(typeParticleSystem::font);
-		fuente->setActive();
+		return fuente;
 		break;
 	case fog:
+		return niebla;
 		break;
 	default:
 		break;
@@ -79,14 +61,11 @@ ParticleSystem::~ParticleSystem()
 	for (auto p : particles)
 	{
 		delete p;
+		p = nullptr;
 	}
 	particles.clear();
-	for (auto pg : particleGenerators)
-	{
-		delete pg;
-
-	}
-	particleGenerators.clear();
+	delete niebla;
+	niebla = nullptr;
 	delete fuente;
 	fuente = nullptr;
 }

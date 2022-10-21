@@ -101,7 +101,11 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	switch (tolower(key))
 	{
 	case 'p':
-			partSys->activateParticleGenerators(typeParticleSystem::font);
+		partSys->getParticleGenerator(typeParticleSystem::font)->setActive();
+		break;
+	case 'o':
+		partSys->getParticleGenerator(typeParticleSystem::fog)->setActive();
+		break;
 	default:
 		break;
 	}

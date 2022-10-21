@@ -1,6 +1,6 @@
 #include "Particle.h"
 
-Particle::Particle(Vector3 Pos, Vector3 Vel, Vector3 acceleration, double dampling, 
+Particle::Particle(Vector3 Pos, Vector3 Vel, Vector3 acceleration, double dampling,
 	particleType t, Vector3 _size, Vector4 _color, double time)
 {
 	vel = Vel;
@@ -19,7 +19,8 @@ Particle::Particle(Vector3 Pos, Vector3 Vel, Vector3 acceleration, double dampli
 
 Particle::~Particle()
 {
-	DeregisterRenderItem(renderItem);
+	if (renderItem != nullptr)
+		DeregisterRenderItem(renderItem);
 }
 
 void Particle::integrate(double t)
@@ -29,8 +30,9 @@ void Particle::integrate(double t)
 	vel += ac * t;
 
 	vel *= powf(damp, t);
+
 	remainingTime--;
-	setColor({ color.x +(float) .01,color.y,color.z,color.w});
+	//setColor({ color.x + (float).01,color.y,color.z,color.w });
 }
 
 Vector3 Particle::getPos()
