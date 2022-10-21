@@ -22,7 +22,7 @@ public:
 	double getRemainingTime() { return remainingTime; }
 	particleType getParticleType() { return type; }
 	Vector3 getSize() { return size; }
-	Vector4 getColor() { return color; }
+	Vector4 getColor() { return renderItem->color; }
 	void setColor(Vector4 _color);
 private:
 	Vector3 vel;
@@ -36,5 +36,6 @@ private:
 	particleType type;
 	Vector3 size;
 	Vector4 color;
+
 };
 

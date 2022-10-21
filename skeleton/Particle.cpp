@@ -19,8 +19,12 @@ Particle::Particle(Vector3 Pos, Vector3 Vel, Vector3 acceleration, double dampli
 
 Particle::~Particle()
 {
-	if (renderItem != nullptr)
-		DeregisterRenderItem(renderItem);
+
+	if (renderItem != nullptr) {
+		renderItem->release();
+		/*DeregisterRenderItem(renderItem);
+		renderItem = nullptr;*/
+	}
 }
 
 void Particle::integrate(double t)
@@ -32,7 +36,6 @@ void Particle::integrate(double t)
 	vel *= powf(damp, t);
 
 	remainingTime--;
-	//setColor({ color.x + (float).01,color.y,color.z,color.w });
 }
 
 Vector3 Particle::getPos()
@@ -56,7 +59,6 @@ void Particle::setRender(particleType t, Vector3 size, Vector4 color)
 	default:
 		break;
 	}
-	RegisterRenderItem(renderItem);
 }
 void Particle::setColor(Vector4 _color) {
 	color = _color;

@@ -31,6 +31,7 @@
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="ParticleGenerator.h" />
     <ClInclude Include="ColorHSV.h" />
+    <ClInclude Include="EjesRGB.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

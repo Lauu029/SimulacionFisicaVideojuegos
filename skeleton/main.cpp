@@ -10,7 +10,8 @@
 
 #include <iostream>
 #include "ParticleSystem.h"
-//#include "checkML.h"
+#include "EjesRGB.h"
+#include "checkML.h"
 
 
 
@@ -59,6 +60,7 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 
 	partSys = new ParticleSystem();
+	
 	gScene = gPhysics->createScene(sceneDesc);
 }
 
@@ -80,6 +82,8 @@ void stepPhysics(bool interactive, double t)
 void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
+	delete partSys;
+	partSys = nullptr;
 
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
@@ -89,7 +93,6 @@ void cleanupPhysics(bool interactive)
 	PxPvdTransport* transport = gPvd->getTransport();
 	gPvd->release();
 	transport->release();
-	delete partSys;
 	gFoundation->release();
 }
 

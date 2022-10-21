@@ -4,6 +4,7 @@
 #include <iterator>
 
 #include "ParticleGenerator.h"
+#include "ColorHSV.h"
 
 enum typeParticleSystem { font, fog };
 class ParticleSystem
@@ -20,4 +21,3 @@ public:
 	void generateFireworkSystem();
 	~ParticleSystem();
 };
-
