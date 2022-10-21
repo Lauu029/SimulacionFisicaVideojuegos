@@ -24,9 +24,9 @@ list<Particle*> UniformParticleGenerator::generateParticles()
 		//newPos.z += distribution(gen) ;
 
 		Vector3 newVel = meanVel;
-		//newVel.x += distribution(gen);
-		//newVel.y += distribution(gen);
-		//newVel.z += distribution(gen);
+		newVel.x += distribution(gen);
+		newVel.y += distribution(gen);
+		newVel.z += distribution(gen);
 
 		float ac = model->getAcceleration().y;
 		ac += distribution(gen) * .3;
