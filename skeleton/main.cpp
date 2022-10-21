@@ -11,6 +11,7 @@
 #include <iostream>
 #include "ParticleSystem.h"
 #include "EjesRGB.h"
+#include "ParticleType.h"
 #include "checkML.h"
 
 
@@ -34,8 +35,9 @@ ContactReportCallback gContactReportCallback;
 
 ParticleSystem* partSys = NULL;
 physx::PxTransform floorPose = { 0,0,0 };
+vector <Particle*> sceneParticles;
 
-//Vector3  const inipos = GetCamera()->getEye();
+Particle* suelo_ = nullptr;
 // Initialize physics engine
 void initPhysics(bool interactive)
 {
@@ -60,7 +62,7 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 
 	partSys = new ParticleSystem();
-	
+	suelo_ = new Particle(Suelo());
 	gScene = gPhysics->createScene(sceneDesc);
 }
 
@@ -71,7 +73,17 @@ void initPhysics(bool interactive)
 void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
+	for (int i = 0; i < sceneParticles.size(); i++)
+	{
+		if (sceneParticles[i]->getPos().y < 0 || sceneParticles[i]->getRemainingTime() < 0) {
+			delete sceneParticles[i];
+			sceneParticles[i] = nullptr;
+			sceneParticles.erase(sceneParticles.begin() + i);
+		}
+		else
+			sceneParticles[i]->integrate(t);
 
+	}
 	partSys->update(0.5);
 	gScene->simulate(t);
 	gScene->fetchResults(true);
@@ -84,7 +96,12 @@ void cleanupPhysics(bool interactive)
 	PX_UNUSED(interactive);
 	delete partSys;
 	partSys = nullptr;
-
+	for (auto s: sceneParticles)
+	{
+		delete s;
+	}
+	delete suelo_;
+	sceneParticles.clear();
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
 	gDispatcher->release();
@@ -101,6 +118,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 {
 	PX_UNUSED(camera);
 
+	Vector3 pos = GetCamera()->getTransform().p;
 	switch (tolower(key))
 	{
 	case 'p':
@@ -108,6 +126,19 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		break;
 	case 'o':
 		partSys->getParticleGenerator(typeParticleSystem::fog)->setActive();
+		break;
+	case 'z':
+		sceneParticles.push_back(new Particle(Pistol( GetCamera()->getDir(),pos)));
+		break;
+		//case ' ':	break;
+	case 'x':
+		sceneParticles.push_back(new Particle(Artillery( GetCamera()->getDir(),pos)));
+		break;
+	case 'c':
+		sceneParticles.push_back(new Particle(Fireball( GetCamera()->getDir(),pos)));
+		break;
+	case 'v':
+		sceneParticles.push_back(new Particle(Laser( GetCamera()->getDir(),pos)));
 		break;
 	default:
 		break;

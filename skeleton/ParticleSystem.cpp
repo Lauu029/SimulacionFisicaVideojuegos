@@ -3,12 +3,11 @@
 ParticleSystem::ParticleSystem()
 {
 	fuente = new UniformParticleGenerator({ 0,0,0 }, { 0,5,0 });
-	fuente->setParticle(new Particle({ 0,0,0 }, { 0.1, 0.1, 0.1 }, { 0,-.5,0 }, 0.9,
-		particleType::Sphere, { 0.5, 0, 0 }, { 0, 0.97,1,.9 }, 60));
+
+	fuente->setParticle(new Particle(Agua()));
 
 	niebla = new GaussianParticleGenerator({ 20,10,10 }, { 0,0,0 });
-	niebla->setParticle(new Particle({ 1,1,1 }, { 0,0,0 }, { 0,0,0 }, 0.8,
-		particleType::Sphere, { 0.2,0,0 }, { 1,1,.3,1 }, 20));
+	niebla->setParticle(new Particle(Nube()));
 }
 
 void ParticleSystem::update(double t)
@@ -25,7 +24,7 @@ void ParticleSystem::update(double t)
 			particles[i]->integrate(t);
 
 	}
-	
+
 	if (fuente != nullptr && fuente->isActive()) {
 
 		list<Particle*> newParticles = fuente->generateParticles();

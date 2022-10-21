@@ -1,18 +1,20 @@
 #include "Particle.h"
+#include <iostream>
 
-Particle::Particle(Vector3 Pos, Vector3 Vel, Vector3 acceleration, double dampling,
-	particleType t, Vector3 _size, Vector4 _color, double time)
+Particle::Particle(particleType p)
 {
-	vel = Vel;
-	ac = acceleration;
-	damp = dampling;
-	pose = physx::PxTransform(Pos.x, Pos.y, Pos.z);
-	remainingTime = time;
-	type = t;
-	size = _size;
-	color = _color;
+	vel = p.vel;
+	ac = p.ac;
+	damp = p.damp;
+	pose = p.pose;
+	remainingTime = p.remainingTime;
+	shape = p.s;
+	size = p.size;
+	color = p.color;
 
-	setRender(t, size, color);
+	type = p;
+
+	setRender(shape, size, color);
 }
 
 
@@ -22,8 +24,6 @@ Particle::~Particle()
 
 	if (renderItem != nullptr) {
 		renderItem->release();
-		/*DeregisterRenderItem(renderItem);
-		renderItem = nullptr;*/
 	}
 }
 
@@ -43,9 +43,9 @@ Vector3 Particle::getPos()
 	return{ pose.p.x,pose.p.y,pose.p.z };
 }
 
-void Particle::setRender(particleType t, Vector3 size, Vector4 color)
+void Particle::setRender(particleShape s, Vector3 size, Vector4 color)
 {
-	switch (t)
+	switch (s)
 	{
 	case Sphere:
 		renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(size.x)), &pose, color);

@@ -19,9 +19,9 @@ list<Particle*> UniformParticleGenerator::generateParticles()
 	for (size_t i = 0; i < numParticles; i++)
 	{
 		Vector3 newPos = meanPos;
-		//newPos.x += distribution(gen);
-		//newPos.y += distribution(gen);
-		//newPos.z += distribution(gen) ;
+		newPos.x += distribution(gen);
+		newPos.y += distribution(gen);
+		newPos.z += distribution(gen) ;
 
 		Vector3 newVel = meanVel;
 		newVel.x += distribution(gen);
@@ -30,8 +30,10 @@ list<Particle*> UniformParticleGenerator::generateParticles()
 
 		float ac = model->getAcceleration().y;
 		ac += distribution(gen) * .3;
-		Particle* newP = new Particle(newPos, newVel, { 0,ac,0 }, model->getDamping(),
-			model->getParticleType(), model->getSize(), model->getColor(), model->getRemainingTime());
+		Particle* newP = new Particle(model->getParticleType());
+		newP->setVelocity(newVel);
+		newP->setPosition(newPos);
+		newP->setAcceleration({ 0,ac,0 });
 
 		listParticles.push_back(newP);
 	}
@@ -67,8 +69,9 @@ list<Particle*> GaussianParticleGenerator::generateParticles()
 		newVel.y += dist(ran)*.1;
 		newVel.z += dist(ran)*.1;
 
-		Particle* newP = new Particle(newPos, newVel,model->getAcceleration(), model->getDamping(),
-			model->getParticleType(), model->getSize(), model->getColor(), model->getRemainingTime());
+		Particle* newP = new Particle(model->getParticleType());
+		newP->setPosition(newPos);
+		newP->setVelocity(newVel);
 
 		listParticles.push_back(newP);
 	}

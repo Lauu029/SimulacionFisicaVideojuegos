@@ -5,6 +5,7 @@
 
 #include "ParticleGenerator.h"
 #include "ColorHSV.h"
+#include "ParticleType.h"
 
 enum typeParticleSystem { font, fog };
 class ParticleSystem
