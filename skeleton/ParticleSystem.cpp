@@ -15,13 +15,26 @@ void ParticleSystem::update(double t)
 
 	for (int i = 0; i < particles.size(); i++)
 	{
-		if (particles[i]->getPos().y < 0 || particles[i]->getRemainingTime() < 0) {
+		if (particles[i]->getPos().y < 0 || particles[i]->getRemainingTime() <= 0) {
 			delete particles[i];
-			particles[i] = nullptr;
 			particles.erase(particles.begin() + i);
 		}
 		else
 			particles[i]->integrate(t);
+
+	}
+	for (int i = 0; i < fireworks.size(); i++)
+	{
+		if (fireworks[i]->getRemainingTime() <= 0) {
+			list<Firework*> newFireworks = fireworks[i]->explode();
+			delete fireworks[i];
+			fireworks.erase(fireworks.begin() + i);
+			for (auto f : newFireworks)
+				fireworks.push_back(f);
+			newFireworks.clear();
+		}
+		else
+			fireworks[i]->integrate(t);
 
 	}
 
@@ -56,6 +69,11 @@ ParticleGenerator* ParticleSystem::getParticleGenerator(typeParticleSystem t)
 	}
 }
 
+void ParticleSystem::generateFireworkSystem(particleType p)
+{
+	fireworks.push_back(new Firework(p, 10));
+}
+
 ParticleSystem::~ParticleSystem()
 {
 	for (auto p : particles)
@@ -64,6 +82,11 @@ ParticleSystem::~ParticleSystem()
 		p = nullptr;
 	}
 	particles.clear();
+	for (auto f : fireworks) {
+		delete f;
+		f = nullptr;
+	}
+	fireworks.clear();
 	delete niebla;
 	niebla = nullptr;
 	delete fuente;

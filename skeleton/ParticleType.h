@@ -145,3 +145,22 @@ public:
 		s = particleShape::box;
 	}
 };
+
+class Firework1 : public particleType {
+public:
+	Firework1(int rT) {
+		mass = 1.0f;
+		vel = { 0.0f,30.0f,0.0f };
+		ac = { 0.0f,0.0f, 0.0f };
+		damp = 0.5f;
+		remainingTime = rT;
+		size = { 1.5f,0.0f,0.0f };
+
+		col = { 279.0f,0.63f,0.72f };
+		rgb rgb = hsv2rgb(col);
+		color = { rgb.r,rgb.g,rgb.b,1.0 };
+
+		pose = physx::PxTransform{ 0.0 ,0.0, 0.0 };
+		s = particleShape::Sphere;
+	}
+};

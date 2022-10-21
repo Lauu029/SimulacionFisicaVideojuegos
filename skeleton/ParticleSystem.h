@@ -14,11 +14,12 @@ protected:
 	vector <Particle*> particles;
 	UniformParticleGenerator* fuente;
 	GaussianParticleGenerator* niebla;
-
+	vector<Firework*> fireworks;
+	
 public:
 	ParticleSystem();
 	void update(double t);
 	ParticleGenerator* getParticleGenerator(typeParticleSystem t);
-	void generateFireworkSystem();
+	void generateFireworkSystem(particleType p);
 	~ParticleSystem();
 };

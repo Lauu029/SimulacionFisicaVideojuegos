@@ -3,6 +3,8 @@
 #include "core.hpp"
 #include "RenderUtils.hpp"
 #include "ParticleType.h"
+#include <list>
+#include <random>
 
 class Particle
 {
@@ -27,7 +29,7 @@ public:
 	Vector3 getSize() { return size; }
 	Vector4 getColor() { return renderItem->color; }
 	particleType getParticleType() { return type; };
-private:
+protected:
 	Vector3 vel;
 	Vector3 ac;
 	double damp;
@@ -40,6 +42,14 @@ private:
 	particleShape shape;
 	Vector3 size;
 	Vector4 color;
-
 };
 
+class Firework : public Particle {
+public:
+	Firework(particleType p,int nH);
+	std::list<Firework*> explode();
+protected:
+	std::default_random_engine ran;
+	std::normal_distribution<> dist{ 0.5, 0.5 };
+	int numHijos;
+};

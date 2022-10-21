@@ -17,11 +17,8 @@ Particle::Particle(particleType p)
 	setRender(shape, size, color);
 }
 
-
-
 Particle::~Particle()
 {
-
 	if (renderItem != nullptr) {
 		renderItem->release();
 	}
@@ -65,3 +62,30 @@ void Particle::setColor(Vector4 _color) {
 	renderItem->color = color;
 }
 
+Firework::Firework(particleType p, int nH) : Particle(p)
+{
+	numHijos = nH;
+}
+
+std::list<Firework*> Firework::explode()
+{
+
+	std::list<Firework*> listParticles;
+
+	for (size_t i = 0; i < numHijos; i++)
+	{
+		/*pose.p.x += dist(ran) * 10;
+		pose.p.y += dist(ran) * 5;
+		pose.p.z += dist(ran) * 10;*/
+		Vector3 newVel = vel;
+		newVel.x += dist(ran);
+		newVel.y += dist(ran);
+		newVel.z += dist(ran);
+
+		Firework* newP = new Firework(Firework1(remainingTime-5),numHijos/2);
+		newP->setVelocity(newVel);
+
+		listParticles.push_back(newP);
+	}
+	return listParticles;
+}

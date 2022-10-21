@@ -140,6 +140,9 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	case 'v':
 		sceneParticles.push_back(new Particle(Laser( GetCamera()->getDir(),pos)));
 		break;
+	case'h':
+		partSys->generateFireworkSystem(Firework1(50));
+		break;
 	default:
 		break;
 	}
