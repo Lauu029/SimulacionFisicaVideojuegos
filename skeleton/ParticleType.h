@@ -103,7 +103,7 @@ public:
 		rgb rgb = hsv2rgb(col);
 		color = { rgb.r,rgb.g,rgb.b,1.0 };
 
-		pose = physx::PxTransform{ 0.0,0.0,0.0 };
+		pose = physx::PxTransform{ 0.0,-10.0,0.0 };
 		s = particleShape::Sphere;
 	}
 };
@@ -122,7 +122,7 @@ public:
 		rgb rgb = hsv2rgb(col);
 		color = { rgb.r,rgb.g,rgb.b,1.0 };
 
-		pose = physx::PxTransform{ 0.0 ,10.0, 0.0 };
+		pose = physx::PxTransform{ 0.0 ,-10.0, 0.0 };
 		s = particleShape::Sphere;
 	}
 };
@@ -146,9 +146,9 @@ public:
 	}
 };
 
-class Firework1 : public particleType {
+class PresetFirework : public particleType {
 public:
-	Firework1(int rT) {
+	PresetFirework(int rT) {
 		mass = 1.0f;
 		vel = { 0.0f,30.0f,0.0f };
 		ac = { 0.0f,0.0f, 0.0f };
@@ -156,7 +156,7 @@ public:
 		remainingTime = rT;
 		size = { 1.5f,0.0f,0.0f };
 
-		col = { 279.0f,0.63f,0.72f };
+		col = { 357.0f,1.0f,0.5f };
 		rgb rgb = hsv2rgb(col);
 		color = { rgb.r,rgb.g,rgb.b,1.0 };
 
@@ -165,17 +165,36 @@ public:
 	}
 };
 
-class Firework2 : public particleType {
+class FireworkHeart : public particleType {
 public:
-	Firework2(int rT) {
+	FireworkHeart(int rT) {
 		mass = 1.0f;
 		vel = { 0.0f,30.0f,0.0f };
 		ac = { 0.0f,0.0f, 0.0f };
-		damp = 0.1f;
+		damp = 0.9f;
 		remainingTime = rT;
 		size = { 0.5f,0.0f,0.0f };
 
-		col = { 279.0f,0.63f,1.0f };
+		col = { 357.0f,1.0f,0.7f };
+		rgb rgb = hsv2rgb(col);
+		color = { rgb.r,rgb.g,rgb.b,1.0 };
+
+		pose = physx::PxTransform{ 0.0 ,0.0, 0.0 };
+		s = particleShape::Sphere;
+	}
+};
+
+class RandomFireworks : public particleType {
+public:
+	RandomFireworks(int rT, Vector3 _color) {
+		mass = 1.0f;
+		vel = { 0.0f,30.0f,0.0f };
+		ac = { 0.0f,0.0f, 0.0f };
+		damp = 0.9f;
+		remainingTime = rT;
+		size = { 0.5f,0.0f,0.0f };
+
+		col = { _color.x,_color.y,_color.z };
 		rgb rgb = hsv2rgb(col);
 		color = { rgb.r,rgb.g,rgb.b,1.0 };
 

@@ -8,6 +8,7 @@
 #include "ParticleType.h"
 
 enum typeParticleSystem { font, fog, firework };
+
 class ParticleSystem
 {
 protected:
@@ -20,6 +21,6 @@ public:
 	ParticleSystem();
 	void update(double t);
 	ParticleGenerator* getParticleGenerator(typeParticleSystem t);
-	void generateFireworkSystem(particleType p);
+	void generateFireworkSystem(FireworkType t);
 	~ParticleSystem();
 };

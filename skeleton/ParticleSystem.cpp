@@ -9,8 +9,7 @@ ParticleSystem::ParticleSystem()
 	niebla->setParticle(new Particle(Nube()));
 
 	fireworks = new FireworkGenerator({ 0,20,0 }, { 0,10,0 });
-
-	fireworks->setParticle(new Firework(Firework1(20), 20));
+	fireworks->setParticle(new Firework(PresetFirework(20), 0,FireworkType::random));
 }
 
 void ParticleSystem::update(double t)
@@ -35,17 +34,17 @@ void ParticleSystem::update(double t)
 			f[i]->integrate(t);
 	}
 	//if (fireworks != nullptr && fireworks->isActive()) {
-		for (int i = 0; i < f.size(); i++)
-		{
-			if (!f[i]->isActive()) {
-				list<Firework*> newParticles = fireworks->generateFireworks(f[i]);
-				for (auto a : newParticles)
-					f.push_back(a);
-				newParticles.clear();
-				delete f[i];
-				f.erase(f.begin() + i);
-			}
+	for (int i = 0; i < f.size(); i++)
+	{
+		if (!f[i]->isActive()) {
+			list<Firework*> newParticles = fireworks->generateFireworks(f[i]);
+			for (auto a : newParticles)
+				f.push_back(a);
+			newParticles.clear();
+			delete f[i];
+			f.erase(f.begin() + i);
 		}
+	}
 	//}
 	if (fuente != nullptr && fuente->isActive()) {
 
@@ -81,9 +80,22 @@ ParticleGenerator* ParticleSystem::getParticleGenerator(typeParticleSystem t)
 	}
 }
 
-void ParticleSystem::generateFireworkSystem(particleType p)
+void ParticleSystem::generateFireworkSystem(FireworkType t)
 {
-	f.push_back(new Firework(p, 10));
+	switch (t)
+	{
+	case heart:
+		f.push_back(new Firework(PresetFirework(10), 50,t));
+		break;
+	case random:
+		f.push_back(new Firework(PresetFirework(10), 10, t));
+		break;
+	case circle:
+		f.push_back(new Firework(PresetFirework(10), 20, t));
+		break;
+	default:
+		break;
+	}
 }
 
 ParticleSystem::~ParticleSystem()

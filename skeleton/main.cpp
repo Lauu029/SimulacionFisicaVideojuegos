@@ -42,6 +42,7 @@ Particle* suelo_ = nullptr;
 void initPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
+	srand(time(NULL));
 
 	gFoundation = PxCreateFoundation(PX_FOUNDATION_VERSION, gAllocator, gErrorCallback);
 
@@ -140,7 +141,13 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		sceneParticles.push_back(new Particle(Laser( GetCamera()->getDir(),pos)));
 		break;
 	case'h':
-		partSys->generateFireworkSystem(Firework1(10));
+		partSys->generateFireworkSystem(FireworkType::heart);
+		break;
+	case 'j':
+		partSys->generateFireworkSystem(FireworkType::random);
+		break;
+	case'k':
+		partSys->generateFireworkSystem(FireworkType::circle);
 		break;
 	default:
 		break;

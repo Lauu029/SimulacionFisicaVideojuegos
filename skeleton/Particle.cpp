@@ -62,9 +62,10 @@ void Particle::setColor(Vector4 _color) {
 	renderItem->color = color;
 }
 
-Firework::Firework(particleType p, int nH) : Particle(p)
+Firework::Firework(particleType p, int nH, FireworkType _t) : Particle(p)
 {
 	numHijos = nH;
+	t = _t;
 	_isActive = true;
 }
 
