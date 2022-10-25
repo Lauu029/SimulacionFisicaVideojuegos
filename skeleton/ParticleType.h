@@ -137,7 +137,7 @@ public:
 		remainingTime = 0;
 		size = { 200.0f,1.0f,200.0f };
 
-		col = { 118.0f,1.0f,0.29f };
+		col = { 118.0f,1.0f,0.7f };
 		rgb rgb = hsv2rgb(col);
 		color = { rgb.r,rgb.g,rgb.b,1.0 };
 
@@ -157,6 +157,25 @@ public:
 		size = { 1.5f,0.0f,0.0f };
 
 		col = { 279.0f,0.63f,0.72f };
+		rgb rgb = hsv2rgb(col);
+		color = { rgb.r,rgb.g,rgb.b,1.0 };
+
+		pose = physx::PxTransform{ 0.0 ,0.0, 0.0 };
+		s = particleShape::Sphere;
+	}
+};
+
+class Firework2 : public particleType {
+public:
+	Firework2(int rT) {
+		mass = 1.0f;
+		vel = { 0.0f,30.0f,0.0f };
+		ac = { 0.0f,0.0f, 0.0f };
+		damp = 0.1f;
+		remainingTime = rT;
+		size = { 0.5f,0.0f,0.0f };
+
+		col = { 279.0f,0.63f,1.0f };
 		rgb rgb = hsv2rgb(col);
 		color = { rgb.r,rgb.g,rgb.b,1.0 };
 

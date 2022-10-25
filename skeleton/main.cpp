@@ -130,7 +130,6 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	case 'z':
 		sceneParticles.push_back(new Particle(Pistol( GetCamera()->getDir(),pos)));
 		break;
-		//case ' ':	break;
 	case 'x':
 		sceneParticles.push_back(new Particle(Artillery( GetCamera()->getDir(),pos)));
 		break;
@@ -141,7 +140,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		sceneParticles.push_back(new Particle(Laser( GetCamera()->getDir(),pos)));
 		break;
 	case'h':
-		partSys->generateFireworkSystem(Firework1(50));
+		partSys->generateFireworkSystem(Firework1(10));
 		break;
 	default:
 		break;

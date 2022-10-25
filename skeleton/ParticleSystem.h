@@ -7,15 +7,15 @@
 #include "ColorHSV.h"
 #include "ParticleType.h"
 
-enum typeParticleSystem { font, fog };
+enum typeParticleSystem { font, fog, firework };
 class ParticleSystem
 {
 protected:
 	vector <Particle*> particles;
 	UniformParticleGenerator* fuente;
 	GaussianParticleGenerator* niebla;
-	vector<Firework*> fireworks;
-	
+	FireworkGenerator* fireworks;
+	vector<Firework*> f;
 public:
 	ParticleSystem();
 	void update(double t);

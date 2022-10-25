@@ -23,6 +23,7 @@ public:
 	void setColor(Vector4 _color);
 
 	Vector3 getPos();
+	Vector3 getVel() { return vel; };
 	Vector3 getAcceleration() { return ac; }
 	double getDamping() { return damp; }
 	double getRemainingTime() { return remainingTime; }
@@ -47,9 +48,10 @@ protected:
 class Firework : public Particle {
 public:
 	Firework(particleType p,int nH);
-	std::list<Firework*> explode();
+	void explode();
+	bool isActive() { return _isActive; };
+	int getNumHijos() { return numHijos; };
 protected:
-	std::default_random_engine ran;
-	std::normal_distribution<> dist{ 0.5, 0.5 };
 	int numHijos;
+	bool _isActive;
 };
