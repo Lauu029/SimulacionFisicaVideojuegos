@@ -6,11 +6,11 @@
 #include <list>
 #include <random>
 
-enum FireworkType { heart, random, circle };
+enum FireworkType { heart, random, circle, batFuego };
 class Particle
 {
 public:
-	Particle(particleType p);
+	Particle(particleType p, bool b);
 	~Particle();
 
 	void integrate(double t);
@@ -48,7 +48,7 @@ protected:
 
 class Firework : public Particle {
 public:
-	Firework(particleType p,int nH, FireworkType _t);
+	Firework(particleType p,int nH, FireworkType _t, bool b);
 	void explode();
 	bool isActive() { return _isActive; };
 	int getNumHijos() { return numHijos; };

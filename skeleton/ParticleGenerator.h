@@ -3,15 +3,14 @@
 #include <string>
 #include <list>
 #include <random>
+#include <complex>
 
 #include "Particle.h"
 using namespace std;
 class ParticleGenerator
 {
 protected:
-	string name;
 	Vector3 meanPos, meanVel;
-	double generationProb;
 	int numParticles;
 	Particle* model;
 	bool active;
@@ -49,13 +48,18 @@ public:
 class FireworkGenerator : public ParticleGenerator
 {
 protected:
-	void FuegosCorazon(Vector3& newVel, double increase, const size_t& i, Firework* parent, std::list<Firework*>& listParticles);
+	void FuegosCorazon(Vector3& newVel, double increase, Firework* parent, std::list<Firework*>& listParticles);
 	void RandomFirework(Vector3& newVel, Firework* parent, Vector3& newPos, std::list<Firework*>& listParticles);
+	void CircleFirework(Vector3& newVel, double increase,  Firework* parent, Vector3& newPos, std::list<Firework*>& listParticles);
+	void BatFirework(Vector3& newVel, double increase, Firework* parent, Vector3& newPos, std::list<Firework*>& listParticles);
 
+	void CabezaBatFuegos(Vector3& newVel, Firework* parent, std::list<Firework*>& listParticles);
+	void FinAlasBatFuegos(Vector3& newVel, int x, Firework* parent, std::list<Firework*>& listParticles);
+	void ParentesisBatFuegos(int x, Vector3& newVel, Firework* parent, std::list<Firework*>& listParticles);
+	void PicosAbajoBatFuegos(int x, Vector3& newVel, Firework* parent, std::list<Firework*>& listParticles);
 public:
 	FireworkGenerator(Vector3 _meanPos, Vector3 _meanVel);
 	list<Firework*> generateFireworks(Firework* parent);
-	void CircleFirework(Vector3& newVel, double increase, const size_t& i, Firework* parent, Vector3& newPos, std::list<Firework*>& listParticles);
 	list<Particle*> generateParticles() override;
 };
 

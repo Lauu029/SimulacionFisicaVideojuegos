@@ -1,7 +1,7 @@
 #include "Particle.h"
 #include <iostream>
 
-Particle::Particle(particleType p)
+Particle::Particle(particleType p, bool b)
 {
 	vel = p.vel;
 	ac = p.ac;
@@ -11,10 +11,11 @@ Particle::Particle(particleType p)
 	shape = p.s;
 	size = p.size;
 	color = p.color;
-
 	type = p;
 
-	setRender(shape, size, color);
+	if (b)
+		setRender(shape, size, color);
+	else renderItem = nullptr;
 }
 
 Particle::~Particle()
@@ -62,7 +63,7 @@ void Particle::setColor(Vector4 _color) {
 	renderItem->color = color;
 }
 
-Firework::Firework(particleType p, int nH, FireworkType _t) : Particle(p)
+Firework::Firework(particleType p, int nH, FireworkType _t, bool b) : Particle(p, b)
 {
 	numHijos = nH;
 	t = _t;

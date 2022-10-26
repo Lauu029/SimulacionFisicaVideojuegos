@@ -3,18 +3,17 @@
 ParticleSystem::ParticleSystem()
 {
 	fuente = new UniformParticleGenerator({ 0,0,0 }, { 0,10,0 });
-	fuente->setParticle(new Particle(Agua()));
+	fuente->setParticle(new Particle(Agua(),false));
 
 	niebla = new GaussianParticleGenerator({ 10,50,10 }, { 0,0,0 });
-	niebla->setParticle(new Particle(Nube()));
+	niebla->setParticle(new Particle(Nube(),false));
 
 	fireworks = new FireworkGenerator({ 0,20,0 }, { 0,10,0 });
-	fireworks->setParticle(new Firework(PresetFirework(20), 0,FireworkType::random));
+	fireworks->setParticle(new Firework(PresetFirework(20), 0,FireworkType::random,false));
 }
 
 void ParticleSystem::update(double t)
 {
-
 	for (int i = 0; i < particles.size(); i++)
 	{
 		if (particles[i]->getPos().y < 0 || particles[i]->getRemainingTime() <= 0) {
@@ -23,7 +22,6 @@ void ParticleSystem::update(double t)
 		}
 		else
 			particles[i]->integrate(t);
-
 	}
 	for (int i = 0; i < f.size(); i++)
 	{
@@ -33,7 +31,6 @@ void ParticleSystem::update(double t)
 		else
 			f[i]->integrate(t);
 	}
-	//if (fireworks != nullptr && fireworks->isActive()) {
 	for (int i = 0; i < f.size(); i++)
 	{
 		if (!f[i]->isActive()) {
@@ -45,7 +42,6 @@ void ParticleSystem::update(double t)
 			f.erase(f.begin() + i);
 		}
 	}
-	//}
 	if (fuente != nullptr && fuente->isActive()) {
 
 		list<Particle*> newParticles = fuente->generateParticles();
@@ -59,7 +55,6 @@ void ParticleSystem::update(double t)
 			particles.push_back(a);
 		newParticles.clear();
 	}
-
 }
 
 ParticleGenerator* ParticleSystem::getParticleGenerator(typeParticleSystem t)
@@ -85,14 +80,16 @@ void ParticleSystem::generateFireworkSystem(FireworkType t)
 	switch (t)
 	{
 	case heart:
-		f.push_back(new Firework(PresetFirework(10), 50,t));
+		f.push_back(new Firework(PresetFirework(10), 50,t,true));
 		break;
 	case random:
-		f.push_back(new Firework(PresetFirework(10), 10, t));
+		f.push_back(new Firework(PresetFirework(10), 10, t,true));
 		break;
 	case circle:
-		f.push_back(new Firework(PresetFirework(10), 20, t));
+		f.push_back(new Firework(PresetFirework(10), 20, t,true));
 		break;
+	case batFuego:
+		f.push_back(new Firework(BatFireworks(5), 50, t, true));
 	default:
 		break;
 	}

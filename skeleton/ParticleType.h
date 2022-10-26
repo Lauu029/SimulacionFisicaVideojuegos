@@ -80,7 +80,7 @@ public:
 		remainingTime = 60;
 		size = { 0.5,0,0 };
 
-		col = {357.0f,1.0f,0.48f };
+		col = { 357.0f,1.0f,0.48f };
 		rgb rgb = hsv2rgb(col);
 		color = { rgb.r,rgb.g,rgb.b,1.0 };
 
@@ -154,7 +154,7 @@ public:
 		ac = { 0.0f,0.0f, 0.0f };
 		damp = 0.5f;
 		remainingTime = rT;
-		size = { 1.5f,0.0f,0.0f };
+		size = { 1.0f,0.0f,0.0f };
 
 		col = { 357.0f,1.0f,0.5f };
 		rgb rgb = hsv2rgb(col);
@@ -186,15 +186,34 @@ public:
 
 class RandomFireworks : public particleType {
 public:
-	RandomFireworks(int rT, Vector3 _color) {
+	RandomFireworks(int rT, Vector3 _color, float _s) {
 		mass = 1.0f;
 		vel = { 0.0f,30.0f,0.0f };
 		ac = { 0.0f,0.0f, 0.0f };
 		damp = 0.9f;
 		remainingTime = rT;
-		size = { 0.5f,0.0f,0.0f };
+		size = { _s ,0.0f,0.0f };
 
 		col = { _color.x,_color.y,_color.z };
+		rgb rgb = hsv2rgb(col);
+		color = { rgb.r,rgb.g,rgb.b,1.0 };
+
+		pose = physx::PxTransform{ 0.0 ,0.0, 0.0 };
+		s = particleShape::Sphere;
+	}
+};
+
+class BatFireworks : public particleType {
+public:
+	BatFireworks(int rT) {
+		mass = 1.0f;
+		vel = { 0.0f,10.0f,0.0f };
+		ac = { 0.0f,0.0f, 0.0f };
+		damp = 0.9f;
+		remainingTime = rT;
+		size = { 0.5f ,0.0f,0.0f };
+
+		col = { 53.0f ,0.93f,0.54f };
 		rgb rgb = hsv2rgb(col);
 		color = { rgb.r,rgb.g,rgb.b,1.0 };
 

@@ -63,7 +63,7 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 
 	partSys = new ParticleSystem();
-	suelo_ = new Particle(Suelo());
+	suelo_ = new Particle(Suelo(),false);
 	gScene = gPhysics->createScene(sceneDesc);
 }
 
@@ -129,16 +129,16 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		partSys->getParticleGenerator(typeParticleSystem::fog)->setActive();
 		break;
 	case 'z':
-		sceneParticles.push_back(new Particle(Pistol( GetCamera()->getDir(),pos)));
+		sceneParticles.push_back(new Particle(Pistol( GetCamera()->getDir(),pos),true));
 		break;
 	case 'x':
-		sceneParticles.push_back(new Particle(Artillery( GetCamera()->getDir(),pos)));
+		sceneParticles.push_back(new Particle(Artillery( GetCamera()->getDir(),pos),true));
 		break;
 	case 'c':
-		sceneParticles.push_back(new Particle(Fireball( GetCamera()->getDir(),pos)));
+		sceneParticles.push_back(new Particle(Fireball( GetCamera()->getDir(),pos),true));
 		break;
 	case 'v':
-		sceneParticles.push_back(new Particle(Laser( GetCamera()->getDir(),pos)));
+		sceneParticles.push_back(new Particle(Laser( GetCamera()->getDir(),pos),true));
 		break;
 	case'h':
 		partSys->generateFireworkSystem(FireworkType::heart);
@@ -148,6 +148,9 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		break;
 	case'k':
 		partSys->generateFireworkSystem(FireworkType::circle);
+		break;
+	case 'l':
+		partSys->generateFireworkSystem(FireworkType::batFuego);
 		break;
 	default:
 		break;
