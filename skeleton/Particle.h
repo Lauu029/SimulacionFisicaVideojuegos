@@ -7,6 +7,7 @@
 #include <random>
 
 enum FireworkType { heart, random, circle, batFuego };
+
 class Particle
 {
 public:
@@ -45,7 +46,6 @@ protected:
 	Vector3 size;
 	Vector4 color;
 };
-
 class Firework : public Particle {
 public:
 	Firework(particleType p,int nH, FireworkType _t, bool b);

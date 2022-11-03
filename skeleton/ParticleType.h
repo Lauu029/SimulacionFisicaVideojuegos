@@ -17,7 +17,6 @@ public:
 	Vector4 color;
 	particleShape s;
 };
-
 class Pistol : public particleType {
 public:
 	Pistol(Vector3 dir, Vector3 pos) {
@@ -88,7 +87,6 @@ public:
 		s = particleShape::Sphere;
 	}
 };
-
 class Agua : public particleType {
 public:
 	Agua() {
@@ -107,7 +105,6 @@ public:
 		s = particleShape::Sphere;
 	}
 };
-
 class Nube : public particleType {
 public:
 	Nube() {
@@ -126,7 +123,6 @@ public:
 		s = particleShape::Sphere;
 	}
 };
-
 class Suelo : public particleType {
 public:
 	Suelo() {
@@ -145,7 +141,6 @@ public:
 		s = particleShape::box;
 	}
 };
-
 class PresetFirework : public particleType {
 public:
 	PresetFirework(int rT) {
@@ -164,7 +159,6 @@ public:
 		s = particleShape::Sphere;
 	}
 };
-
 class FireworkHeart : public particleType {
 public:
 	FireworkHeart(int rT) {
@@ -183,7 +177,6 @@ public:
 		s = particleShape::Sphere;
 	}
 };
-
 class RandomFireworks : public particleType {
 public:
 	RandomFireworks(int rT, Vector3 _color, float _s) {
@@ -202,7 +195,6 @@ public:
 		s = particleShape::Sphere;
 	}
 };
-
 class BatFireworks : public particleType {
 public:
 	BatFireworks(int rT) {

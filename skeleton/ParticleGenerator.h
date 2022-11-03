@@ -4,9 +4,9 @@
 #include <list>
 #include <random>
 #include <complex>
-
 #include "Particle.h"
 using namespace std;
+
 class ParticleGenerator
 {
 protected:

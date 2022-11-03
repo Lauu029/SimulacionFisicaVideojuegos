@@ -58,6 +58,7 @@ void Particle::setRender(particleShape s, Vector3 size, Vector4 color)
 		break;
 	}
 }
+
 void Particle::setColor(Vector4 _color) {
 	color = _color;
 	renderItem->color = color;

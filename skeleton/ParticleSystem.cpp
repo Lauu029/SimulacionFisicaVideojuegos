@@ -11,7 +11,6 @@ ParticleSystem::ParticleSystem()
 	fireworks = new FireworkGenerator({ 0,20,0 }, { 0,10,0 });
 	fireworks->setParticle(new Firework(PresetFirework(20), 0,FireworkType::random,false));
 }
-
 void ParticleSystem::update(double t)
 {
 	for (int i = 0; i < particles.size(); i++)
@@ -56,7 +55,6 @@ void ParticleSystem::update(double t)
 		newParticles.clear();
 	}
 }
-
 ParticleGenerator* ParticleSystem::getParticleGenerator(typeParticleSystem t)
 {
 	switch (t)
@@ -74,7 +72,6 @@ ParticleGenerator* ParticleSystem::getParticleGenerator(typeParticleSystem t)
 		break;
 	}
 }
-
 void ParticleSystem::generateFireworkSystem(FireworkType t)
 {
 	switch (t)
@@ -94,7 +91,6 @@ void ParticleSystem::generateFireworkSystem(FireworkType t)
 		break;
 	}
 }
-
 ParticleSystem::~ParticleSystem()
 {
 	for (auto p : particles)
