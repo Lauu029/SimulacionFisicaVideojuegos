@@ -14,6 +14,8 @@
     <ClCompile Include="Proyectile.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
+    <ClCompile Include="ForceRegistry.cpp" />
+    <ClCompile Include="ForceGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -33,6 +35,8 @@
     <ClInclude Include="ColorHSV.h" />
     <ClInclude Include="EjesRGB.h" />
     <ClInclude Include="ParticleType.h" />
+    <ClInclude Include="ForceRegistry.h" />
+    <ClInclude Include="ForceGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

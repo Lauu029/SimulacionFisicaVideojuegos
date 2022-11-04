@@ -15,10 +15,8 @@ public:
 	~Particle();
 
 	void integrate(double t);
-
-	void setMass(double m) { mass = m; }
+	
 	void setVelocity(Vector3 v) { vel = v; }
-	void setDamping(double d) { damp = d; }
 	void setAcceleration(Vector3 a) { ac = a; }
 	void setPosition(Vector3 p) { pose = physx::PxTransform(p.x, p.y, p.z); }
 	void setRender(particleShape s, Vector3 size, Vector4 color);
@@ -32,11 +30,17 @@ public:
 	Vector3 getSize() { return size; }
 	Vector4 getColor() { return renderItem->color; }
 	particleType getParticleType() { return type; };
+	double getMass() { return mass; };
+
+	void clearForce() { force *= 0; };
+	void addForce(const Vector3& f) { force += f; };
 protected:
+	Vector3 force;
 	Vector3 vel;
 	Vector3 ac;
 	double damp;
 	double mass;
+	double inverse_mass;
 	double remainingTime;
 	physx::PxTransform pose;
 	RenderItem* renderItem;
@@ -45,7 +49,9 @@ protected:
 	particleShape shape;
 	Vector3 size;
 	Vector4 color;
+
 };
+
 class Firework : public Particle {
 public:
 	Firework(particleType p,int nH, FireworkType _t, bool b);

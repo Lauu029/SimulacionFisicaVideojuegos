@@ -254,6 +254,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="callbacks.cpp" />
+    <ClCompile Include="ForceGenerator.cpp" />
+    <ClCompile Include="ForceRegistry.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
@@ -269,6 +271,8 @@
     <ClInclude Include="ColorHSV.h" />
     <ClInclude Include="core.hpp" />
     <ClInclude Include="EjesRGB.h" />
+    <ClInclude Include="ForceGenerator.h" />
+    <ClInclude Include="ForceRegistry.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleGenerator.h" />
     <ClInclude Include="ParticleSystem.h" />
