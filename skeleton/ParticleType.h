@@ -126,14 +126,14 @@ public:
 class Suelo : public particleType {
 public:
 	Suelo() {
-		mass = 1.0f;
+		mass = 0.0f;
 		vel = { 0.0f,0.0f,0.0f };
 		ac = { 0.0f,0.0f, 0.0f };
 		damp = 0.0f;
 		remainingTime = 0;
 		size = { 200.0f,1.0f,200.0f };
 
-		col = { 118.0f,1.0f,0.7f };
+		col = { 153.0f,1.0f,0.9f };
 		rgb rgb = hsv2rgb(col);
 		color = { rgb.r,rgb.g,rgb.b,1.0 };
 
@@ -210,6 +210,22 @@ public:
 		color = { rgb.r,rgb.g,rgb.b,1.0 };
 
 		pose = physx::PxTransform{ 0.0 ,0.0, 0.0 };
+		s = particleShape::Sphere;
+	}
+};
+class GravityParticle1 : public particleType {
+public:
+	GravityParticle1(Vector3 pos) {
+		mass = 2.0f;
+		vel = { 0,0,0 };
+		ac = { 0.0f, 0.0f, 0.0f };
+		damp = 0.99;
+		remainingTime = 300;
+		size = { 1.0,0,0 };
+		col = { 67.0f,0.93f,0.95f };
+		rgb rgb = hsv2rgb(col);
+		color = { rgb.r,rgb.g,rgb.b,1.0 };
+		pose = physx::PxTransform{ pos.x,pos.y, pos.z };
 		s = particleShape::Sphere;
 	}
 };

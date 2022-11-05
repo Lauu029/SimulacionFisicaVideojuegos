@@ -30,6 +30,7 @@ public:
 	Vector3 getSize() { return size; }
 	Vector4 getColor() { return renderItem->color; }
 	particleType getParticleType() { return type; };
+	double getInvMass() { return inverse_mass; };
 	double getMass() { return mass; };
 
 	void clearForce() { force *= 0; };

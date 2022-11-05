@@ -10,7 +10,6 @@
 
 #include <iostream>
 #include "ParticleSystem.h"
-#include "EjesRGB.h"
 #include "ParticleType.h"
 #include "checkML.h"
 
@@ -33,7 +32,8 @@ PxDefaultCpuDispatcher* gDispatcher = NULL;
 PxScene* gScene = NULL;
 ContactReportCallback gContactReportCallback;
 
-ParticleSystem* partSys = NULL;
+ParticleSystem* partSysFireworks = nullptr;
+ParticleSystem* partSysGravity = nullptr;
 physx::PxTransform floorPose = { 0,0,0 };
 vector <Particle*> sceneParticles;
 
@@ -62,8 +62,7 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 
-	partSys = new ParticleSystem();
-	suelo_ = new Particle(Suelo(),false);
+	suelo_ = new Particle(Suelo(), true);
 	gScene = gPhysics->createScene(sceneDesc);
 }
 
@@ -85,7 +84,10 @@ void stepPhysics(bool interactive, double t)
 			sceneParticles[i]->integrate(t);
 
 	}
-	partSys->update(0.5);
+	if (partSysFireworks != nullptr)
+		partSysFireworks->update(0.5);
+	if (partSysGravity != nullptr)
+		partSysGravity->update(0.5);
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 }
@@ -95,12 +97,17 @@ void stepPhysics(bool interactive, double t)
 void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
-	delete partSys;
-	partSys = nullptr;
-	for (auto s: sceneParticles)
-	{
-		delete s;
+	if (partSysFireworks != nullptr) {
+		delete partSysFireworks;
+		partSysFireworks = nullptr;
 	}
+	if (partSysGravity != nullptr) {
+		delete partSysGravity;
+		partSysGravity = nullptr;
+	}
+	for (auto s : sceneParticles)
+		delete s;
+
 	delete suelo_;
 	sceneParticles.clear();
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
@@ -122,35 +129,54 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	Vector3 pos = GetCamera()->getTransform().p;
 	switch (tolower(key))
 	{
+	case '1':
+		if (partSysGravity != nullptr) delete partSysGravity; partSysGravity = nullptr;
+		if (partSysFireworks == nullptr)
+			partSysFireworks = new ParticleSystem(typeParticleSystem::particleGenerators);
+		break;
+	case '2':
+		if (partSysFireworks != nullptr) delete partSysFireworks; partSysFireworks = nullptr;
+		if (partSysGravity == nullptr)
+			partSysGravity = new ParticleSystem(typeParticleSystem::ForceGenerators);
 	case 'p':
-		partSys->getParticleGenerator(typeParticleSystem::font)->setActive();
+		if (partSysFireworks != nullptr)
+			partSysFireworks->getParticleGenerator(typeParticleGenerator::font)->setActive();
 		break;
 	case 'o':
-		partSys->getParticleGenerator(typeParticleSystem::fog)->setActive();
+		if (partSysFireworks != nullptr)
+			partSysFireworks->getParticleGenerator(typeParticleGenerator::fog)->setActive();
 		break;
 	case 'z':
-		sceneParticles.push_back(new Particle(Pistol( GetCamera()->getDir(),pos),true));
+		if (partSysFireworks != nullptr)
+			sceneParticles.push_back(new Particle(Pistol(GetCamera()->getDir(), pos), true));
 		break;
 	case 'x':
-		sceneParticles.push_back(new Particle(Artillery( GetCamera()->getDir(),pos),true));
+		if (partSysFireworks != nullptr)
+			sceneParticles.push_back(new Particle(Artillery(GetCamera()->getDir(), pos), true));
 		break;
 	case 'c':
-		sceneParticles.push_back(new Particle(Fireball( GetCamera()->getDir(),pos),true));
+		if (partSysFireworks != nullptr)
+			sceneParticles.push_back(new Particle(Fireball(GetCamera()->getDir(), pos), true));
 		break;
 	case 'v':
-		sceneParticles.push_back(new Particle(Laser( GetCamera()->getDir(),pos),true));
+		if (partSysFireworks != nullptr)
+			sceneParticles.push_back(new Particle(Laser(GetCamera()->getDir(), pos), true));
 		break;
 	case'h':
-		partSys->generateFireworkSystem(FireworkType::heart);
+		if (partSysFireworks != nullptr)
+			partSysFireworks->generateFireworkSystem(FireworkType::heart);
 		break;
 	case 'j':
-		partSys->generateFireworkSystem(FireworkType::random);
+		if (partSysFireworks != nullptr)
+			partSysFireworks->generateFireworkSystem(FireworkType::random);
 		break;
 	case'k':
-		partSys->generateFireworkSystem(FireworkType::circle);
+		if (partSysFireworks != nullptr)
+			partSysFireworks->generateFireworkSystem(FireworkType::circle);
 		break;
 	case 'l':
-		partSys->generateFireworkSystem(FireworkType::batFuego);
+		if (partSysFireworks != nullptr)
+			partSysFireworks->generateFireworkSystem(FireworkType::batFuego);
 		break;
 	default:
 		break;

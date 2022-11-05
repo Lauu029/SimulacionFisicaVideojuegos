@@ -1,10 +1,12 @@
 #include "ParticleGenerator.h"
 //Generadores de partículas
-UniformParticleGenerator::UniformParticleGenerator(Vector3 _meanPos, Vector3 _meanVel)
+UniformParticleGenerator::UniformParticleGenerator(Vector3 _meanPos, Vector3 _meanVel, int n, bool m, int s)
 {
 	meanPos = _meanPos;
 	meanVel = _meanVel;
-	numParticles = 10;
+	numParticles = n;
+	move = m;
+	sep = s;
 	active = false;
 }
 list<Particle*> UniformParticleGenerator::generateParticles()
@@ -14,21 +16,25 @@ list<Particle*> UniformParticleGenerator::generateParticles()
 	for (size_t i = 0; i < numParticles; i++)
 	{
 		Vector3 newPos = meanPos;
-		newPos.x += distribution(gen);
-		newPos.y += distribution(gen);
-		newPos.z += distribution(gen);
+		newPos.x += distribution(gen) * sep;
+		newPos.y += distribution(gen) * sep;
+		newPos.z += distribution(gen) * sep;
+
 
 		Vector3 newVel = meanVel;
-		newVel.x += distribution(gen) * 2;
-		newVel.y += distribution(gen);
-		newVel.z += distribution(gen) * 2;
-
 		float ac = model->getAcceleration().y;
-		ac += distribution(gen) * .3;
+		if (move) {
+			newVel.x += distribution(gen) * 2;
+			newVel.y += distribution(gen);
+			newVel.z += distribution(gen) * 2;
+
+			ac += distribution(gen) * .3;
+		}
 		Particle* newP = new Particle(model->getParticleType(), true);
 		newP->setVelocity(newVel);
 		newP->setPosition(newPos);
-		newP->setAcceleration({ 0,ac,0 });
+		if (move)
+			newP->setAcceleration({ 0,ac,0 });
 
 		listParticles.push_back(newP);
 	}
@@ -112,7 +118,7 @@ list<Firework*> FireworkGenerator::generateFireworks(Firework* parent)
 	return listParticles;
 }
 //Tipos de fireworks
-void FireworkGenerator::BatFirework(Vector3& newVel, double increase,  Firework* parent, Vector3& newPos, std::list<Firework*>& listParticles)
+void FireworkGenerator::BatFirework(Vector3& newVel, double increase, Firework* parent, Vector3& newPos, std::list<Firework*>& listParticles)
 {
 	for (size_t i = 1; i <= parent->getNumHijos(); i++)
 	{
@@ -213,10 +219,10 @@ void FireworkGenerator::CabezaBatFuegos(Vector3& newVel, Firework* parent, std::
 void FireworkGenerator::FinAlasBatFuegos(Vector3& newVel, int x, Firework* parent, std::list<Firework*>& listParticles)
 {
 	newVel = { 0,0,0 };
-	if (sin(x) < 0 && cos(x)<0) {
+	if (sin(x) < 0 && cos(x) < 0) {
 
-		newVel.x = -10+(10* cos(x));
-		newVel.y = 25+(10 * sin(x));
+		newVel.x = -10 + (10 * cos(x));
+		newVel.y = 25 + (10 * sin(x));
 	}
 	Firework* newP = new Firework(parent->getParticleType(), 0, FireworkType::batFuego, true);
 	newP->setPosition(parent->getPos());
@@ -224,7 +230,7 @@ void FireworkGenerator::FinAlasBatFuegos(Vector3& newVel, int x, Firework* paren
 	listParticles.push_back(newP);
 	Firework* newP2 = new Firework(parent->getParticleType(), 0, FireworkType::batFuego, true);
 	newP2->setPosition(parent->getPos());
-	newP2->setVelocity({ - newVel.x,newVel.y,newVel.z });
+	newP2->setVelocity({ -newVel.x,newVel.y,newVel.z });
 	listParticles.push_back(newP2);
 }
 void FireworkGenerator::ParentesisBatFuegos(int x, Vector3& newVel, Firework* parent, std::list<Firework*>& listParticles)

@@ -29,9 +29,10 @@ public:
 class UniformParticleGenerator : public ParticleGenerator
 {
 protected:
-
+	bool move;
+	int sep;
 public:
-	UniformParticleGenerator(Vector3 _meanPos, Vector3 _meanVel);
+	UniformParticleGenerator(Vector3 _meanPos, Vector3 _meanVel,int n,bool m,int s);
 	Vector3 velWidth, posWidth;
 	list<Particle*> generateParticles() override;
 };

@@ -27,7 +27,7 @@ void ForceRegistry::deleteForce(ForceGenerator* f)
 	for (auto it=begin();it!=end();)
 	{
 		if (it->first == f)
-			erase( it);
+			erase(it);
 		else it++;
 	}
 }

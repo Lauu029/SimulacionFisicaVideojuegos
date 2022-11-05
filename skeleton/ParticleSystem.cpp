@@ -1,15 +1,36 @@
 #include "ParticleSystem.h"
 
-ParticleSystem::ParticleSystem()
+ParticleSystem::ParticleSystem(typeParticleSystem pt)
 {
-	fuente = new UniformParticleGenerator({ 0,0,0 }, { 0,10,0 });
-	fuente->setParticle(new Particle(Agua(),false));
+	_typeSystem = pt;
+	switch (pt)
+	{
+	case particleGenerators:
+		fuente = new UniformParticleGenerator({ 0,0,0 }, { 0,10,0 }, 10, true, 1);
+		fuente->setParticle(new Particle(Agua(), false));
 
-	niebla = new GaussianParticleGenerator({ 10,50,10 }, { 0,0,0 });
-	niebla->setParticle(new Particle(Nube(),false));
+		niebla = new GaussianParticleGenerator({ 10,50,10 }, { 0,0,0 });
+		niebla->setParticle(new Particle(Nube(), false));
 
-	fireworks = new FireworkGenerator({ 0,20,0 }, { 0,10,0 });
-	fireworks->setParticle(new Firework(PresetFirework(20), 0,FireworkType::random,false));
+		fireworks = new FireworkGenerator({ 0,20,0 }, { 0,10,0 });
+		fireworks->setParticle(new Firework(PresetFirework(20), 0, FireworkType::random, false));
+		break;
+	case ForceGenerators:
+		GravityParticles = new UniformParticleGenerator({ 0,50,0 }, { 0,0,0 }, 20, false, 30);
+		GravityParticles->setParticle(new Particle(GravityParticle1({ 0,0,0 }), false));
+		ParticlesGravitySystem();
+		break;
+	default:
+
+		break;
+	}
+}
+void ParticleSystem::ParticlesGravitySystem()
+{
+	list<Particle*> newParticles = GravityParticles->generateParticles();
+	for (auto a : newParticles)
+		particles.push_back(a);
+	newParticles.clear();
 }
 void ParticleSystem::update(double t)
 {
@@ -22,40 +43,43 @@ void ParticleSystem::update(double t)
 		else
 			particles[i]->integrate(t);
 	}
-	for (int i = 0; i < f.size(); i++)
-	{
-		if (f[i]->getPos().y < 0 || f[i]->getRemainingTime() <= 0) {
-			f[i]->explode();
-		}
-		else
-			f[i]->integrate(t);
-	}
-	for (int i = 0; i < f.size(); i++)
-	{
-		if (!f[i]->isActive()) {
-			list<Firework*> newParticles = fireworks->generateFireworks(f[i]);
-			for (auto a : newParticles)
-				f.push_back(a);
-			newParticles.clear();
-			delete f[i];
-			f.erase(f.begin() + i);
-		}
-	}
-	if (fuente != nullptr && fuente->isActive()) {
+	if (_typeSystem == typeParticleSystem::particleGenerators) {
 
-		list<Particle*> newParticles = fuente->generateParticles();
-		for (auto a : newParticles)
-			particles.push_back(a);
-		newParticles.clear();
-	}
-	if (niebla != nullptr && niebla->isActive()) {
-		list<Particle*> newParticles = niebla->generateParticles();
-		for (auto a : newParticles)
-			particles.push_back(a);
-		newParticles.clear();
+		for (int i = 0; i < f.size(); i++)
+		{
+			if (f[i]->getPos().y < 0 || f[i]->getRemainingTime() <= 0) {
+				f[i]->explode();
+			}
+			else
+				f[i]->integrate(t);
+		}
+		for (int i = 0; i < f.size(); i++)
+		{
+			if (!f[i]->isActive()) {
+				list<Firework*> newParticles = fireworks->generateFireworks(f[i]);
+				for (auto a : newParticles)
+					f.push_back(a);
+				newParticles.clear();
+				delete f[i];
+				f.erase(f.begin() + i);
+			}
+		}
+		if (fuente != nullptr && fuente->isActive()) {
+
+			list<Particle*> newParticles = fuente->generateParticles();
+			for (auto a : newParticles)
+				particles.push_back(a);
+			newParticles.clear();
+		}
+		if (niebla != nullptr && niebla->isActive()) {
+			list<Particle*> newParticles = niebla->generateParticles();
+			for (auto a : newParticles)
+				particles.push_back(a);
+			newParticles.clear();
+		}
 	}
 }
-ParticleGenerator* ParticleSystem::getParticleGenerator(typeParticleSystem t)
+ParticleGenerator* ParticleSystem::getParticleGenerator(typeParticleGenerator t)
 {
 	switch (t)
 	{
@@ -77,13 +101,13 @@ void ParticleSystem::generateFireworkSystem(FireworkType t)
 	switch (t)
 	{
 	case heart:
-		f.push_back(new Firework(PresetFirework(10), 50,t,true));
+		f.push_back(new Firework(PresetFirework(10), 50, t, true));
 		break;
 	case random:
-		f.push_back(new Firework(PresetFirework(10), 10, t,true));
+		f.push_back(new Firework(PresetFirework(10), 10, t, true));
 		break;
 	case circle:
-		f.push_back(new Firework(PresetFirework(10), 20, t,true));
+		f.push_back(new Firework(PresetFirework(10), 20, t, true));
 		break;
 	case batFuego:
 		f.push_back(new Firework(BatFireworks(5), 50, t, true));
@@ -104,10 +128,20 @@ ParticleSystem::~ParticleSystem()
 		fi = nullptr;
 	}
 	f.clear();
-	delete fireworks;
-	fireworks = nullptr;
-	delete niebla;
-	niebla = nullptr;
-	delete fuente;
-	fuente = nullptr;
+	if (GravityParticles != nullptr) {
+		delete GravityParticles;
+		GravityParticles = nullptr;
+	}
+	if (fireworks != nullptr) {
+		delete fireworks;
+		fireworks = nullptr;
+	}
+	if (niebla != nullptr) {
+		delete niebla;
+		niebla = nullptr;
+	}
+	if (fuente != nullptr) {
+		delete fuente;
+		fuente = nullptr;
+	}
 }

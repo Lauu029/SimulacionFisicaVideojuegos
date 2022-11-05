@@ -33,7 +33,6 @@
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="ParticleGenerator.h" />
     <ClInclude Include="ColorHSV.h" />
-    <ClInclude Include="EjesRGB.h" />
     <ClInclude Include="ParticleType.h" />
     <ClInclude Include="ForceRegistry.h" />
     <ClInclude Include="ForceGenerator.h" />
