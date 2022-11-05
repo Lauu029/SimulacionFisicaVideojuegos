@@ -19,6 +19,8 @@ ParticleSystem::ParticleSystem(typeParticleSystem pt)
 		GravityParticles = new UniformParticleGenerator({ 0,50,0 }, { 0,0,0 }, 20, false, 30);
 		GravityParticles->setParticle(new Particle(GravityParticle1({ 0,0,0 }), false));
 		ParticlesGravitySystem();
+		fg = new ForceRegistry();
+		gravity = new GravityGenerator({ 0,-9.8,0 });
 		break;
 	default:
 
@@ -34,9 +36,12 @@ void ParticleSystem::ParticlesGravitySystem()
 }
 void ParticleSystem::update(double t)
 {
+	if (fg != nullptr)
+		fg->updateForces(t);
 	for (int i = 0; i < particles.size(); i++)
 	{
 		if (particles[i]->getPos().y < 0 || particles[i]->getRemainingTime() <= 0) {
+			if (fg != nullptr) fg->deleteParticle(particles[i]);
 			delete particles[i];
 			particles.erase(particles.begin() + i);
 		}
@@ -77,6 +82,20 @@ void ParticleSystem::update(double t)
 				particles.push_back(a);
 			newParticles.clear();
 		}
+	}
+}
+void ParticleSystem::addGravity()
+{
+	for (Particle* p: particles)
+	{
+		fg->addRegistry(p, gravity);
+	}
+}
+void ParticleSystem::deleteGravity()
+{
+	for (Particle* p : particles)
+	{
+		fg->deleteForce(gravity);
 	}
 }
 ParticleGenerator* ParticleSystem::getParticleGenerator(typeParticleGenerator t)
@@ -143,5 +162,13 @@ ParticleSystem::~ParticleSystem()
 	if (fuente != nullptr) {
 		delete fuente;
 		fuente = nullptr;
+	}
+	if (fg != nullptr){
+		delete fg;
+		fg = nullptr;
+	}
+	if (gravity != nullptr) {
+		delete gravity;
+		gravity = nullptr;
 	}
 }

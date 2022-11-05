@@ -14,7 +14,7 @@ Particle::Particle(particleType p, bool b)
 	size = p.size;
 	color = p.color;
 	type = p;
-
+	clearForce();
 	if (b)
 		setRender(shape, size, color);
 	else renderItem = nullptr;
@@ -33,11 +33,11 @@ void Particle::integrate(double t)
 
 	pose = physx::PxTransform(pose.p.x + vel.x * t, pose.p.y + vel.y * t, pose.p.z + vel.z * t);
 
-	Vector3 totalAcceleration= ac;
+	Vector3 totalAcceleration = ac;
 
-	totalAcceleration+= force * inverse_mass;
+	ac += force * inverse_mass;
 
-	vel += ac * t;
+	vel += totalAcceleration * t;
 
 	vel *= powf(damp, t);
 

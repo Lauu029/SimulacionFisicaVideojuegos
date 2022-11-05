@@ -138,6 +138,15 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		if (partSysFireworks != nullptr) delete partSysFireworks; partSysFireworks = nullptr;
 		if (partSysGravity == nullptr)
 			partSysGravity = new ParticleSystem(typeParticleSystem::ForceGenerators);
+		break;
+	case 'm':
+		if (partSysGravity != nullptr)
+			partSysGravity->addGravity();
+		break;
+	case'n':
+		if (partSysGravity != nullptr)
+			partSysGravity->deleteGravity();
+		break;
 	case 'p':
 		if (partSysFireworks != nullptr)
 			partSysFireworks->getParticleGenerator(typeParticleGenerator::font)->setActive();

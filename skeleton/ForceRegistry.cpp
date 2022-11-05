@@ -12,22 +12,23 @@ void ForceRegistry::addRegistry(Particle* p, ForceGenerator* f)
 	insert({ f, p });
 }
 
-void ForceRegistry::deleteParticle(Particle*p)
+void ForceRegistry::deleteParticle(Particle* p)
 {
-	for (auto it=begin();it!=end();)
+	for (auto it = begin(); it != end();)
 	{
 		if (it->second == p)
-			erase(it);
-		else it++;
+			it = erase(it);
+		else
+			it++;
 	}
 }
 
 void ForceRegistry::deleteForce(ForceGenerator* f)
 {
-	for (auto it=begin();it!=end();)
+	for (auto it = begin(); it != end();)
 	{
 		if (it->first == f)
-			erase(it);
+			it = erase(it);
 		else it++;
 	}
 }

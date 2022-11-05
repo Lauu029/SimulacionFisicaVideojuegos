@@ -4,8 +4,9 @@
 #include <iterator>
 
 #include "ParticleGenerator.h"
-#include "ColorHSV.h"
 #include "ParticleType.h"
+#include "ForceRegistry.h"
+#include "ForceGenerator.h"
 
 enum typeParticleGenerator { font, fog, firework };
 enum typeParticleSystem { particleGenerators, ForceGenerators };
@@ -20,10 +21,14 @@ protected:
 	FireworkGenerator* fireworks=nullptr;
 	vector<Firework*> f;
 	typeParticleSystem _typeSystem;
+	ForceRegistry* fg = nullptr;
+	ForceGenerator* gravity = nullptr;
 public:
 	ParticleSystem(typeParticleSystem pt);
 	void ParticlesGravitySystem();
 	void update(double t);
+	void addGravity();
+	void deleteGravity();
 	ParticleGenerator* getParticleGenerator(typeParticleGenerator t);
 	void generateFireworkSystem(FireworkType t);
 	~ParticleSystem();

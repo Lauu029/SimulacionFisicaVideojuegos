@@ -216,7 +216,7 @@ public:
 class GravityParticle1 : public particleType {
 public:
 	GravityParticle1(Vector3 pos) {
-		mass = 2.0f;
+		mass =0.0001f;
 		vel = { 0,0,0 };
 		ac = { 0.0f, 0.0f, 0.0f };
 		damp = 0.99;
