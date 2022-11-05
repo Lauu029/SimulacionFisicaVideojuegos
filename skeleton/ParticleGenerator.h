@@ -35,6 +35,7 @@ public:
 	UniformParticleGenerator(Vector3 _meanPos, Vector3 _meanVel,int n,bool m,int s);
 	Vector3 velWidth, posWidth;
 	list<Particle*> generateParticles() override;
+	void newParticleType();
 };
 
 class GaussianParticleGenerator : public ParticleGenerator

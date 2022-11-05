@@ -17,10 +17,10 @@ ParticleSystem::ParticleSystem(typeParticleSystem pt)
 		break;
 	case ForceGenerators:
 		GravityParticles = new UniformParticleGenerator({ 0,50,0 }, { 0,0,0 }, 20, false, 30);
-		GravityParticles->setParticle(new Particle(GravityParticle1({ 0,0,0 }), false));
+		GravityParticles->setParticle(new Particle(GravityParticle1({ 0,0,0 },500), false));
 		ParticlesGravitySystem();
 		fg = new ForceRegistry();
-		gravity = new GravityGenerator({ 0,-9.8,0 });
+		gravity = new GravityGenerator({ 0,-2.5,0 });
 		break;
 	default:
 

@@ -147,6 +147,10 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		if (partSysGravity != nullptr)
 			partSysGravity->deleteGravity();
 		break;
+	case 'b':
+		if (partSysGravity != nullptr)
+			partSysGravity->ParticlesGravitySystem();
+		break;
 	case 'p':
 		if (partSysFireworks != nullptr)
 			partSysFireworks->getParticleGenerator(typeParticleGenerator::font)->setActive();
@@ -156,20 +160,17 @@ void keyPress(unsigned char key, const PxTransform& camera)
 			partSysFireworks->getParticleGenerator(typeParticleGenerator::fog)->setActive();
 		break;
 	case 'z':
-		if (partSysFireworks != nullptr)
-			sceneParticles.push_back(new Particle(Pistol(GetCamera()->getDir(), pos), true));
+
+		sceneParticles.push_back(new Particle(Pistol(GetCamera()->getDir(), pos,100), true));
 		break;
 	case 'x':
-		if (partSysFireworks != nullptr)
-			sceneParticles.push_back(new Particle(Artillery(GetCamera()->getDir(), pos), true));
+		sceneParticles.push_back(new Particle(Artillery(GetCamera()->getDir(), pos,100), true));
 		break;
 	case 'c':
-		if (partSysFireworks != nullptr)
-			sceneParticles.push_back(new Particle(Fireball(GetCamera()->getDir(), pos), true));
+		sceneParticles.push_back(new Particle(Fireball(GetCamera()->getDir(), pos,100), true));
 		break;
 	case 'v':
-		if (partSysFireworks != nullptr)
-			sceneParticles.push_back(new Particle(Laser(GetCamera()->getDir(), pos), true));
+		sceneParticles.push_back(new Particle(Laser(GetCamera()->getDir(), pos,100), true));
 		break;
 	case'h':
 		if (partSysFireworks != nullptr)

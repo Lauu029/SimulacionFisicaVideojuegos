@@ -35,7 +35,7 @@ void Particle::integrate(double t)
 
 	Vector3 totalAcceleration = ac;
 
-	ac += force * inverse_mass;
+	ac += force;
 
 	vel += totalAcceleration * t;
 

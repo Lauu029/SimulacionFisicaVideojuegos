@@ -30,15 +30,45 @@ list<Particle*> UniformParticleGenerator::generateParticles()
 
 			ac += distribution(gen) * .3;
 		}
+		if (!move) newParticleType();
 		Particle* newP = new Particle(model->getParticleType(), true);
 		newP->setVelocity(newVel);
 		newP->setPosition(newPos);
 		if (move)
 			newP->setAcceleration({ 0,ac,0 });
+		else newP->setAcceleration({ 0,0,0 });
 
 		listParticles.push_back(newP);
 	}
 	return listParticles;
+}
+void UniformParticleGenerator::newParticleType()
+{
+	int t = rand() % 4 + 1;
+	if (model != nullptr) {
+		delete model;
+		model = nullptr;
+	}
+	switch (t)
+	{
+	case 1:
+		this->setParticle(new Particle(Artillery(meanVel, meanPos, 500), false));
+		break;
+	case 2:
+		this->setParticle(new Particle(Pistol(meanVel, meanPos, 500), false));
+		break;
+	case 3:
+		this->setParticle(new Particle(Laser(meanVel, meanPos, 500), false));
+		break;
+	case 4:
+		this->setParticle(new Particle(Fireball(meanVel, meanPos, 500), false));
+		break;
+	case 5:
+		this->setParticle(new Particle(GravityParticle1(meanPos, 500), false));
+		break;
+	default:
+		break;
+	}
 }
 //----------------------------------------------------------------------
 GaussianParticleGenerator::GaussianParticleGenerator(Vector3 _meanPos, Vector3 _meanVel)
@@ -148,9 +178,12 @@ void FireworkGenerator::CircleFirework(Vector3& newVel, double increase, Firewor
 {
 	for (size_t i = 1; i <= parent->getNumHijos(); i++)
 	{
-		newVel.x = sqrt(pow(cos(increase * i), 2) / 2) * pow(-1, i);
+		newVel.x = cos(increase * i);
 		newVel.y = sin(increase * i);
-		newVel.z = -sqrt(pow(cos(increase * i), 2) / 2) * pow(-1, i);
+		newVel.z = 1;
+		/*newVel.x = sqrt(pow(cos(increase * i), 2) / 2) * pow(-1, i);
+		newVel.y = sin(increase * i);
+		newVel.z = -sqrt(pow(cos(increase * i), 2) / 2) * pow(-1, i);*/
 		float color = 360.0 - parent->getNumHijos();
 		Firework* newP = new Firework(RandomFireworks(std::rand() % 20 + 14, { color,1.0f,0.5f }, parent->getSize().x / 2), parent->getNumHijos() - 10, parent->type(), true);
 

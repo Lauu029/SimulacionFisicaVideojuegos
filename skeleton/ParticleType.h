@@ -19,12 +19,12 @@ public:
 };
 class Pistol : public particleType {
 public:
-	Pistol(Vector3 dir, Vector3 pos) {
-		mass = 2.0f;
+	Pistol(Vector3 dir, Vector3 pos, int rt) {
+		mass = 0.20f;
 		vel = dir * 35;
 		ac = { 0.0f, -1.0f, 0.0f };
 		damp = 0.99;
-		remainingTime = 100;
+		remainingTime = rt;
 		size = { 1.0,0,0 };
 		col = { 0.0f,0.0f,0.75f };
 		rgb rgb = hsv2rgb(col);
@@ -35,12 +35,12 @@ public:
 };
 class Artillery : public particleType {
 public:
-	Artillery(Vector3 dir, Vector3 pos) {
-		mass = 200.0f;
+	Artillery(Vector3 dir, Vector3 pos, int rt) {
+		mass = 20.0f;
 		vel = dir * 100;
 		ac = { 0.0f, -200.0f, 0.0f };
 		damp = 0.99;
-		remainingTime = 100;
+		remainingTime = rt;
 		size = { 3.0,0,0 };
 
 		col = { 0.0f,0.0f,0.0f };
@@ -53,12 +53,12 @@ public:
 };
 class Fireball : public particleType {
 public:
-	Fireball(Vector3 dir, Vector3 pos) {
-		mass = 1.0f;
+	Fireball(Vector3 dir, Vector3 pos, int rt) {
+		mass = 0.001f;
 		vel = dir * 100;
 		ac = { 0.0f, 6.0f, 0.0f };
 		damp = 0.9;
-		remainingTime = 150;
+		remainingTime = rt;
 		size = { 1.5,0,0 };
 
 		col = { 32.0f,1.0f,0.65f };
@@ -71,12 +71,12 @@ public:
 };
 class Laser : public particleType {
 public:
-	Laser(Vector3 dir, Vector3 pos) {
-		mass = 0.1f;
+	Laser(Vector3 dir, Vector3 pos, int rt) {
+		mass = 0.01f;
 		vel = dir * 400;
 		ac = { 0.0f, 0.0f, 0.0f };
 		damp = 0.9;
-		remainingTime = 60;
+		remainingTime = rt;
 		size = { 0.5,0,0 };
 
 		col = { 357.0f,1.0f,0.48f };
@@ -215,12 +215,12 @@ public:
 };
 class GravityParticle1 : public particleType {
 public:
-	GravityParticle1(Vector3 pos) {
-		mass =0.0001f;
+	GravityParticle1(Vector3 pos, int rt) {
+		mass = 0.001f;
 		vel = { 0,0,0 };
 		ac = { 0.0f, 0.0f, 0.0f };
 		damp = 0.99;
-		remainingTime = 300;
+		remainingTime = rt;
 		size = { 1.0,0,0 };
 		col = { 67.0f,0.93f,0.95f };
 		rgb rgb = hsv2rgb(col);
