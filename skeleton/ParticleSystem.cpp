@@ -1,4 +1,5 @@
 #include "ParticleSystem.h"
+#include <iostream>
 
 ParticleSystem::ParticleSystem(typeParticleSystem pt)
 {
@@ -16,11 +17,12 @@ ParticleSystem::ParticleSystem(typeParticleSystem pt)
 		fireworks->setParticle(new Firework(PresetFirework(20), 0, FireworkType::random, false));
 		break;
 	case ForceGenerators:
-		GravityParticles = new UniformParticleGenerator({ 0,50,0 }, { 0,0,0 }, 20, false, 30);
-		GravityParticles->setParticle(new Particle(GravityParticle1({ 0,0,0 },500), false));
+		GravityParticles = new UniformParticleGenerator({ 0,60,0 }, { 0,0,0 }, 20, false, 30);
+		GravityParticles->setParticle(new Particle(GravityParticle1({ 0,0,0 },5000), false));
 		ParticlesGravitySystem();
 		fg = new ForceRegistry();
-		gravity = new GravityGenerator({ 0,-2.5,0 });
+		gravity = new GravityGenerator({ 0,-29.8,0 });
+		wind = new WindGenerator(30, { -50,50,0 }, { 5,70,5 });
 		break;
 	default:
 
@@ -98,6 +100,20 @@ void ParticleSystem::deleteGravity()
 		fg->deleteForce(gravity);
 	}
 }
+void ParticleSystem::addWind()
+{
+	for (Particle*p : particles)
+	{
+		fg->addRegistry(p, wind);
+	}
+}
+void ParticleSystem::deleteWind()
+{
+	for (Particle * p : particles)
+	{
+		fg->deleteForce(wind);
+	}
+}
 ParticleGenerator* ParticleSystem::getParticleGenerator(typeParticleGenerator t)
 {
 	switch (t)
@@ -170,5 +186,9 @@ ParticleSystem::~ParticleSystem()
 	if (gravity != nullptr) {
 		delete gravity;
 		gravity = nullptr;
+	}
+	if (wind != nullptr) {
+		delete wind;
+		wind = nullptr;
 	}
 }

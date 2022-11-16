@@ -35,14 +35,14 @@ void Particle::integrate(double t)
 
 	Vector3 totalAcceleration = ac;
 
-	ac += force;
+	totalAcceleration += force * inverse_mass;
 
 	vel += totalAcceleration * t;
 
 	vel *= powf(damp, t);
 
 	remainingTime--;
-	
+
 	clearForce();
 }
 

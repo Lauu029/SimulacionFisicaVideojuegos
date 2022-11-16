@@ -22,9 +22,15 @@ private:
 };
 class WindGenerator : public ForceGenerator {
 public:
-	WindGenerator();
+	WindGenerator(float r, Vector3 v, Vector3 p);
 	~WindGenerator();
 	virtual void updateForce(Particle* p, double t) override;
+private:
+	bool checkDistance(Particle* p);
+	float radius = 0;
+	Particle* actionRate = nullptr;
+	Vector3 pos;
+	Vector3 vel;
 };
 class TorbellinoGenerator : public ForceGenerator {
 public:

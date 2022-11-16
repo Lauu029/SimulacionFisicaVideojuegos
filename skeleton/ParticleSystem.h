@@ -23,12 +23,15 @@ protected:
 	typeParticleSystem _typeSystem;
 	ForceRegistry* fg = nullptr;
 	ForceGenerator* gravity = nullptr;
+	ForceGenerator* wind = nullptr;
 public:
 	ParticleSystem(typeParticleSystem pt);
 	void ParticlesGravitySystem();
 	void update(double t);
 	void addGravity();
 	void deleteGravity();
+	void addWind();
+	void deleteWind();
 	ParticleGenerator* getParticleGenerator(typeParticleGenerator t);
 	void generateFireworkSystem(FireworkType t);
 	~ParticleSystem();

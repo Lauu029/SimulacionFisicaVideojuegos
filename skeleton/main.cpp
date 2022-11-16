@@ -87,7 +87,7 @@ void stepPhysics(bool interactive, double t)
 	if (partSysFireworks != nullptr)
 		partSysFireworks->update(0.5);
 	if (partSysGravity != nullptr)
-		partSysGravity->update(0.5);
+		partSysGravity->update(t);
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 }
@@ -129,64 +129,76 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	Vector3 pos = GetCamera()->getTransform().p;
 	switch (tolower(key))
 	{
+	//Escena proyectiles
+	case '0':
+		if (partSysGravity != nullptr) delete partSysGravity; partSysGravity = nullptr;
+		if (partSysFireworks != nullptr) delete partSysFireworks; partSysFireworks = nullptr;
+		break;
+	//Escena generadores partículas
 	case '1':
 		if (partSysGravity != nullptr) delete partSysGravity; partSysGravity = nullptr;
 		if (partSysFireworks == nullptr)
 			partSysFireworks = new ParticleSystem(typeParticleSystem::particleGenerators);
 		break;
+	//Escena fuerzas
 	case '2':
 		if (partSysFireworks != nullptr) delete partSysFireworks; partSysFireworks = nullptr;
 		if (partSysGravity == nullptr)
 			partSysGravity = new ParticleSystem(typeParticleSystem::ForceGenerators);
 		break;
-	case 'm':
-		if (partSysGravity != nullptr)
+	//Pistola/fuegosCorazon/gravedad(activa)
+	case 'z':
+		if (partSysFireworks == nullptr && partSysGravity == nullptr)
+			sceneParticles.push_back(new Particle(Pistol(GetCamera()->getDir(), pos, 100), true));
+		else if (partSysFireworks != nullptr)
+			partSysFireworks->generateFireworkSystem(FireworkType::heart);
+		else if (partSysGravity != nullptr)
 			partSysGravity->addGravity();
 		break;
-	case'n':
-		if (partSysGravity != nullptr)
+	//Cañón/fuego aleatorio/gravedad(desactiva)
+	case 'x':
+		if (partSysFireworks == nullptr && partSysGravity == nullptr)
+			sceneParticles.push_back(new Particle(Artillery(GetCamera()->getDir(), pos, 100), true));
+		else if (partSysFireworks != nullptr)
+			partSysFireworks->generateFireworkSystem(FireworkType::random);
+		else if (partSysGravity != nullptr)
 			partSysGravity->deleteGravity();
 		break;
-	case 'b':
-		if (partSysGravity != nullptr)
-			partSysGravity->ParticlesGravitySystem();
+	//Fireball/fuego circulo/viento(activa)
+	case 'c':
+		if (partSysFireworks == nullptr && partSysGravity == nullptr)
+			sceneParticles.push_back(new Particle(Fireball(GetCamera()->getDir(), pos, 100), true));
+		else if (partSysFireworks != nullptr)
+			partSysFireworks->generateFireworkSystem(FireworkType::circle);
+		else if (partSysGravity != nullptr)
+			partSysGravity->addWind();
 		break;
-	case 'p':
+	//Laser/BatFuego/viento(desactiva)
+	case 'v':
+		if (partSysFireworks == nullptr && partSysGravity == nullptr)
+			sceneParticles.push_back(new Particle(Laser(GetCamera()->getDir(), pos, 100), true));
+		else if (partSysFireworks != nullptr)
+			partSysFireworks->generateFireworkSystem(FireworkType::batFuego);
+		else if (partSysGravity != nullptr)
+			partSysGravity->deleteWind();
+		break;
+	//Fuente/Torbellino(activa)
+	case 'b':
 		if (partSysFireworks != nullptr)
 			partSysFireworks->getParticleGenerator(typeParticleGenerator::font)->setActive();
+		else if (partSysGravity != nullptr)
+			std::cout << "Activa Torbellino\n";
 		break;
-	case 'o':
+	//Niebla/Torbellino(desactiva)
+	case 'n':
 		if (partSysFireworks != nullptr)
 			partSysFireworks->getParticleGenerator(typeParticleGenerator::fog)->setActive();
+		else if (partSysGravity != nullptr)
+			std::cout << "Desactiva Torbellino\n";
 		break;
-	case 'z':
-
-		sceneParticles.push_back(new Particle(Pistol(GetCamera()->getDir(), pos,100), true));
-		break;
-	case 'x':
-		sceneParticles.push_back(new Particle(Artillery(GetCamera()->getDir(), pos,100), true));
-		break;
-	case 'c':
-		sceneParticles.push_back(new Particle(Fireball(GetCamera()->getDir(), pos,100), true));
-		break;
-	case 'v':
-		sceneParticles.push_back(new Particle(Laser(GetCamera()->getDir(), pos,100), true));
-		break;
-	case'h':
-		if (partSysFireworks != nullptr)
-			partSysFireworks->generateFireworkSystem(FireworkType::heart);
-		break;
-	case 'j':
-		if (partSysFireworks != nullptr)
-			partSysFireworks->generateFireworkSystem(FireworkType::random);
-		break;
-	case'k':
-		if (partSysFireworks != nullptr)
-			partSysFireworks->generateFireworkSystem(FireworkType::circle);
-		break;
-	case 'l':
-		if (partSysFireworks != nullptr)
-			partSysFireworks->generateFireworkSystem(FireworkType::batFuego);
+	case 'm':
+		if (partSysGravity != nullptr)
+			partSysGravity->ParticlesGravitySystem();
 		break;
 	default:
 		break;

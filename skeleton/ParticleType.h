@@ -36,7 +36,7 @@ public:
 class Artillery : public particleType {
 public:
 	Artillery(Vector3 dir, Vector3 pos, int rt) {
-		mass = 20.0f;
+		mass = 10.0f;
 		vel = dir * 100;
 		ac = { 0.0f, -200.0f, 0.0f };
 		damp = 0.99;
@@ -54,7 +54,7 @@ public:
 class Fireball : public particleType {
 public:
 	Fireball(Vector3 dir, Vector3 pos, int rt) {
-		mass = 0.001f;
+		mass = 0.1f;
 		vel = dir * 100;
 		ac = { 0.0f, 6.0f, 0.0f };
 		damp = 0.9;
@@ -72,7 +72,7 @@ public:
 class Laser : public particleType {
 public:
 	Laser(Vector3 dir, Vector3 pos, int rt) {
-		mass = 0.01f;
+		mass = 0.1f;
 		vel = dir * 400;
 		ac = { 0.0f, 0.0f, 0.0f };
 		damp = 0.9;
@@ -225,6 +225,22 @@ public:
 		col = { 67.0f,0.93f,0.95f };
 		rgb rgb = hsv2rgb(col);
 		color = { rgb.r,rgb.g,rgb.b,1.0 };
+		pose = physx::PxTransform{ pos.x,pos.y, pos.z };
+		s = particleShape::Sphere;
+	}
+};
+class forceActionRateParticle : public particleType {
+public:
+	forceActionRateParticle(float radius, Vector3 pos) {
+		mass = 0.0f;
+		vel = { 0,0,0 };
+		ac = { 0.0f, 0.0f, 0.0f };
+		damp = 0.99;
+		remainingTime = 0;
+		size = { radius,0,0 };
+		col = {353.0f,1.0f,0.47f };
+		rgb rgb = hsv2rgb(col);
+		color = { rgb.r,rgb.g,rgb.b,0.4 };
 		pose = physx::PxTransform{ pos.x,pos.y, pos.z };
 		s = particleShape::Sphere;
 	}
