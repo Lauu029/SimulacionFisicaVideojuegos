@@ -24,6 +24,7 @@ protected:
 	ForceRegistry* fg = nullptr;
 	ForceGenerator* gravity = nullptr;
 	ForceGenerator* wind = nullptr;
+	ForceGenerator* torbellino = nullptr;
 public:
 	ParticleSystem(typeParticleSystem pt);
 	void ParticlesGravitySystem();
@@ -32,6 +33,8 @@ public:
 	void deleteGravity();
 	void addWind();
 	void deleteWind();
+	void addTorbellino();
+	void deleteTorbellino();
 	ParticleGenerator* getParticleGenerator(typeParticleGenerator t);
 	void generateFireworkSystem(FireworkType t);
 	~ParticleSystem();

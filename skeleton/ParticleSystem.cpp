@@ -17,12 +17,13 @@ ParticleSystem::ParticleSystem(typeParticleSystem pt)
 		fireworks->setParticle(new Firework(PresetFirework(20), 0, FireworkType::random, false));
 		break;
 	case ForceGenerators:
-		GravityParticles = new UniformParticleGenerator({ 0,60,0 }, { 0,0,0 }, 20, false, 30);
+		GravityParticles = new UniformParticleGenerator({ 0,60,0 }, { 0,0,0 }, 100, false, 30);
 		GravityParticles->setParticle(new Particle(GravityParticle1({ 0,0,0 },5000), false));
 		ParticlesGravitySystem();
 		fg = new ForceRegistry();
 		gravity = new GravityGenerator({ 0,-29.8,0 });
 		wind = new WindGenerator(30, { -50,20,0 }, { 10,50,5 });
+		torbellino = new TorbellinoGenerator(50, { 10,10,10 }, { 0,40,10 });
 		break;
 	default:
 
@@ -114,6 +115,20 @@ void ParticleSystem::deleteWind()
 		fg->deleteForce(wind);
 	}
 }
+void ParticleSystem::addTorbellino()
+{
+	for (Particle* p : particles)
+	{
+		fg->addRegistry(p, torbellino);
+	}
+}
+void ParticleSystem::deleteTorbellino()
+{
+	for (Particle* p : particles)
+	{
+		fg->deleteForce(torbellino);
+	}
+}
 ParticleGenerator* ParticleSystem::getParticleGenerator(typeParticleGenerator t)
 {
 	switch (t)
@@ -153,42 +168,27 @@ void ParticleSystem::generateFireworkSystem(FireworkType t)
 ParticleSystem::~ParticleSystem()
 {
 	for (auto p : particles)
-	{
 		delete p;
-		p = nullptr;
-	}
 	particles.clear();
-	for (auto fi : f) {
+
+	for (auto fi : f)
 		delete fi;
-		fi = nullptr;
-	}
 	f.clear();
-	if (GravityParticles != nullptr) {
+
+	if (GravityParticles != nullptr)
 		delete GravityParticles;
-		GravityParticles = nullptr;
-	}
-	if (fireworks != nullptr) {
+	if (fireworks != nullptr) 
 		delete fireworks;
-		fireworks = nullptr;
-	}
-	if (niebla != nullptr) {
+	if (niebla != nullptr)
 		delete niebla;
-		niebla = nullptr;
-	}
-	if (fuente != nullptr) {
+	if (fuente != nullptr) 
 		delete fuente;
-		fuente = nullptr;
-	}
-	if (fg != nullptr){
+	if (fg != nullptr)
 		delete fg;
-		fg = nullptr;
-	}
-	if (gravity != nullptr) {
+	if (gravity != nullptr) 
 		delete gravity;
-		gravity = nullptr;
-	}
-	if (wind != nullptr) {
+	if (wind != nullptr) 
 		delete wind;
-		wind = nullptr;
-	}
+	if (torbellino != nullptr)
+		delete torbellino;
 }

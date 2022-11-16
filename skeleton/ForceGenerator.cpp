@@ -44,16 +44,25 @@ bool WindGenerator::checkDistance(Particle* p)
 		&& (particlePos.z <= pos.z + radius && particlePos.z >= pos.z - radius);
 }
 
-TorbellinoGenerator::TorbellinoGenerator()
+TorbellinoGenerator::TorbellinoGenerator(float r, Vector3 v, Vector3 p):WindGenerator(r,v,p)
 {
 }
 
 TorbellinoGenerator::~TorbellinoGenerator()
 {
+	if (actionRate != nullptr) delete actionRate;
 }
 
 void TorbellinoGenerator::updateForce(Particle* p, double t)
 {
+	if (fabs(p->getInvMass()) < 1e-10) return;
+
+	//𝐹𝑣	⃗⃗⃗ = 𝑘1(𝑣 𝑣 − 𝑣) + 𝑘2 ‖𝑣 𝑣 − 𝑣 ‖ (𝑣 𝑣 − 𝑣)
+	float k = 0.8;
+	vel = { p->getPos().x - pos.x, 50 - (p->getPos().y - pos.y), -(p->getPos().z - pos.z) };
+
+	if (checkDistance(p))
+		p->addForce(k * (vel - p->getVel()));
 }
 
 ExplosionGenerator::ExplosionGenerator()

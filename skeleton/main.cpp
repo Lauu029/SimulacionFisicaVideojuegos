@@ -187,14 +187,14 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		if (partSysFireworks != nullptr)
 			partSysFireworks->getParticleGenerator(typeParticleGenerator::font)->setActive();
 		else if (partSysGravity != nullptr)
-			std::cout << "Activa Torbellino\n";
+			partSysGravity->addTorbellino();
 		break;
 	//Niebla/Torbellino(desactiva)
 	case 'n':
 		if (partSysFireworks != nullptr)
 			partSysFireworks->getParticleGenerator(typeParticleGenerator::fog)->setActive();
 		else if (partSysGravity != nullptr)
-			std::cout << "Desactiva Torbellino\n";
+			partSysGravity->deleteTorbellino();
 		break;
 	case 'm':
 		if (partSysGravity != nullptr)
