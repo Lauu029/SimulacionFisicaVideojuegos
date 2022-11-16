@@ -52,19 +52,19 @@ void UniformParticleGenerator::newParticleType()
 	switch (t)
 	{
 	case 1:
-		this->setParticle(new Particle(Artillery(meanVel, meanPos, 500), false));
+		this->setParticle(new Particle(Artillery(meanVel, meanPos, 5000), false));
 		break;
 	case 2:
-		this->setParticle(new Particle(Pistol(meanVel, meanPos, 500), false));
+		this->setParticle(new Particle(Pistol(meanVel, meanPos, 5000), false));
 		break;
 	case 3:
-		this->setParticle(new Particle(Laser(meanVel, meanPos, 500), false));
+		this->setParticle(new Particle(Laser(meanVel, meanPos, 5000), false));
 		break;
 	case 4:
-		this->setParticle(new Particle(Fireball(meanVel, meanPos, 500), false));
+		this->setParticle(new Particle(Fireball(meanVel, meanPos, 5000), false));
 		break;
 	case 5:
-		this->setParticle(new Particle(GravityParticle1(meanPos, 500), false));
+		this->setParticle(new Particle(GravityParticle1(meanPos, 5000), false));
 		break;
 	default:
 		break;

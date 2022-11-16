@@ -30,7 +30,7 @@ void WindGenerator::updateForce(Particle* p, double t)
 	if (fabs(p->getInvMass()) < 1e-10) return;
 
 	//𝐹𝑣	⃗⃗⃗ = 𝑘1(𝑣 𝑣 − 𝑣) + 𝑘2 ‖𝑣 𝑣 − 𝑣 ‖ (𝑣 𝑣 − 𝑣)
-	float k = 0.4;
+	float k = 0.8;
 
 	if (checkDistance(p))
 		p->addForce(k * (vel - p->getVel()));

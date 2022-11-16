@@ -22,7 +22,7 @@ ParticleSystem::ParticleSystem(typeParticleSystem pt)
 		ParticlesGravitySystem();
 		fg = new ForceRegistry();
 		gravity = new GravityGenerator({ 0,-29.8,0 });
-		wind = new WindGenerator(30, { -50,50,0 }, { 5,70,5 });
+		wind = new WindGenerator(30, { -50,20,0 }, { 10,50,5 });
 		break;
 	default:
 
