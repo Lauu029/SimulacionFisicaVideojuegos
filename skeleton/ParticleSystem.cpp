@@ -17,22 +17,45 @@ ParticleSystem::ParticleSystem(typeParticleSystem pt)
 		fireworks->setParticle(new Firework(PresetFirework(20), 0, FireworkType::random, false));
 		break;
 	case ForceGenerators:
-		GravityParticles = new UniformParticleGenerator({ 0,60,0 }, { 0,0,0 }, 100, false, 30);
-		GravityParticles->setParticle(new Particle(GravityParticle1({ 0,0,0 },5000), false));
-		ParticlesGravitySystem();
 		fg = new ForceRegistry();
 		gravity = new GravityGenerator({ 0,-29.8,0 });
-		wind = new WindGenerator(30, { -50,20,0 }, { 10,50,5 });
-		torbellino = new TorbellinoGenerator(50, { 10,10,10 }, { 0,40,10 });
+		GravityParticles = new UniformParticleGenerator({ 0,60,0 }, { 0,0,0 }, 100, false, 70);
+		GravityParticles->setParticle(new Particle(GravityParticle1({ 0,0,0 }, 0), false));
+
+		wind = new WindGenerator(30, { -50,20,0 }, { 50,50,5 });
+		WindParticles = new UniformParticleGenerator({ 50,50,0 }, { 0,0,0 }, 50, false, 20);
+		WindParticles->setParticle(new Particle(GravityParticle1({ 0,0,0 }, 0), false));
+
+		torbellino = new TorbellinoGenerator(50, { 10,10,10 }, { -30,40,10 });
+		TorbellinoParticles = new UniformParticleGenerator({ -30,40,0 }, { 0,0,0 }, 200, false, 30);
+		TorbellinoParticles->setParticle(new Particle(GravityParticle1({ 0,0,0 }, 0), false));
+
 		break;
 	default:
 
 		break;
 	}
 }
-void ParticleSystem::ParticlesGravitySystem()
+void ParticleSystem::GenerateForceParticles(typeForceSystem tf)
 {
-	list<Particle*> newParticles = GravityParticles->generateParticles();
+	list<Particle*> newParticles;
+	switch (tf)
+	{
+	case type_explosion:
+		newParticles = GravityParticles->generateParticles();
+		break;
+	case type_gravity:
+		newParticles = GravityParticles->generateParticles();
+		break;
+	case type_wind:
+		newParticles = WindParticles->generateParticles();
+		break;
+	case type_torbellino:
+		newParticles = TorbellinoParticles->generateParticles();
+		break;
+	default:
+		break;
+	}
 	for (auto a : newParticles)
 		particles.push_back(a);
 	newParticles.clear();
@@ -89,7 +112,7 @@ void ParticleSystem::update(double t)
 }
 void ParticleSystem::addGravity()
 {
-	for (Particle* p: particles)
+	for (Particle* p : particles)
 	{
 		fg->addRegistry(p, gravity);
 	}
@@ -103,14 +126,14 @@ void ParticleSystem::deleteGravity()
 }
 void ParticleSystem::addWind()
 {
-	for (Particle*p : particles)
+	for (Particle* p : particles)
 	{
 		fg->addRegistry(p, wind);
 	}
 }
 void ParticleSystem::deleteWind()
 {
-	for (Particle * p : particles)
+	for (Particle* p : particles)
 	{
 		fg->deleteForce(wind);
 	}
@@ -177,17 +200,17 @@ ParticleSystem::~ParticleSystem()
 
 	if (GravityParticles != nullptr)
 		delete GravityParticles;
-	if (fireworks != nullptr) 
+	if (fireworks != nullptr)
 		delete fireworks;
 	if (niebla != nullptr)
 		delete niebla;
-	if (fuente != nullptr) 
+	if (fuente != nullptr)
 		delete fuente;
 	if (fg != nullptr)
 		delete fg;
-	if (gravity != nullptr) 
+	if (gravity != nullptr)
 		delete gravity;
-	if (wind != nullptr) 
+	if (wind != nullptr)
 		delete wind;
 	if (torbellino != nullptr)
 		delete torbellino;

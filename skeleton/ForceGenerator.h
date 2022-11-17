@@ -14,7 +14,7 @@ public:
 class GravityGenerator :public ForceGenerator {
 public:
 	GravityGenerator(const Vector3& g);
-	~GravityGenerator();
+	~GravityGenerator() {};
 	virtual void updateForce(Particle* p, double t) override;
 	inline void setGravity(const Vector3& g) { gravity = g; };
 private:
@@ -35,7 +35,7 @@ protected:
 class TorbellinoGenerator : public WindGenerator {
 public:
 	TorbellinoGenerator(float r, Vector3 v, Vector3 p);
-	~TorbellinoGenerator();
+	~TorbellinoGenerator(){};
 	virtual void updateForce(Particle* p, double t) override;
 };
 class ExplosionGenerator : public ForceGenerator {

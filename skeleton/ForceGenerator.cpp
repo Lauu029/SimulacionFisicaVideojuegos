@@ -21,8 +21,7 @@ WindGenerator::WindGenerator(float r, Vector3 v, Vector3 p)
 
 WindGenerator::~WindGenerator()
 {
-	if (actionRate != nullptr)
-		delete actionRate;
+	if (actionRate != nullptr) delete actionRate;
 }
 
 void WindGenerator::updateForce(Particle* p, double t)
@@ -44,13 +43,8 @@ bool WindGenerator::checkDistance(Particle* p)
 		&& (particlePos.z <= pos.z + radius && particlePos.z >= pos.z - radius);
 }
 
-TorbellinoGenerator::TorbellinoGenerator(float r, Vector3 v, Vector3 p):WindGenerator(r,v,p)
+TorbellinoGenerator::TorbellinoGenerator(float r, Vector3 v, Vector3 p) :WindGenerator(r, v, p)
 {
-}
-
-TorbellinoGenerator::~TorbellinoGenerator()
-{
-	if (actionRate != nullptr) delete actionRate;
 }
 
 void TorbellinoGenerator::updateForce(Particle* p, double t)
@@ -58,11 +52,16 @@ void TorbellinoGenerator::updateForce(Particle* p, double t)
 	if (fabs(p->getInvMass()) < 1e-10) return;
 
 	//𝐹𝑣	⃗⃗⃗ = 𝑘1(𝑣 𝑣 − 𝑣) + 𝑘2 ‖𝑣 𝑣 − 𝑣 ‖ (𝑣 𝑣 − 𝑣)
-	float k = 0.8;
-	vel = { p->getPos().x - pos.x, 50 - (p->getPos().y - pos.y), -(p->getPos().z - pos.z) };
+	float k = 5;
 
+	vel = k * Vector3(-(p->getPos().z - pos.z), 50 - (p->getPos().y - pos.y),
+		(p->getPos().x - pos.x));
+
+	Vector3 v = p->getVel()-vel;
+	float mod = v.normalize();
+	mod = 1 * mod + 0 * powf(mod, 2);
 	if (checkDistance(p))
-		p->addForce(k * (vel - p->getVel()));
+	p->addForce(-v * mod);
 }
 
 ExplosionGenerator::ExplosionGenerator()

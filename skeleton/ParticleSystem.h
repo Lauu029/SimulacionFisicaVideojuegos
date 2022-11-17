@@ -10,24 +10,26 @@
 
 enum typeParticleGenerator { font, fog, firework };
 enum typeParticleSystem { particleGenerators, ForceGenerators };
-
+enum typeForceSystem { type_explosion, type_gravity, type_wind, type_torbellino };
 class ParticleSystem
 {
 protected:
 	vector <Particle*> particles;
-	UniformParticleGenerator* fuente=nullptr;
-	GaussianParticleGenerator* niebla=nullptr;
-	UniformParticleGenerator* GravityParticles=nullptr;
-	FireworkGenerator* fireworks=nullptr;
+	UniformParticleGenerator* fuente = nullptr;
+	GaussianParticleGenerator* niebla = nullptr;
+	UniformParticleGenerator* GravityParticles = nullptr;
+	UniformParticleGenerator* WindParticles = nullptr;
+	UniformParticleGenerator* TorbellinoParticles = nullptr;
+	FireworkGenerator* fireworks = nullptr;
 	vector<Firework*> f;
 	typeParticleSystem _typeSystem;
 	ForceRegistry* fg = nullptr;
-	ForceGenerator* gravity = nullptr;
-	ForceGenerator* wind = nullptr;
-	ForceGenerator* torbellino = nullptr;
+	GravityGenerator* gravity = nullptr;
+	WindGenerator* wind = nullptr;
+	TorbellinoGenerator* torbellino = nullptr;
 public:
 	ParticleSystem(typeParticleSystem pt);
-	void ParticlesGravitySystem();
+	void GenerateForceParticles(typeForceSystem tf);
 	void update(double t);
 	void addGravity();
 	void deleteGravity();

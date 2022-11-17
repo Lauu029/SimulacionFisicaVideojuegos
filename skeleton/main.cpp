@@ -196,9 +196,17 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		else if (partSysGravity != nullptr)
 			partSysGravity->deleteTorbellino();
 		break;
-	case 'm':
+	case 'p':
 		if (partSysGravity != nullptr)
-			partSysGravity->ParticlesGravitySystem();
+			partSysGravity->GenerateForceParticles(type_gravity);
+		break;
+	case 'o':
+		if (partSysGravity != nullptr)
+			partSysGravity->GenerateForceParticles(type_wind);
+		break;
+	case 'i':
+		if (partSysGravity != nullptr)
+			partSysGravity->GenerateForceParticles(type_torbellino);
 		break;
 	default:
 		break;
