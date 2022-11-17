@@ -57,21 +57,40 @@ void TorbellinoGenerator::updateForce(Particle* p, double t)
 	vel = k * Vector3(-(p->getPos().z - pos.z), 50 - (p->getPos().y - pos.y),
 		(p->getPos().x - pos.x));
 
-	Vector3 v = p->getVel()-vel;
+	Vector3 v = p->getVel() - vel;
 	float mod = v.normalize();
 	mod = 1 * mod + 0 * powf(mod, 2);
 	if (checkDistance(p))
-	p->addForce(-v * mod);
+		p->addForce(-v * mod);
 }
 
-ExplosionGenerator::ExplosionGenerator()
+ExplosionGenerator::ExplosionGenerator(float r, Vector3 p)
 {
+	actionRate = new Particle(forceActionRateParticle(r, p), true);
+	radius = r;
+	meanPose = p;
 }
 
 ExplosionGenerator::~ExplosionGenerator()
 {
+	if (actionRate != nullptr)
+		delete actionRate;
 }
 
 void ExplosionGenerator::updateForce(Particle* p, double t)
 {
+	if (fabs(p->getInvMass()) < 1e-10) return;
+	float k = 3;
+	float R = 300000 * t;
+	Vector3 particlePos = p->getPos();
+	float r = sqrt(powf(particlePos.x - meanPose.x, 2) + powf(particlePos.y - meanPose.y, 2) + powf(particlePos.x - meanPose.x, 2));
+	
+	float explosionMultiply = exp(-(t / R));
+	float x = k / radius * (p->getPos().x - meanPose.x) * explosionMultiply;
+	float y = k / radius * (p->getPos().y - meanPose.y) * explosionMultiply;
+	float z = k / radius * (p->getPos().z - meanPose.z) * explosionMultiply;
+
+	if (r < R)
+		p->addForce({ x, y, z });
+
 }

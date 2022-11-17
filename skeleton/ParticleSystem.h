@@ -20,6 +20,7 @@ protected:
 	UniformParticleGenerator* GravityParticles = nullptr;
 	UniformParticleGenerator* WindParticles = nullptr;
 	UniformParticleGenerator* TorbellinoParticles = nullptr;
+	UniformParticleGenerator* ExplosionParticles = nullptr;
 	FireworkGenerator* fireworks = nullptr;
 	vector<Firework*> f;
 	typeParticleSystem _typeSystem;
@@ -27,6 +28,7 @@ protected:
 	GravityGenerator* gravity = nullptr;
 	WindGenerator* wind = nullptr;
 	TorbellinoGenerator* torbellino = nullptr;
+	ExplosionGenerator* explosion = nullptr;
 public:
 	ParticleSystem(typeParticleSystem pt);
 	void GenerateForceParticles(typeForceSystem tf);
@@ -37,6 +39,7 @@ public:
 	void deleteWind();
 	void addTorbellino();
 	void deleteTorbellino();
+	void addExplosion();
 	ParticleGenerator* getParticleGenerator(typeParticleGenerator t);
 	void generateFireworkSystem(FireworkType t);
 	~ParticleSystem();

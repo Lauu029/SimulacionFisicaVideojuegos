@@ -40,7 +40,11 @@ public:
 };
 class ExplosionGenerator : public ForceGenerator {
 public:
-	ExplosionGenerator();
+	ExplosionGenerator(float r, Vector3 p);
 	~ExplosionGenerator();
 	virtual void updateForce(Particle* p, double t) override;
+protected:
+	Particle* actionRate = nullptr;
+	float radius = 0;
+	Vector3 meanPose;
 };

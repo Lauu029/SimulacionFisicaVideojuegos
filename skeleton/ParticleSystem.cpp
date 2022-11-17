@@ -30,6 +30,11 @@ ParticleSystem::ParticleSystem(typeParticleSystem pt)
 		TorbellinoParticles = new UniformParticleGenerator({ -30,40,0 }, { 0,0,0 }, 200, false, 30);
 		TorbellinoParticles->setParticle(new Particle(GravityParticle1({ 0,0,0 }, 0), false));
 
+		explosion = new ExplosionGenerator(50, { 0,0,0 });
+		ExplosionParticles = new UniformParticleGenerator({ 0,0,0 }, { 0,0,0 }, 150, false, 30);
+		ExplosionParticles->setParticle(new Particle(GravityParticle1({ 0,0,0 }, 0), false));
+		
+
 		break;
 	default:
 
@@ -42,7 +47,7 @@ void ParticleSystem::GenerateForceParticles(typeForceSystem tf)
 	switch (tf)
 	{
 	case type_explosion:
-		newParticles = GravityParticles->generateParticles();
+		newParticles = ExplosionParticles->generateParticles();
 		break;
 	case type_gravity:
 		newParticles = GravityParticles->generateParticles();
@@ -152,6 +157,13 @@ void ParticleSystem::deleteTorbellino()
 		fg->deleteForce(torbellino);
 	}
 }
+void ParticleSystem::addExplosion()
+{
+	for (Particle* p : particles)
+	{
+		fg->addRegistry(p, explosion);
+	}
+}
 ParticleGenerator* ParticleSystem::getParticleGenerator(typeParticleGenerator t)
 {
 	switch (t)
@@ -214,4 +226,6 @@ ParticleSystem::~ParticleSystem()
 		delete wind;
 	if (torbellino != nullptr)
 		delete torbellino;
+	if (explosion != nullptr)
+		delete explosion;
 }
