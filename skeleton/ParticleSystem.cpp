@@ -22,18 +22,18 @@ ParticleSystem::ParticleSystem(typeParticleSystem pt)
 		GravityParticles = new UniformParticleGenerator({ 0,60,0 }, { 0,0,0 }, 100, false, 70);
 		GravityParticles->setParticle(new Particle(GravityParticle1({ 0,0,0 }, 0), false));
 
-		wind = new WindGenerator(30, { -50,20,0 }, { 50,50,5 });
-		WindParticles = new UniformParticleGenerator({ 50,50,0 }, { 0,0,0 }, 50, false, 20);
+		wind = new WindGenerator(30, { -50,20,0 }, { 70,50,5 });
+		WindParticles = new UniformParticleGenerator({ 70,50,0 }, { 0,0,0 }, 500, false, 20);
 		WindParticles->setParticle(new Particle(GravityParticle1({ 0,0,0 }, 0), false));
 
-		torbellino = new TorbellinoGenerator(50, { 10,10,10 }, { -30,40,10 });
-		TorbellinoParticles = new UniformParticleGenerator({ -30,40,0 }, { 0,0,0 }, 200, false, 30);
+		torbellino = new TorbellinoGenerator(50, { 10,10,10 }, { -70,40,10 });
+		TorbellinoParticles = new UniformParticleGenerator({ -70,40,0 }, { 0,0,0 }, 500, false, 30);
 		TorbellinoParticles->setParticle(new Particle(GravityParticle1({ 0,0,0 }, 0), false));
 
-		explosion = new ExplosionGenerator(50, { 0,0,0 });
-		ExplosionParticles = new UniformParticleGenerator({ 0,0,0 }, { 0,0,0 }, 150, false, 30);
+		explosion = new ExplosionGenerator(50, { 0,0,50 });
+		ExplosionParticles = new UniformParticleGenerator({ 0,0,50 }, { 0,0,0 }, 700, false, 40);
 		ExplosionParticles->setParticle(new Particle(GravityParticle1({ 0,0,0 }, 0), false));
-		
+
 
 		break;
 	default:
@@ -212,6 +212,12 @@ ParticleSystem::~ParticleSystem()
 
 	if (GravityParticles != nullptr)
 		delete GravityParticles;
+	if (ExplosionParticles != nullptr)
+		delete ExplosionParticles;
+	if (TorbellinoParticles != nullptr)
+		delete TorbellinoParticles;
+	if (WindParticles != nullptr)
+		delete WindParticles;
 	if (fireworks != nullptr)
 		delete fireworks;
 	if (niebla != nullptr)

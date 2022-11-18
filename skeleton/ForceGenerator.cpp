@@ -21,7 +21,10 @@ WindGenerator::WindGenerator(float r, Vector3 v, Vector3 p)
 
 WindGenerator::~WindGenerator()
 {
-	if (actionRate != nullptr) delete actionRate;
+	if (actionRate != nullptr) {
+		delete actionRate;
+		actionRate = nullptr;
+	}
 }
 
 void WindGenerator::updateForce(Particle* p, double t)
@@ -47,6 +50,10 @@ TorbellinoGenerator::TorbellinoGenerator(float r, Vector3 v, Vector3 p) :WindGen
 {
 }
 
+TorbellinoGenerator::~TorbellinoGenerator()
+{
+}
+
 void TorbellinoGenerator::updateForce(Particle* p, double t)
 {
 	if (fabs(p->getInvMass()) < 1e-10) return;
@@ -59,7 +66,7 @@ void TorbellinoGenerator::updateForce(Particle* p, double t)
 
 	Vector3 v = p->getVel() - vel;
 	float mod = v.normalize();
-	mod = 1 * mod + 0 * powf(mod, 2);
+	mod =3 * mod + 0 * powf(mod, 2);
 	if (checkDistance(p))
 		p->addForce(-v * mod);
 }
@@ -73,19 +80,21 @@ ExplosionGenerator::ExplosionGenerator(float r, Vector3 p)
 
 ExplosionGenerator::~ExplosionGenerator()
 {
-	if (actionRate != nullptr)
+	if (actionRate != nullptr) {
 		delete actionRate;
+		actionRate = nullptr;
+	}
 }
 
 void ExplosionGenerator::updateForce(Particle* p, double t)
 {
 	if (fabs(p->getInvMass()) < 1e-10) return;
-	float k = 3;
-	float R = 300000 * t;
+	float k = 2000;
+	float R = 3000000 * t;
 	Vector3 particlePos = p->getPos();
 	float r = sqrt(powf(particlePos.x - meanPose.x, 2) + powf(particlePos.y - meanPose.y, 2) + powf(particlePos.x - meanPose.x, 2));
 	
-	float explosionMultiply = exp(-(t / R));
+	float explosionMultiply = exp(-(t / 2));
 	float x = k / radius * (p->getPos().x - meanPose.x) * explosionMultiply;
 	float y = k / radius * (p->getPos().y - meanPose.y) * explosionMultiply;
 	float z = k / radius * (p->getPos().z - meanPose.z) * explosionMultiply;

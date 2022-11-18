@@ -8,8 +8,9 @@ class ForceGenerator
 {
 public:
 	virtual void updateForce(Particle* p, double t)=0;
-	std::string name;
 	double t = -1e10;
+	Particle* actionRate = nullptr;
+	
 };
 class GravityGenerator :public ForceGenerator {
 public:
@@ -23,28 +24,26 @@ private:
 class WindGenerator : public ForceGenerator {
 public:
 	WindGenerator(float r, Vector3 v, Vector3 p);
-	~WindGenerator();
+	virtual ~WindGenerator();
 	virtual void updateForce(Particle* p, double t) override;
 protected:
 	bool checkDistance(Particle* p);
 	float radius = 0;
-	Particle* actionRate = nullptr;
 	Vector3 pos;
 	Vector3 vel;
 };
 class TorbellinoGenerator : public WindGenerator {
 public:
 	TorbellinoGenerator(float r, Vector3 v, Vector3 p);
-	~TorbellinoGenerator(){};
+	virtual ~TorbellinoGenerator();
 	virtual void updateForce(Particle* p, double t) override;
 };
 class ExplosionGenerator : public ForceGenerator {
 public:
 	ExplosionGenerator(float r, Vector3 p);
-	~ExplosionGenerator();
+	virtual ~ExplosionGenerator();
 	virtual void updateForce(Particle* p, double t) override;
 protected:
-	Particle* actionRate = nullptr;
 	float radius = 0;
 	Vector3 meanPose;
 };

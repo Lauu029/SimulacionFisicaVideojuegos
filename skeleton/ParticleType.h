@@ -36,7 +36,7 @@ public:
 class Artillery : public particleType {
 public:
 	Artillery(Vector3 dir, Vector3 pos, int rt) {
-		mass = 10.0f;
+		mass = 2.0f;
 		vel = dir * 100;
 		ac = { 0.0f, -200.0f, 0.0f };
 		damp = 0.99;
