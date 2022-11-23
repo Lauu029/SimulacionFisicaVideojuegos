@@ -34,6 +34,7 @@ ContactReportCallback gContactReportCallback;
 
 ParticleSystem* partSysFireworks = nullptr;
 ParticleSystem* partSysGravity = nullptr;
+ParticleSystem* partSysSprings = nullptr;
 physx::PxTransform floorPose = { 0,0,0 };
 vector <Particle*> sceneParticles;
 
@@ -88,6 +89,8 @@ void stepPhysics(bool interactive, double t)
 		partSysFireworks->update(0.5);
 	if (partSysGravity != nullptr)
 		partSysGravity->update(t);
+	if (partSysSprings != nullptr)
+		partSysSprings->update(t);
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 }
@@ -97,18 +100,16 @@ void stepPhysics(bool interactive, double t)
 void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
-	if (partSysFireworks != nullptr) {
+	if (partSysFireworks != nullptr)
 		delete partSysFireworks;
-		partSysFireworks = nullptr;
-	}
-	if (partSysGravity != nullptr) {
+	if (partSysGravity != nullptr)
 		delete partSysGravity;
-		partSysGravity = nullptr;
-	}
+	if (partSysSprings != nullptr)
+		delete partSysGravity;
 	for (auto s : sceneParticles)
 		delete s;
-
-	delete suelo_;
+	if (suelo_ != nullptr)
+		delete suelo_;
 	sceneParticles.clear();
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
@@ -129,67 +130,81 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	Vector3 pos = GetCamera()->getTransform().p;
 	switch (tolower(key))
 	{
-	//Escena proyectiles
+		//Escena proyectiles
 	case '0':
-		if (partSysGravity != nullptr) delete partSysGravity; partSysGravity = nullptr;
-		if (partSysFireworks != nullptr) delete partSysFireworks; partSysFireworks = nullptr;
+		if (partSysGravity != nullptr) { delete partSysGravity; partSysGravity = nullptr; }
+		if (partSysFireworks != nullptr) { delete partSysFireworks; partSysFireworks = nullptr; }
+		if(suelo_==nullptr) suelo_ = new Particle(Suelo(), true);
+		if (partSysSprings != nullptr) delete partSysSprings; partSysSprings = nullptr;
 		break;
-	//Escena generadores partículas
+		//Escena generadores partículas
 	case '1':
-		if (partSysGravity != nullptr) delete partSysGravity; partSysGravity = nullptr;
+		if (partSysGravity != nullptr) { delete partSysGravity; partSysGravity = nullptr; }
+		if (partSysSprings != nullptr) { delete partSysSprings; partSysSprings = nullptr; }
+		if(suelo_==nullptr) suelo_ = new Particle(Suelo(), true);
 		if (partSysFireworks == nullptr)
 			partSysFireworks = new ParticleSystem(typeParticleSystem::particleGenerators);
 		break;
-	//Escena fuerzas
+		//Escena fuerzas
 	case '2':
-		if (partSysFireworks != nullptr) delete partSysFireworks; partSysFireworks = nullptr;
+		if (partSysFireworks != nullptr) { delete partSysFireworks; partSysFireworks = nullptr; }
+		if (partSysSprings != nullptr) { delete partSysSprings; partSysSprings = nullptr; }
+		if (suelo_ != nullptr) { delete suelo_; suelo_ = nullptr; }
 		if (partSysGravity == nullptr)
 			partSysGravity = new ParticleSystem(typeParticleSystem::ForceGenerators);
 		break;
-	//Pistola/fuegosCorazon/gravedad(activa)
+		//Escena muelles
+	case '3':
+		if (partSysFireworks != nullptr) { delete partSysFireworks; partSysFireworks = nullptr; }
+		if (partSysGravity != nullptr) { delete partSysGravity; partSysGravity = nullptr; }
+		if (suelo_ != nullptr) { delete suelo_; suelo_ = nullptr; }
+		if (partSysSprings == nullptr)
+			partSysSprings = new ParticleSystem(typeParticleSystem::SpringsGenerators);
+		break;
+		//Pistola/fuegosCorazon/gravedad(activa)
 	case 'z':
-		if (partSysFireworks == nullptr && partSysGravity == nullptr)
+		if (partSysFireworks == nullptr && partSysGravity == nullptr && partSysSprings == nullptr)
 			sceneParticles.push_back(new Particle(Pistol(GetCamera()->getDir(), pos, 100), true));
 		else if (partSysFireworks != nullptr)
 			partSysFireworks->generateFireworkSystem(FireworkType::heart);
 		else if (partSysGravity != nullptr)
 			partSysGravity->addGravity();
 		break;
-	//Cañón/fuego aleatorio/gravedad(desactiva)
+		//Cañón/fuego aleatorio/gravedad(desactiva)
 	case 'x':
-		if (partSysFireworks == nullptr && partSysGravity == nullptr)
+		if (partSysFireworks == nullptr && partSysGravity == nullptr && partSysSprings == nullptr)
 			sceneParticles.push_back(new Particle(Artillery(GetCamera()->getDir(), pos, 100), true));
 		else if (partSysFireworks != nullptr)
 			partSysFireworks->generateFireworkSystem(FireworkType::random);
 		else if (partSysGravity != nullptr)
 			partSysGravity->deleteGravity();
 		break;
-	//Fireball/fuego circulo/viento(activa)
+		//Fireball/fuego circulo/viento(activa)
 	case 'c':
-		if (partSysFireworks == nullptr && partSysGravity == nullptr)
+		if (partSysFireworks == nullptr && partSysGravity == nullptr && partSysSprings == nullptr)
 			sceneParticles.push_back(new Particle(Fireball(GetCamera()->getDir(), pos, 100), true));
 		else if (partSysFireworks != nullptr)
 			partSysFireworks->generateFireworkSystem(FireworkType::circle);
 		else if (partSysGravity != nullptr)
 			partSysGravity->addWind();
 		break;
-	//Laser/BatFuego/viento(desactiva)
+		//Laser/BatFuego/viento(desactiva)
 	case 'v':
-		if (partSysFireworks == nullptr && partSysGravity == nullptr)
+		if (partSysFireworks == nullptr && partSysGravity == nullptr && partSysSprings == nullptr)
 			sceneParticles.push_back(new Particle(Laser(GetCamera()->getDir(), pos, 100), true));
 		else if (partSysFireworks != nullptr)
 			partSysFireworks->generateFireworkSystem(FireworkType::batFuego);
 		else if (partSysGravity != nullptr)
 			partSysGravity->deleteWind();
 		break;
-	//Fuente/Torbellino(activa)
+		//Fuente/Torbellino(activa)
 	case 'b':
 		if (partSysFireworks != nullptr)
 			partSysFireworks->getParticleGenerator(typeParticleGenerator::font)->setActive();
 		else if (partSysGravity != nullptr)
 			partSysGravity->addTorbellino();
 		break;
-	//Niebla/Torbellino(desactiva)
+		//Niebla/Torbellino(desactiva)
 	case 'n':
 		if (partSysFireworks != nullptr)
 			partSysFireworks->getParticleGenerator(typeParticleGenerator::fog)->setActive();

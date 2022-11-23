@@ -10,7 +10,6 @@ public:
 	virtual void updateForce(Particle* p, double t)=0;
 	double t = -1e10;
 	Particle* actionRate = nullptr;
-	
 };
 class GravityGenerator :public ForceGenerator {
 public:
@@ -47,3 +46,23 @@ protected:
 	float radius = 0;
 	Vector3 meanPose;
 };
+
+class SpringForceGenerator : public ForceGenerator {
+public:
+	SpringForceGenerator(double _k, double resting_Length, Particle* other);
+	virtual void updateForce(Particle* p, double t) override;
+	inline void setK(double _k) { k = _k; };
+	virtual ~SpringForceGenerator();
+protected:
+	double k;
+	double restingLength;
+	Particle* particle= nullptr;
+};
+
+//Muelle anclado a un punto fijo
+class AnchoredSpringFG : public SpringForceGenerator {
+public:
+	AnchoredSpringFG(double _k, double _resting, const Vector3& anchor_pos);
+	~AnchoredSpringFG() {};
+};
+

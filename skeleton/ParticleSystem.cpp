@@ -4,6 +4,7 @@
 ParticleSystem::ParticleSystem(typeParticleSystem pt)
 {
 	_typeSystem = pt;
+	fg = new ForceRegistry();
 	switch (pt)
 	{
 	case particleGenerators:
@@ -17,7 +18,6 @@ ParticleSystem::ParticleSystem(typeParticleSystem pt)
 		fireworks->setParticle(new Firework(PresetFirework(20), 0, FireworkType::random, false));
 		break;
 	case ForceGenerators:
-		fg = new ForceRegistry();
 		gravity = new GravityGenerator({ 0,-29.8,0 });
 		GravityParticles = new UniformParticleGenerator({ 0,60,0 }, { 0,0,0 }, 100, false, 70);
 		GravityParticles->setParticle(new Particle(GravityParticle1({ 0,0,0 }, 0), false));
@@ -33,11 +33,11 @@ ParticleSystem::ParticleSystem(typeParticleSystem pt)
 		explosion = new ExplosionGenerator(50, { 0,0,50 });
 		ExplosionParticles = new UniformParticleGenerator({ 0,0,50 }, { 0,0,0 }, 700, false, 40);
 		ExplosionParticles->setParticle(new Particle(GravityParticle1({ 0,0,0 }, 0), false));
-
-
+		break;
+	case SpringsGenerators:
+		generateSpringDemo();
 		break;
 	default:
-
 		break;
 	}
 }
@@ -164,6 +164,28 @@ void ParticleSystem::addExplosion()
 		fg->addRegistry(p, explosion);
 	}
 }
+void ParticleSystem::generateSpringDemo()
+{
+	//unión de dos partículas
+	/*Particle* p1 = new Particle(MuelleParticula({ -10.0,10.0,0.0 }), true);
+	Particle* p2 = new Particle(MuelleParticula({ 10.0,10.0,0.0 }), true);
+	p2->setMass(2.0);
+	SpringForceGenerator* f1 = new SpringForceGenerator(1, 10, p2);
+	fg->addRegistry(p1, f1);
+	SpringForceGenerator* f2 = new SpringForceGenerator(1, 10, p1);
+	fg->addRegistry(p2, f2);
+	springGenerators.push_back(f1);
+	springGenerators.push_back(f2);
+	particles.push_back(p1);
+	particles.push_back(p2);*/
+
+	//Punto fijo
+	Particle* p3 = new Particle(MuelleParticula({ -10.0,20.0,0.0 }), true);
+	AnchoredSpringFG* f3 = new AnchoredSpringFG(1, 10, { 10.0,20.0,0.0 });
+	fg->addRegistry(p3, f3);
+	springGenerators.push_back(f3);
+	particles.push_back(p3);
+}
 ParticleGenerator* ParticleSystem::getParticleGenerator(typeParticleGenerator t)
 {
 	switch (t)
@@ -234,4 +256,7 @@ ParticleSystem::~ParticleSystem()
 		delete torbellino;
 	if (explosion != nullptr)
 		delete explosion;
+	for (auto s : springGenerators)
+		delete s;
+	springGenerators.clear();
 }

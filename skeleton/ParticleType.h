@@ -238,9 +238,47 @@ public:
 		damp = 0.99;
 		remainingTime = 0;
 		size = { radius,0,0 };
-		col = {353.0f,1.0f,0.47f };
+		col = { 353.0f,1.0f,0.47f };
 		rgb rgb = hsv2rgb(col);
 		color = { rgb.r,rgb.g,rgb.b,0.4 };
+		pose = physx::PxTransform{ pos.x,pos.y, pos.z };
+		s = particleShape::Sphere;
+	}
+};
+
+class RigidBox : public particleType {
+public:
+	RigidBox(Vector3 pos) {
+		mass = 0.0f;
+		vel = { 0.0f,0.0f,0.0f };
+		ac = { 0.0f, 0.0f, 0.0f };
+		damp = 0;
+		remainingTime = 1e6;
+		size = { 20,20,20.0 };
+
+		col = { 238.0f,0.93f,0.5f };
+		rgb rgb = hsv2rgb(col);
+		color = { rgb.r,rgb.g,rgb.b,1.0 };
+
+		pose = physx::PxTransform{ pos.x,pos.y, pos.z };
+		s = particleShape::box;
+	}
+};
+
+class MuelleParticula : public particleType {
+public:
+	MuelleParticula(Vector3 pos) {
+		mass = 5.0f;
+		vel = { 0.0f,0.0f,0.0f };
+		ac = { 0.0f, 0.0f, 0.0f };
+		damp = 0.99;
+		remainingTime = 1e6;
+		size = {5,0,0 };
+
+		col = {63.0f,0.93f,0.8f };
+		rgb rgb = hsv2rgb(col);
+		color = { rgb.r,rgb.g,rgb.b,1.0 };
+
 		pose = physx::PxTransform{ pos.x,pos.y, pos.z };
 		s = particleShape::Sphere;
 	}

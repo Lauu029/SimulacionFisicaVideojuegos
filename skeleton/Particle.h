@@ -21,6 +21,7 @@ public:
 	void setPosition(Vector3 p) { pose = physx::PxTransform(p.x, p.y, p.z); }
 	void setRender(particleShape s, Vector3 size, Vector4 color);
 	void setColor(Vector4 _color);
+	void setMass(double m) { mass = m; };
 
 	Vector3 getPos();
 	Vector3 getVel() { return vel; };

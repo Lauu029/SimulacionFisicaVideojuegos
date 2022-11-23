@@ -103,3 +103,32 @@ void ExplosionGenerator::updateForce(Particle* p, double t)
 		p->addForce({ x, y, z });
 
 }
+
+SpringForceGenerator::SpringForceGenerator(double _k, double resting_Length, Particle* other)
+{
+	k = _k;
+	restingLength = resting_Length;
+	particle = other;
+}
+
+void SpringForceGenerator::updateForce(Particle* p, double t)
+{
+	Vector3 f = particle->getPos() - p->getPos();
+
+	const float l = f.normalize();
+	const float delta_x = l - restingLength;
+
+	f *= delta_x * k;
+
+	p->addForce(f);
+}
+
+SpringForceGenerator::~SpringForceGenerator()
+{
+	if (particle != nullptr) delete particle;
+}
+
+AnchoredSpringFG::AnchoredSpringFG(double _k, double _resting, const Vector3& anchor_pos):SpringForceGenerator(_k,_resting,nullptr)
+{
+	particle = new Particle(RigidBox(anchor_pos),true);
+}
