@@ -105,7 +105,8 @@ void cleanupPhysics(bool interactive)
 	if (partSysGravity != nullptr)
 		delete partSysGravity;
 	if (partSysSprings != nullptr)
-		delete partSysGravity;
+		delete partSysSprings;
+
 	for (auto s : sceneParticles)
 		delete s;
 	if (suelo_ != nullptr)
@@ -134,8 +135,8 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	case '0':
 		if (partSysGravity != nullptr) { delete partSysGravity; partSysGravity = nullptr; }
 		if (partSysFireworks != nullptr) { delete partSysFireworks; partSysFireworks = nullptr; }
+		if (partSysSprings != nullptr) { delete partSysSprings; partSysSprings = nullptr; }
 		if(suelo_==nullptr) suelo_ = new Particle(Suelo(), true);
-		if (partSysSprings != nullptr) delete partSysSprings; partSysSprings = nullptr;
 		break;
 		//Escena generadores partículas
 	case '1':

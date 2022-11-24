@@ -35,6 +35,7 @@ ParticleSystem::ParticleSystem(typeParticleSystem pt)
 		ExplosionParticles->setParticle(new Particle(GravityParticle1({ 0,0,0 }, 0), false));
 		break;
 	case SpringsGenerators:
+		gravity = new GravityGenerator({ 0,-9.8,0 });
 		generateSpringDemo();
 		break;
 	default:
@@ -180,9 +181,10 @@ void ParticleSystem::generateSpringDemo()
 	particles.push_back(p2);*/
 
 	//Punto fijo
-	Particle* p3 = new Particle(MuelleParticula({ -10.0,20.0,0.0 }), true);
-	AnchoredSpringFG* f3 = new AnchoredSpringFG(1, 10, { 10.0,20.0,0.0 });
+	Particle* p3 = new Particle(MuelleParticula({ 10.0,50.0,0.0 }), true);
+	AnchoredSpringFG* f3 = new AnchoredSpringFG(5, 10, { 10.0,100.0,0.0 });
 	fg->addRegistry(p3, f3);
+	fg->addRegistry(p3, gravity);
 	springGenerators.push_back(f3);
 	particles.push_back(p3);
 }

@@ -254,13 +254,13 @@ public:
 		ac = { 0.0f, 0.0f, 0.0f };
 		damp = 0;
 		remainingTime = 1e6;
-		size = { 20,20,20.0 };
+		size = { 10,5,10.0 };
 
-		col = { 238.0f,0.93f,0.5f };
+		col = { 238.0f,0.93f,0.9f };
 		rgb rgb = hsv2rgb(col);
 		color = { rgb.r,rgb.g,rgb.b,1.0 };
 
-		pose = physx::PxTransform{ pos.x,pos.y, pos.z };
+		pose = physx::PxTransform{ pos.x, pos.y, pos.z };
 		s = particleShape::box;
 	}
 };
@@ -268,7 +268,7 @@ public:
 class MuelleParticula : public particleType {
 public:
 	MuelleParticula(Vector3 pos) {
-		mass = 5.0f;
+		mass = 10.0f;
 		vel = { 0.0f,0.0f,0.0f };
 		ac = { 0.0f, 0.0f, 0.0f };
 		damp = 0.99;

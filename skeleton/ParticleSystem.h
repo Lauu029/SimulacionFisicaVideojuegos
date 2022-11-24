@@ -30,7 +30,7 @@ protected:
 	TorbellinoGenerator* torbellino = nullptr;
 	ExplosionGenerator* explosion = nullptr;
 
-	vector<ForceGenerator*> springGenerators;
+	vector<SpringForceGenerator*> springGenerators;
 public:
 	ParticleSystem(typeParticleSystem pt);
 	void GenerateForceParticles(typeForceSystem tf);
