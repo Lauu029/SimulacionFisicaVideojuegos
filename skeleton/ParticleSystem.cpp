@@ -254,9 +254,10 @@ void ParticleSystem::addSlinky()
 }
 void ParticleSystem::FlotationSim()
 {
-	BuoyancyForceGenerator* by = new BuoyancyForceGenerator(3, 2, 1000, { -90.0, 0.0, 0.0 });
-	Particle* p = new Particle(Barquito({ -90.0,-2.0,0.0 }), true);
+	BuoyancyForceGenerator* by = new BuoyancyForceGenerator(5, 2, 100, { -100.0, 0.0, 0.0 });
+	Particle* p = new Particle(Barquito({ -100.0,0.0,0.0 }), true);
 	fg->addRegistry(p, by);
+	fg->addRegistry(p, gravity);
 	particles.push_back(p);
 }
 ParticleGenerator* ParticleSystem::getParticleGenerator(typeParticleGenerator t)

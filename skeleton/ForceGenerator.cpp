@@ -195,7 +195,7 @@ void BuoyancyForceGenerator::updateForce(Particle* p)
 		inmersed = 1.0;
 	else
 		inmersed = (h0 - h) / height + 0.5;
-	f.y = liquidDensity * volume * inmersed * gravity;
+	f.y = liquidDensity * volume * inmersed * 9.8;
 	p->addForce(f);
 }
 

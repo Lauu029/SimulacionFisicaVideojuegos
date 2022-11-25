@@ -325,7 +325,7 @@ public:
 class Barquito : public particleType {
 public:
 	Barquito(Vector3 pos) {
-		mass = 0.0f;
+		mass = 10.0f;
 		vel = { 0.0f,0.0f,0.0f };
 		ac = { 0.0f, 0.0f, 0.0f };
 		damp = 0.99;
