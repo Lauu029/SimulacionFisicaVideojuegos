@@ -1,6 +1,6 @@
 #include "ForceRegistry.h"
 
-void ForceRegistry::updateForces(double duration)
+void ForceRegistry::updateForces(float duration)
 {
 	for (auto it = begin(); it != end(); it++)
 		it->first->updateForce(it->second);

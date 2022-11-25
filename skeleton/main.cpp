@@ -71,7 +71,7 @@ void initPhysics(bool interactive)
 // Function to configure what happens in each step of physics
 // interactive: true if the game is rendering, false if it offline
 // t: time passed since last call in milliseconds
-void stepPhysics(bool interactive, double t)
+void stepPhysics(bool interactive, float t)
 {
 	PX_UNUSED(interactive);
 	for (int i = 0; i < sceneParticles.size(); i++)

@@ -14,26 +14,26 @@ public:
 	Particle(particleType p, bool b);
 	~Particle();
 
-	void integrate(double t);
+	void integrate(float t);
 	
 	void setVelocity(Vector3 v) { vel = v; }
 	void setAcceleration(Vector3 a) { ac = a; }
 	void setPosition(Vector3 p) { pose = physx::PxTransform(p.x, p.y, p.z); }
 	void setRender(particleShape s, Vector3 size, Vector4 color);
 	void setColor(Vector4 _color);
-	void setMass(double m) { mass = m; };
-	void setDampling(double d) { damp = d; };
+	void setMass(float m) { mass = m; };
+	void setDampling(float d) { damp = d; };
 
 	Vector3 getPos();
 	Vector3 getVel() { return vel; };
 	Vector3 getAcceleration() { return ac; }
-	double getDamping() { return damp; }
-	double getRemainingTime() { return remainingTime; }
+	float getDamping() { return damp; }
+	float getRemainingTime() { return remainingTime; }
 	Vector3 getSize() { return size; }
 	Vector4 getColor() { return renderItem->color; }
 	particleType getParticleType() { return type; };
 	float getInvMass() { return inverse_mass; };
-	double getMass() { return mass; };
+	float getMass() { return mass; };
 
 	void clearForce() { force *= 0; };
 	void addForce(const Vector3& f) { force += f; };
@@ -41,10 +41,10 @@ protected:
 	Vector3 force;
 	Vector3 vel;
 	Vector3 ac;
-	double damp;
-	double mass;
+	float damp;
+	float mass;
 	float inverse_mass;
-	double remainingTime;
+	float remainingTime;
 	physx::PxTransform pose;
 	RenderItem* renderItem;
 

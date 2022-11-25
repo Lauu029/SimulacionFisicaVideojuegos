@@ -34,7 +34,7 @@ protected:
 public:
 	ParticleSystem(typeParticleSystem pt);
 	void GenerateForceParticles(typeForceSystem tf);
-	void update(double t);
+	void update(float t);
 
 	void addGravity();
 	void deleteGravity();
@@ -49,6 +49,8 @@ public:
 	void MuellesUnidos();
 	void GomaElastica();
 	void addSlinky();
+	void FlotationSim();
+
 	ParticleGenerator* getParticleGenerator(typeParticleGenerator t);
 	void generateFireworkSystem(FireworkType t);
 	~ParticleSystem();

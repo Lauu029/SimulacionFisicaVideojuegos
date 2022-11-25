@@ -104,7 +104,7 @@ void ExplosionGenerator::updateForce(Particle* p)
 
 }
 
-SpringForceGenerator::SpringForceGenerator(double _k, double resting_Length, Particle* other)
+SpringForceGenerator::SpringForceGenerator(float _k, float resting_Length, Particle* other)
 {
 	k = _k;
 	restingLength = resting_Length;
@@ -113,7 +113,7 @@ SpringForceGenerator::SpringForceGenerator(double _k, double resting_Length, Par
 
 void SpringForceGenerator::updateForce(Particle* p)
 {
-	if (fabs(p->getInvMass()) < 1e-10) return;
+
 
 	Vector3 f = particle->getPos() - p->getPos();
 
@@ -130,7 +130,7 @@ SpringForceGenerator::~SpringForceGenerator()
 	particle = nullptr;
 }
 
-AnchoredSpringFG::AnchoredSpringFG(double _k, double _resting, const Vector3& anchor_pos) :SpringForceGenerator(_k, _resting, nullptr)
+AnchoredSpringFG::AnchoredSpringFG(float _k, float _resting, const Vector3& anchor_pos) :SpringForceGenerator(_k, _resting, nullptr)
 {
 	particle = new Particle(RigidBox(anchor_pos), true);
 }
@@ -141,7 +141,7 @@ AnchoredSpringFG::~AnchoredSpringFG()
 		delete particle;
 }
 
-GomaElasticaGenerator::GomaElasticaGenerator(double _k, double resting_Length, Particle* other) :
+GomaElasticaGenerator::GomaElasticaGenerator(float _k, float resting_Length, Particle* other) :
 	SpringForceGenerator(_k, resting_Length, other)
 {
 }
@@ -174,4 +174,33 @@ void ParticleDragGenerator::updateForce(Particle* particle)
 	dragF = -v * drag_coef;
 
 	particle->addForce(dragF);
+}
+
+BuoyancyForceGenerator::BuoyancyForceGenerator(float h, float V, float d, Vector3 pos) : height(h), volume(V), liquidDensity(d)
+{
+	liquid = new Particle(Liquid(pos), true);
+}
+
+void BuoyancyForceGenerator::updateForce(Particle* p)
+{
+	if (fabs(p->getInvMass()) < 1e-10) return;
+	float h = p->getPos().y;
+	float h0 = liquid->getPos().y;
+
+	Vector3 f(0, 0, 0);
+	float inmersed = 0.0;
+	if (h - h0 > height * 0.5)
+		inmersed = 0.0;
+	else if (h0 - h > height * 0.5)
+		inmersed = 1.0;
+	else
+		inmersed = (h0 - h) / height + 0.5;
+	f.y = liquidDensity * volume * inmersed * gravity;
+	p->addForce(f);
+}
+
+BuoyancyForceGenerator::~BuoyancyForceGenerator()
+{
+	if (liquid != nullptr)
+		delete liquid;
 }

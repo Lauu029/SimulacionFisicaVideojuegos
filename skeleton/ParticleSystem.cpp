@@ -66,7 +66,7 @@ void ParticleSystem::GenerateForceParticles(typeForceSystem tf)
 		particles.push_back(a);
 	newParticles.clear();
 }
-void ParticleSystem::update(double t)
+void ParticleSystem::update(float t)
 {
 	if (fg != nullptr)
 		fg->updateForces(t);
@@ -169,8 +169,12 @@ void ParticleSystem::generateSpringDemo()
 {
 	//unión de dos partículas
 	MuellesUnidos();
+	//Goma
 	GomaElastica();
+	//Slinky
 	addSlinky();
+	//Partícula que flota
+	FlotationSim();
 	//Punto fijo
 	MuelleFijo();
 }
@@ -215,7 +219,7 @@ void ParticleSystem::GomaElastica()
 void ParticleSystem::addSlinky()
 {
 	Vector3 pos = { -30.0,150.0,0.0 }, resta = { 0.0,5.0,0.0 };
-	hsv col = { 100.0,0.7,0.7 };
+	hsv col = { 10.0,0.7,0.7 };
 	float inc = 20.0;
 	rgb colorRGB = hsv2rgb(col);
 	Vector4 colorAplica = { colorRGB.r, colorRGB.g, colorRGB.b,1.0 };
@@ -247,6 +251,13 @@ void ParticleSystem::addSlinky()
 		springGenerators.push_back(sf);
 		springGenerators.push_back(sf2);
 	}
+}
+void ParticleSystem::FlotationSim()
+{
+	BuoyancyForceGenerator* by = new BuoyancyForceGenerator(3, 2, 1000, { -90.0, 0.0, 0.0 });
+	Particle* p = new Particle(Barquito({ -90.0,-2.0,0.0 }), true);
+	fg->addRegistry(p, by);
+	particles.push_back(p);
 }
 ParticleGenerator* ParticleSystem::getParticleGenerator(typeParticleGenerator t)
 {

@@ -50,10 +50,10 @@ public:
 class FireworkGenerator : public ParticleGenerator
 {
 protected:
-	void FuegosCorazon(Vector3& newVel, double increase, Firework* parent, std::list<Firework*>& listParticles);
+	void FuegosCorazon(Vector3& newVel, float increase, Firework* parent, std::list<Firework*>& listParticles);
 	void RandomFirework(Vector3& newVel, Firework* parent, Vector3& newPos, std::list<Firework*>& listParticles);
-	void CircleFirework(Vector3& newVel, double increase,  Firework* parent, Vector3& newPos, std::list<Firework*>& listParticles);
-	void BatFirework(Vector3& newVel, double increase, Firework* parent, Vector3& newPos, std::list<Firework*>& listParticles);
+	void CircleFirework(Vector3& newVel, float increase,  Firework* parent, Vector3& newPos, std::list<Firework*>& listParticles);
+	void BatFirework(Vector3& newVel, float increase, Firework* parent, Vector3& newPos, std::list<Firework*>& listParticles);
 
 	void CabezaBatFuegos(Vector3& newVel, Firework* parent, std::list<Firework*>& listParticles);
 	void FinAlasBatFuegos(Vector3& newVel, int x, Firework* parent, std::list<Firework*>& listParticles);

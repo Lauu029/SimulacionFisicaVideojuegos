@@ -27,7 +27,7 @@ Particle::~Particle()
 	}
 }
 
-void Particle::integrate(double t)
+void Particle::integrate(float t)
 {
 	if (inverse_mass <= 0.0f) 
 		return;

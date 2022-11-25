@@ -59,7 +59,7 @@ public:
 	unsigned references;
 };
 
-double GetLastTime();
+float GetLastTime();
 Camera* GetCamera();
 
 physx::PxShape* CreateShape(const physx::PxGeometry& geo);

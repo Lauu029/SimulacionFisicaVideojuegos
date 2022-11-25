@@ -8,7 +8,7 @@ class ForceGenerator
 {
 public:
 	virtual void updateForce(Particle* p)=0;
-	double t = -1e10;
+	float t = -1e10;
 	Particle* actionRate = nullptr;
 };
 class GravityGenerator :public ForceGenerator {
@@ -60,20 +60,20 @@ protected:
 
 class SpringForceGenerator : public ForceGenerator {
 public:
-	SpringForceGenerator(double _k, double resting_Length, Particle* other);
+	SpringForceGenerator(float _k, float resting_Length, Particle* other);
 	virtual void updateForce(Particle* p) override;
-	inline void setK(double _k) { k = _k; };
+	inline void setK(float _k) { k = _k; };
 	virtual ~SpringForceGenerator();
 protected:
-	double k;
-	double restingLength;
+	float k;
+	float restingLength;
 	Particle* particle= nullptr;
 };
 
 //Muelle anclado a un punto fijo
 class AnchoredSpringFG : public SpringForceGenerator {
 public:
-	AnchoredSpringFG(double _k, double _resting, const Vector3& anchor_pos);
+	AnchoredSpringFG(float _k, float _resting, const Vector3& anchor_pos);
 	~AnchoredSpringFG() ;
 private:
 	Particle* ancla = nullptr;
@@ -81,8 +81,20 @@ private:
 
 class GomaElasticaGenerator : public SpringForceGenerator {
 public:
-	GomaElasticaGenerator(double _k, double resting_Length, Particle* other);
+	GomaElasticaGenerator(float _k, float resting_Length, Particle* other);
 	~GomaElasticaGenerator(){};
 	virtual void updateForce(Particle* p) override;
 };
 
+class BuoyancyForceGenerator : public ForceGenerator {
+public:
+	BuoyancyForceGenerator(float h, float V, float d, Vector3 pos);
+	virtual void updateForce(Particle* p);
+	virtual ~BuoyancyForceGenerator();
+protected:
+	float height;
+	float volume;
+	float liquidDensity;
+	float gravity = 9.8;
+	Particle* liquid = nullptr;
+};

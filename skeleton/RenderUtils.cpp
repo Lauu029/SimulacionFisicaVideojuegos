@@ -9,7 +9,7 @@
 using namespace physx;
 
 extern void initPhysics(bool interactive);
-extern void stepPhysics(bool interactive, double t);	
+extern void stepPhysics(bool interactive, float t);
 extern void cleanupPhysics(bool interactive);
 extern void keyPress(unsigned char key, const PxTransform& camera);
 extern PxPhysics* gPhysics;
@@ -17,7 +17,7 @@ extern PxMaterial* gMaterial;
 
 std::vector<const RenderItem*> gRenderItems;
 
-double PCFreq = 0.0;
+float PCFreq = 0.0;
 __int64 CounterStart = 0;
 __int64 CounterLast = 0;
 
@@ -27,18 +27,18 @@ void StartCounter()
 	if (!QueryPerformanceFrequency(&li))
 		return;
 
-	PCFreq = double(li.QuadPart) /*/ 1000.0*/;
+	PCFreq = float(li.QuadPart) /*/ 1000.0*/;
 
 	QueryPerformanceCounter(&li);
 	CounterStart = li.QuadPart;
 	CounterLast = CounterStart;
 }
 
-double GetCounter()
+float GetCounter()
 {
 	LARGE_INTEGER li;
 	QueryPerformanceCounter(&li);
-	double t = double(li.QuadPart - CounterLast) / PCFreq;
+	float t = float(li.QuadPart - CounterLast) / PCFreq;
 	CounterLast = li.QuadPart;
 	return t;
 }
@@ -76,7 +76,7 @@ float stepTime = 0.0f;
 
 void renderCallback()
 {
-	double t = GetCounter();
+	float t = GetCounter();
 #ifdef FIXED_STEP
 	if (t < (1.0f / 30.0f))
 	{
@@ -166,9 +166,9 @@ void DeregisterRenderItem(const RenderItem* _item)
 	gRenderItems.erase(it);
 }
 
-double GetLastTime()
+float GetLastTime()
 {
-	double t = double(CounterLast - CounterStart) / PCFreq;
+	float t = float(CounterLast - CounterStart) / PCFreq;
 	return t;
 }
 

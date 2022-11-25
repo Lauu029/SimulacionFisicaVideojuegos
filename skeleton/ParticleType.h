@@ -8,9 +8,9 @@ class particleType {
 public:
 	Vector3 vel;
 	Vector3 ac;
-	double damp;
-	double mass;
-	double remainingTime;
+	float damp;
+	float mass;
+	float remainingTime;
 	physx::PxTransform pose;
 	Vector3 size;
 	hsv col;
@@ -300,5 +300,43 @@ public:
 
 		pose = physx::PxTransform{ pos.x,pos.y, pos.z };
 		s = particleShape::Sphere;
+	}
+};
+
+class Liquid : public particleType {
+public:
+	Liquid(Vector3 pos) {
+		mass = 0.0f;
+		vel = { 0.0f,0.0f,0.0f };
+		ac = { 0.0f, 0.0f, 0.0f };
+		damp = 0;
+		remainingTime = 1e6;
+		size = { 50,0.1,50.0 };
+
+		col = { 165.0f,0.93f,0.70f };
+		rgb rgb = hsv2rgb(col);
+		color = { rgb.r,rgb.g,rgb.b,1.0 };
+
+		pose = physx::PxTransform{ pos.x, pos.y, pos.z };
+		s = particleShape::box;
+	}
+};
+
+class Barquito : public particleType {
+public:
+	Barquito(Vector3 pos) {
+		mass = 0.0f;
+		vel = { 0.0f,0.0f,0.0f };
+		ac = { 0.0f, 0.0f, 0.0f };
+		damp = 0.99;
+		remainingTime = 1e6;
+		size = { 10,10,10 };
+
+		col = {350.0f,0.93f,0.90f };
+		rgb rgb = hsv2rgb(col);
+		color = { rgb.r,rgb.g,rgb.b,1.0 };
+
+		pose = physx::PxTransform{ pos.x, pos.y, pos.z };
+		s = particleShape::box;
 	}
 };
