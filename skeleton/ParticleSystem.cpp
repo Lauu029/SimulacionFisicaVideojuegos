@@ -214,7 +214,7 @@ void ParticleSystem::GomaElastica()
 }
 void ParticleSystem::addSlinky()
 {
-	Vector3 pos = { -30.0,60.0,0.0 }, resta = { 0.0,5.0,0.0 };
+	Vector3 pos = { -30.0,150.0,0.0 }, resta = { 0.0,5.0,0.0 };
 	hsv col = { 100.0,0.7,0.7 };
 	float inc = 20.0;
 	rgb colorRGB = hsv2rgb(col);
@@ -225,21 +225,24 @@ void ParticleSystem::addSlinky()
 		pos = pos - resta;
 		Particle* p1 = new Particle(MuelleParticula(pos), true);
 		p1->setColor(colorAplica);
-		if (i > 0)
-			fg->addRegistry(p1, gravity);
-		if (!i)
+		if (!i) {
 			p1->setMass(0.0);
-		slinky.push_back(p1);
+			p1->setDampling(0.0);
+		}
+		else
+			fg->addRegistry(p1, gravity);
+
 		particles.push_back(p1);
+		slinky.push_back(p1);
 		col.h += inc;
 		colorRGB = hsv2rgb(col);
 		colorAplica = { colorRGB.r, colorRGB.g, colorRGB.b,1.0 };
 	}
 	for (int i = 0; i < 9; i++)
 	{
-		SpringForceGenerator* sf = new SpringForceGenerator(7.0,3.0,slinky[i+1]);
+		SpringForceGenerator* sf = new SpringForceGenerator(30.0,5.0,slinky[i+1]);
 		fg->addRegistry(slinky[i], sf);
-		SpringForceGenerator* sf2 = new SpringForceGenerator(7.0, 3.0, slinky[i]);
+		SpringForceGenerator* sf2 = new SpringForceGenerator(30.0,5.0, slinky[i]);
 		fg->addRegistry(slinky[i + 1], sf2);
 		springGenerators.push_back(sf);
 		springGenerators.push_back(sf2);

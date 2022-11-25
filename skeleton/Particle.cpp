@@ -29,7 +29,8 @@ Particle::~Particle()
 
 void Particle::integrate(double t)
 {
-	if (inverse_mass <= 0.0f) return;
+	if (inverse_mass <= 0.0f) 
+		return;
 
 	pose = physx::PxTransform(pose.p.x + vel.x * t, pose.p.y + vel.y * t, pose.p.z + vel.z * t);
 

@@ -22,6 +22,7 @@ public:
 	void setRender(particleShape s, Vector3 size, Vector4 color);
 	void setColor(Vector4 _color);
 	void setMass(double m) { mass = m; };
+	void setDampling(double d) { damp = d; };
 
 	Vector3 getPos();
 	Vector3 getVel() { return vel; };
@@ -31,7 +32,7 @@ public:
 	Vector3 getSize() { return size; }
 	Vector4 getColor() { return renderItem->color; }
 	particleType getParticleType() { return type; };
-	double getInvMass() { return inverse_mass; };
+	float getInvMass() { return inverse_mass; };
 	double getMass() { return mass; };
 
 	void clearForce() { force *= 0; };
@@ -42,7 +43,7 @@ protected:
 	Vector3 ac;
 	double damp;
 	double mass;
-	double inverse_mass;
+	float inverse_mass;
 	double remainingTime;
 	physx::PxTransform pose;
 	RenderItem* renderItem;

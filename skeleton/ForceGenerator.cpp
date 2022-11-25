@@ -113,6 +113,8 @@ SpringForceGenerator::SpringForceGenerator(double _k, double resting_Length, Par
 
 void SpringForceGenerator::updateForce(Particle* p)
 {
+	if (fabs(p->getInvMass()) < 1e-10) return;
+
 	Vector3 f = particle->getPos() - p->getPos();
 
 	const float l = f.normalize();
