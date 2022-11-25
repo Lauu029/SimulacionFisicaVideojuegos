@@ -136,13 +136,13 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		if (partSysGravity != nullptr) { delete partSysGravity; partSysGravity = nullptr; }
 		if (partSysFireworks != nullptr) { delete partSysFireworks; partSysFireworks = nullptr; }
 		if (partSysSprings != nullptr) { delete partSysSprings; partSysSprings = nullptr; }
-		if(suelo_==nullptr) suelo_ = new Particle(Suelo(), true);
+		if (suelo_ == nullptr) suelo_ = new Particle(Suelo(), true);
 		break;
 		//Escena generadores partículas
 	case '1':
 		if (partSysGravity != nullptr) { delete partSysGravity; partSysGravity = nullptr; }
 		if (partSysSprings != nullptr) { delete partSysSprings; partSysSprings = nullptr; }
-		if(suelo_==nullptr) suelo_ = new Particle(Suelo(), true);
+		if (suelo_ == nullptr) suelo_ = new Particle(Suelo(), true);
 		if (partSysFireworks == nullptr)
 			partSysFireworks = new ParticleSystem(typeParticleSystem::particleGenerators);
 		break;
@@ -170,6 +170,8 @@ void keyPress(unsigned char key, const PxTransform& camera)
 			partSysFireworks->generateFireworkSystem(FireworkType::heart);
 		else if (partSysGravity != nullptr)
 			partSysGravity->addGravity();
+		else if (partSysSprings != nullptr)
+			partSysSprings->GomaElastica();
 		break;
 		//Cañón/fuego aleatorio/gravedad(desactiva)
 	case 'x':

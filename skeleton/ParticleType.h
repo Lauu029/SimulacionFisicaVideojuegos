@@ -283,3 +283,22 @@ public:
 		s = particleShape::Sphere;
 	}
 };
+
+class MuelleParticula1 : public particleType {
+public:
+	MuelleParticula1(Vector3 pos) {
+		mass = 10.0f;
+		vel = { 0.0f,0.0f,0.0f };
+		ac = { 0.0f, 0.0f, 0.0f };
+		damp = 0.99;
+		remainingTime = 1e6;
+		size = { 5,0,0 };
+
+		col = { 205.0f,0.93f,0.8f };
+		rgb rgb = hsv2rgb(col);
+		color = { rgb.r,rgb.g,rgb.b,1.0 };
+
+		pose = physx::PxTransform{ pos.x,pos.y, pos.z };
+		s = particleShape::Sphere;
+	}
+};

@@ -45,6 +45,10 @@ public:
 	void addExplosion();
 
 	void generateSpringDemo();
+	void MuelleFijo();
+	void MuellesUnidos();
+	void GomaElastica();
+	void addSlinky();
 	ParticleGenerator* getParticleGenerator(typeParticleGenerator t);
 	void generateFireworkSystem(FireworkType t);
 	~ParticleSystem();

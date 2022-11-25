@@ -3,7 +3,7 @@
 void ForceRegistry::updateForces(double duration)
 {
 	for (auto it = begin(); it != end(); it++)
-		it->first->updateForce(it->second, duration);
+		it->first->updateForce(it->second);
 
 }
 

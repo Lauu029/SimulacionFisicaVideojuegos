@@ -30,8 +30,8 @@ ParticleSystem::ParticleSystem(typeParticleSystem pt)
 		TorbellinoParticles = new UniformParticleGenerator({ -70,40,0 }, { 0,0,0 }, 500, false, 30);
 		TorbellinoParticles->setParticle(new Particle(GravityParticle1({ 0,0,0 }, 0), false));
 
-		explosion = new ExplosionGenerator(50, { 0,0,50 });
-		ExplosionParticles = new UniformParticleGenerator({ 0,0,50 }, { 0,0,0 }, 700, false, 40);
+		explosion = new ExplosionGenerator(50, { 0,70,50 });
+		ExplosionParticles = new UniformParticleGenerator({ 0,70,50 }, { 0,0,0 }, 700, false, 40);
 		ExplosionParticles->setParticle(new Particle(GravityParticle1({ 0,0,0 }, 0), false));
 		break;
 	case SpringsGenerators:
@@ -72,7 +72,7 @@ void ParticleSystem::update(double t)
 		fg->updateForces(t);
 	for (int i = 0; i < particles.size(); i++)
 	{
-		if (particles[i]->getPos().y < 0 || particles[i]->getRemainingTime() <= 0) {
+		if (particles[i]->getRemainingTime() <= 0) {
 			if (fg != nullptr) fg->deleteParticle(particles[i]);
 			delete particles[i];
 			particles.erase(particles.begin() + i);
@@ -168,25 +168,82 @@ void ParticleSystem::addExplosion()
 void ParticleSystem::generateSpringDemo()
 {
 	//unión de dos partículas
-	/*Particle* p1 = new Particle(MuelleParticula({ -10.0,10.0,0.0 }), true);
-	Particle* p2 = new Particle(MuelleParticula({ 10.0,10.0,0.0 }), true);
-	p2->setMass(2.0);
-	SpringForceGenerator* f1 = new SpringForceGenerator(1, 10, p2);
-	fg->addRegistry(p1, f1);
-	SpringForceGenerator* f2 = new SpringForceGenerator(1, 10, p1);
-	fg->addRegistry(p2, f2);
-	springGenerators.push_back(f1);
-	springGenerators.push_back(f2);
-	particles.push_back(p1);
-	particles.push_back(p2);*/
-
+	MuellesUnidos();
+	GomaElastica();
+	addSlinky();
 	//Punto fijo
-	Particle* p3 = new Particle(MuelleParticula({ 10.0,50.0,0.0 }), true);
-	AnchoredSpringFG* f3 = new AnchoredSpringFG(5, 10, { 10.0,100.0,0.0 });
+	MuelleFijo();
+}
+void ParticleSystem::MuelleFijo()
+{
+	Particle* p3 = new Particle(MuelleParticula({ 70.0,50.0,0.0 }), true);
+	AnchoredSpringFG* f3 = new AnchoredSpringFG(5, 10, { 70.0,100.0,0.0 });
 	fg->addRegistry(p3, f3);
 	fg->addRegistry(p3, gravity);
 	springGenerators.push_back(f3);
 	particles.push_back(p3);
+}
+void ParticleSystem::MuellesUnidos()
+{
+	Particle* p1 = new Particle(MuelleParticula({ 40.0,10.0,0.0 }), true);
+	Particle* p2 = new Particle(MuelleParticula1({ 70.0,-10.0,0.0 }), true);
+	p2->setMass(2.0);
+	SpringForceGenerator* f1 = new SpringForceGenerator(7, 20, p2);
+	fg->addRegistry(p1, f1);
+	SpringForceGenerator* f2 = new SpringForceGenerator(7, 20, p1);
+	fg->addRegistry(p2, f2);
+	springGenerators.push_back(f1);
+	springGenerators.push_back(f2);
+	particles.push_back(p1);
+	particles.push_back(p2);
+}
+void ParticleSystem::GomaElastica()
+{
+	Particle* p1 = new Particle(MuelleParticula({ 0.0,70.0,0.0 }), true);
+	Particle* p2 = new Particle(MuelleParticula1({ 10.0, 70.0,0.0 }), true);
+	p2->setMass(2.0);
+	GomaElasticaGenerator* f1 = new GomaElasticaGenerator(5, 10, p2);
+	fg->addRegistry(p1, f1);
+	GomaElasticaGenerator* f2 = new GomaElasticaGenerator(5, 10, p1);
+	fg->addRegistry(p2, f2);
+	fg->addRegistry(p1, gravity);
+	springGenerators.push_back(f1);
+	springGenerators.push_back(f2);
+	particles.push_back(p1);
+	particles.push_back(p2);
+}
+void ParticleSystem::addSlinky()
+{
+	Vector3 pos = { -30.0,60.0,0.0 }, resta = { 0.0,5.0,0.0 };
+	hsv col = { 100.0,0.7,0.7 };
+	float inc = 20.0;
+	rgb colorRGB = hsv2rgb(col);
+	Vector4 colorAplica = { colorRGB.r, colorRGB.g, colorRGB.b,1.0 };
+	vector<Particle*> slinky;
+	for (int i = 0; i < 10; i++)
+	{
+		pos = pos - resta;
+		Particle* p1 = new Particle(MuelleParticula(pos), true);
+		p1->setColor(colorAplica);
+		if (i > 0)
+			fg->addRegistry(p1, gravity);
+		if (!i)
+			p1->setMass(0.0);
+		slinky.push_back(p1);
+		particles.push_back(p1);
+		col.h += inc;
+		colorRGB = hsv2rgb(col);
+		colorAplica = { colorRGB.r, colorRGB.g, colorRGB.b,1.0 };
+	}
+	for (int i = 0; i < 9; i++)
+	{
+		SpringForceGenerator* sf = new SpringForceGenerator(7.0,3.0,slinky[i+1]);
+		fg->addRegistry(slinky[i], sf);
+		SpringForceGenerator* sf2 = new SpringForceGenerator(7.0, 3.0, slinky[i]);
+		fg->addRegistry(slinky[i + 1], sf2);
+		springGenerators.push_back(sf);
+		springGenerators.push_back(sf2);
+	}
 }
 ParticleGenerator* ParticleSystem::getParticleGenerator(typeParticleGenerator t)
 {
