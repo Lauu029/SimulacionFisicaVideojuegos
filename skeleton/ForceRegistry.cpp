@@ -1,10 +1,10 @@
 #include "ForceRegistry.h"
+#include <iostream>
 
 void ForceRegistry::updateForces(float duration)
 {
 	for (auto it = begin(); it != end(); it++)
-		it->first->updateForce(it->second);
-
+		it->first->updateForce(it->second,duration);
 }
 
 void ForceRegistry::addRegistry(Particle* p, ForceGenerator* f)

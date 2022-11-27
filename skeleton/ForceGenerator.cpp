@@ -5,7 +5,7 @@ GravityGenerator::GravityGenerator(const Vector3& g)
 	gravity = g;
 }
 
-void GravityGenerator::updateForce(Particle* p)
+void GravityGenerator::updateForce(Particle* p, float t)
 {
 	if (fabs(p->getInvMass()) < 1e-10) return;
 	p->addForce(gravity * p->getMass());
@@ -27,7 +27,7 @@ WindGenerator::~WindGenerator()
 	}
 }
 
-void WindGenerator::updateForce(Particle* p)
+void WindGenerator::updateForce(Particle* p, float t)
 {
 	if (fabs(p->getInvMass()) < 1e-10) return;
 
@@ -54,7 +54,7 @@ TorbellinoGenerator::~TorbellinoGenerator()
 {
 }
 
-void TorbellinoGenerator::updateForce(Particle* p)
+void TorbellinoGenerator::updateForce(Particle* p, float t)
 {
 	if (fabs(p->getInvMass()) < 1e-10) return;
 
@@ -86,7 +86,7 @@ ExplosionGenerator::~ExplosionGenerator()
 	}
 }
 
-void ExplosionGenerator::updateForce(Particle* p)
+void ExplosionGenerator::updateForce(Particle* p, float t)
 {
 	if (fabs(p->getInvMass()) < 1e-10) return;
 	float k = 2000;
@@ -111,7 +111,7 @@ SpringForceGenerator::SpringForceGenerator(float _k, float resting_Length, Parti
 	particle = other;
 }
 
-void SpringForceGenerator::updateForce(Particle* p)
+void SpringForceGenerator::updateForce(Particle* p, float t)
 {
 
 
@@ -146,9 +146,15 @@ GomaElasticaGenerator::GomaElasticaGenerator(float _k, float resting_Length, Par
 {
 }
 
-void GomaElasticaGenerator::updateForce(Particle* p)
+void GomaElasticaGenerator::updateForce(Particle* p, float t)
 {
+<<<<<<< HEAD
+	if (p->getMass() <= 0) return;
+
+=======
+>>>>>>> parent of 8bac750... Aqui empieza el principio de mis desgracia
 	Vector3 f = particle->getPos() - p->getPos();
+
 	if (f.magnitude() > restingLength) {
 		const float l = f.normalize();
 		const float delta_x = l - restingLength;
@@ -163,7 +169,11 @@ ParticleDragGenerator::ParticleDragGenerator(const float _k1, const float _k2) :
 {
 }
 
+<<<<<<< HEAD
+void ParticleDragGenerator::updateForce(Particle* p, float t)
+=======
 void ParticleDragGenerator::updateForce(Particle* particle)
+>>>>>>> parent of 8bac750... Aqui empieza el principio de mis desgracia
 {
 	if (fabs(particle->getInvMass()) < 1e-10) return;
 
@@ -176,13 +186,33 @@ void ParticleDragGenerator::updateForce(Particle* particle)
 	particle->addForce(dragF);
 }
 
-BuoyancyForceGenerator::BuoyancyForceGenerator(float h, float V, float d, Vector3 pos) : height(h), volume(V), liquidDensity(d)
+BuoyancyForceGenerator::BuoyancyForceGenerator(float mD, float h, float V, float d, Vector3 pos) :maxDepth(mD), height(h), volume(V), liquidDensity(d)
 {
 	liquid = new Particle(Liquid(pos), true);
 }
 
-void BuoyancyForceGenerator::updateForce(Particle* p)
+void BuoyancyForceGenerator::updateForce(Particle* p, float t)
 {
+<<<<<<< HEAD
+	float depth;
+
+	depth = p->getPos().y;
+	Vector3 f(0.0f, 0.0f, 0.0f);
+
+	//Above plane
+	if (depth > (height + maxDepth))
+		return;
+
+	if (depth < (height - maxDepth)) {
+		f.y = liquidDensity * volume * gravity;
+	}
+	else {
+		float depthExt = height + maxDepth;
+		float volFactor = (depthExt - depth) / (2 * maxDepth);
+		f.y = liquidDensity * volume * volFactor * gravity;
+	}
+
+=======
 	if (fabs(p->getInvMass()) < 1e-10) return;
 	float h = p->getPos().y;
 	float h0 = liquid->getPos().y;
@@ -196,6 +226,7 @@ void BuoyancyForceGenerator::updateForce(Particle* p)
 	else
 		inmersed = (h0 - h) / height + 0.5;
 	f.y = liquidDensity * volume * inmersed * 9.8;
+>>>>>>> parent of 8bac750... Aqui empieza el principio de mis desgracia
 	p->addForce(f);
 }
 

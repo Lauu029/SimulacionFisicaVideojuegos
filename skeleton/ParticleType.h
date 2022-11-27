@@ -268,7 +268,7 @@ public:
 class MuelleParticula : public particleType {
 public:
 	MuelleParticula(Vector3 pos) {
-		mass = 10.0f;
+		mass = 2.0f;
 		vel = { 0.0f,0.0f,0.0f };
 		ac = { 0.0f, 0.0f, 0.0f };
 		damp = 0.99;
@@ -287,7 +287,7 @@ public:
 class MuelleParticula1 : public particleType {
 public:
 	MuelleParticula1(Vector3 pos) {
-		mass = 10.0f;
+		mass = 2.0f;
 		vel = { 0.0f,0.0f,0.0f };
 		ac = { 0.0f, 0.0f, 0.0f };
 		damp = 0.99;
@@ -325,14 +325,14 @@ public:
 class Barquito : public particleType {
 public:
 	Barquito(Vector3 pos) {
-		mass = 10.0f;
+		mass = 20.0f;
 		vel = { 0.0f,0.0f,0.0f };
 		ac = { 0.0f, 0.0f, 0.0f };
 		damp = 0.99;
 		remainingTime = 1e6;
 		size = { 10,10,10 };
 
-		col = {350.0f,0.93f,0.90f };
+		col = {200.0f,0.6f,1.0f };
 		rgb rgb = hsv2rgb(col);
 		color = { rgb.r,rgb.g,rgb.b,1.0 };
 

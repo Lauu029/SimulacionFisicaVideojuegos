@@ -14,8 +14,8 @@ ParticleSystem::ParticleSystem(typeParticleSystem pt)
 		niebla = new GaussianParticleGenerator({ 10,50,10 }, { 0,0,0 });
 		niebla->setParticle(new Particle(Nube(), false));
 
-		fireworks = new FireworkGenerator({ 0,20,0 }, { 0,10,0 });
-		fireworks->setParticle(new Firework(PresetFirework(20), 0, FireworkType::random, false));
+		fireworks = new FireworkGenerator({ 0,20,0 }, { 0,100,0 });
+		fireworks->setParticle(new Firework(PresetFirework(200), 0, FireworkType::random, false));
 		break;
 	case ForceGenerators:
 		gravity = new GravityGenerator({ 0,-29.8,0 });
@@ -36,6 +36,7 @@ ParticleSystem::ParticleSystem(typeParticleSystem pt)
 		break;
 	case SpringsGenerators:
 		gravity = new GravityGenerator({ 0,-9.8,0 });
+		drag = new ParticleDragGenerator(0.01, 0.01);
 		generateSpringDemo();
 		break;
 	default:
@@ -181,21 +182,25 @@ void ParticleSystem::generateSpringDemo()
 void ParticleSystem::MuelleFijo()
 {
 	Particle* p3 = new Particle(MuelleParticula({ 70.0,50.0,0.0 }), true);
-	AnchoredSpringFG* f3 = new AnchoredSpringFG(5, 10, { 70.0,100.0,0.0 });
+	AnchoredSpringFG* f3 = new AnchoredSpringFG(1, 10, { 70.0,100.0,0.0 });
 	fg->addRegistry(p3, f3);
 	fg->addRegistry(p3, gravity);
+	fg->addRegistry(p3, drag);
+
 	springGenerators.push_back(f3);
 	particles.push_back(p3);
 }
 void ParticleSystem::MuellesUnidos()
 {
 	Particle* p1 = new Particle(MuelleParticula({ 40.0,10.0,0.0 }), true);
-	Particle* p2 = new Particle(MuelleParticula1({ 70.0,-10.0,0.0 }), true);
+	Particle* p2 = new Particle(MuelleParticula1({ 60.0,-10.0,0.0 }), true);
 	p2->setMass(2.0);
-	SpringForceGenerator* f1 = new SpringForceGenerator(7, 20, p2);
+	SpringForceGenerator* f1 = new SpringForceGenerator(5, 50, p2);
 	fg->addRegistry(p1, f1);
-	SpringForceGenerator* f2 = new SpringForceGenerator(7, 20, p1);
+	SpringForceGenerator* f2 = new SpringForceGenerator(5, 50, p1);
 	fg->addRegistry(p2, f2);
+	fg->addRegistry(p1, drag);
+	fg->addRegistry(p2, drag);
 	springGenerators.push_back(f1);
 	springGenerators.push_back(f2);
 	particles.push_back(p1);
@@ -211,6 +216,8 @@ void ParticleSystem::GomaElastica()
 	GomaElasticaGenerator* f2 = new GomaElasticaGenerator(5, 10, p1);
 	fg->addRegistry(p2, f2);
 	fg->addRegistry(p1, gravity);
+	fg->addRegistry(p1, drag);
+	fg->addRegistry(p2, drag);
 	springGenerators.push_back(f1);
 	springGenerators.push_back(f2);
 	particles.push_back(p1);
@@ -233,9 +240,13 @@ void ParticleSystem::addSlinky()
 			p1->setMass(0.0);
 			p1->setDampling(0.0);
 		}
+<<<<<<< HEAD
+		fg->addRegistry(p1, drag);
+=======
 		else
 			fg->addRegistry(p1, gravity);
 
+>>>>>>> parent of 8bac750... Aqui empieza el principio de mis desgracia
 		particles.push_back(p1);
 		slinky.push_back(p1);
 		col.h += inc;
@@ -244,9 +255,9 @@ void ParticleSystem::addSlinky()
 	}
 	for (int i = 0; i < 9; i++)
 	{
-		SpringForceGenerator* sf = new SpringForceGenerator(30.0,5.0,slinky[i+1]);
+		SpringForceGenerator* sf = new SpringForceGenerator(20.0,10.0,slinky[i+1]);
 		fg->addRegistry(slinky[i], sf);
-		SpringForceGenerator* sf2 = new SpringForceGenerator(30.0,5.0, slinky[i]);
+		SpringForceGenerator* sf2 = new SpringForceGenerator(20.0,10.0, slinky[i]);
 		fg->addRegistry(slinky[i + 1], sf2);
 		springGenerators.push_back(sf);
 		springGenerators.push_back(sf2);
@@ -254,10 +265,11 @@ void ParticleSystem::addSlinky()
 }
 void ParticleSystem::FlotationSim()
 {
-	BuoyancyForceGenerator* by = new BuoyancyForceGenerator(5, 2, 100, { -100.0, 0.0, 0.0 });
+	BuoyancyForceGenerator* by = new BuoyancyForceGenerator(1.5,0.0, 0.25, 100, { -100.0, 0.0, 0.0 });
 	Particle* p = new Particle(Barquito({ -100.0,0.0,0.0 }), true);
 	fg->addRegistry(p, by);
 	fg->addRegistry(p, gravity);
+	fg->addRegistry(p, drag);
 	particles.push_back(p);
 }
 ParticleGenerator* ParticleSystem::getParticleGenerator(typeParticleGenerator t)

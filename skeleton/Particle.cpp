@@ -36,7 +36,11 @@ void Particle::integrate(float t)
 
 	Vector3 totalAcceleration = ac;
 
+<<<<<<< HEAD
+	ac = force * inverse_mass;
+=======
 	totalAcceleration += force * inverse_mass;
+>>>>>>> parent of 8bac750... Aqui empieza el principio de mis desgracia
 
 	vel += totalAcceleration * t;
 

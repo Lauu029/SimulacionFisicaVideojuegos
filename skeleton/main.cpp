@@ -74,6 +74,10 @@ void initPhysics(bool interactive)
 void stepPhysics(bool interactive, float t)
 {
 	PX_UNUSED(interactive);
+
+	gScene->simulate(t);
+	gScene->fetchResults(true);
+
 	for (int i = 0; i < sceneParticles.size(); i++)
 	{
 		if (sceneParticles[i]->getPos().y < 0 || sceneParticles[i]->getRemainingTime() < 0) {
@@ -91,8 +95,6 @@ void stepPhysics(bool interactive, float t)
 		partSysGravity->update(t);
 	if (partSysSprings != nullptr)
 		partSysSprings->update(t);
-	gScene->simulate(t);
-	gScene->fetchResults(true);
 }
 
 // Function to clean data

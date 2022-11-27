@@ -54,6 +54,24 @@ void Camera::handleMouse(int button, int state, int x, int y)
 	mMouseY = y;
 }
 
+//void Camera::handleMouseMotion(int x, int y)
+//{
+//	int dx = mMouseXx - x;
+//	int dy = mMouseYy - y;
+//
+//	PxVec3 viewY = mDird.cross(PxVec3(0, 1, 0)).getNormalized();
+//
+//	PxQuat qx(PxPi * dx / 180.0f, PxVec3(0, 1, 0));
+//	mDird = qx.rotate(mDird);
+//	PxQuat qy(PxPi * dy / 180.0f, viewY);
+//	mDird = qy.rotate(mDird);
+//
+//	mDird.normalize();
+//
+//	mMouseXx = x;
+//	mMouseYy = y;
+//}
+
 bool Camera::handleKey(unsigned char key, int x, int y, float speed)
 {
 	PX_UNUSED(x);

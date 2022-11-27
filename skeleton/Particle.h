@@ -5,6 +5,7 @@
 #include "ParticleType.h"
 #include <list>
 #include <random>
+#include <iostream>
 
 enum FireworkType { heart, random, circle, batFuego };
 
@@ -21,7 +22,7 @@ public:
 	void setPosition(Vector3 p) { pose = physx::PxTransform(p.x, p.y, p.z); }
 	void setRender(particleShape s, Vector3 size, Vector4 color);
 	void setColor(Vector4 _color);
-	void setMass(float m) { mass = m; };
+	void setMass(float m) { mass = m; inverse_mass = 1 / m; };
 	void setDampling(float d) { damp = d; };
 
 	Vector3 getPos();
@@ -36,7 +37,9 @@ public:
 	float getMass() { return mass; };
 
 	void clearForce() { force *= 0; };
-	void addForce(const Vector3& f) { force += f; };
+	void addForce(const Vector3& f) { 
+		force += f;
+	};
 protected:
 	Vector3 force;
 	Vector3 vel;

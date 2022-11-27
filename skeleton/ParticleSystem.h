@@ -26,6 +26,7 @@ protected:
 	typeParticleSystem _typeSystem;
 	ForceRegistry* fg = nullptr;
 	GravityGenerator* gravity = nullptr;
+	ParticleDragGenerator* drag = nullptr;
 	WindGenerator* wind = nullptr;
 	TorbellinoGenerator* torbellino = nullptr;
 	ExplosionGenerator* explosion = nullptr;

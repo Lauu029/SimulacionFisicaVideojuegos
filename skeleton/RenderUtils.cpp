@@ -65,6 +65,10 @@ void mouseCallback(int button, int state, int x, int y)
 {
 	sCamera->handleMouse(button, state, x, y);
 }
+//
+//void passiveMotionCallback(int x, int y) {
+//	sCamera->handleMouseMotion(x, y);
+//}
 
 void idleCallback()
 {
@@ -147,6 +151,7 @@ void renderLoop()
 	glutKeyboardFunc(keyboardCallback);
 	glutMouseFunc(mouseCallback);
 	glutMotionFunc(motionCallback);
+	//glutPassiveMotionFunc(passiveMotionCallback);
 	motionCallback(0,0);
 
 	atexit(exitCallback);
