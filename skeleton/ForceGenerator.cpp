@@ -113,7 +113,8 @@ SpringForceGenerator::SpringForceGenerator(float _k, float resting_Length, Parti
 
 void SpringForceGenerator::updateForce(Particle* p, float t)
 {
-
+	if (p->getMass() <= 0)
+		return;
 
 	Vector3 f = particle->getPos() - p->getPos();
 
@@ -148,11 +149,8 @@ GomaElasticaGenerator::GomaElasticaGenerator(float _k, float resting_Length, Par
 
 void GomaElasticaGenerator::updateForce(Particle* p, float t)
 {
-<<<<<<< HEAD
 	if (p->getMass() <= 0) return;
 
-=======
->>>>>>> parent of 8bac750... Aqui empieza el principio de mis desgracia
 	Vector3 f = particle->getPos() - p->getPos();
 
 	if (f.magnitude() > restingLength) {
@@ -169,21 +167,17 @@ ParticleDragGenerator::ParticleDragGenerator(const float _k1, const float _k2) :
 {
 }
 
-<<<<<<< HEAD
 void ParticleDragGenerator::updateForce(Particle* p, float t)
-=======
-void ParticleDragGenerator::updateForce(Particle* particle)
->>>>>>> parent of 8bac750... Aqui empieza el principio de mis desgracia
 {
-	if (fabs(particle->getInvMass()) < 1e-10) return;
+	if (fabs(p->getInvMass()) < 1e-10) return;
 
-	Vector3 v = particle->getVel();
+	Vector3 v = p->getVel();
 	float drag_coef = v.normalize();
 	Vector3 dragF;
 	drag_coef = k1 * drag_coef + k2 * powf(drag_coef, 2);
 	dragF = -v * drag_coef;
 
-	particle->addForce(dragF);
+	p->addForce(dragF);
 }
 
 BuoyancyForceGenerator::BuoyancyForceGenerator(float mD, float h, float V, float d, Vector3 pos) :maxDepth(mD), height(h), volume(V), liquidDensity(d)
@@ -193,7 +187,6 @@ BuoyancyForceGenerator::BuoyancyForceGenerator(float mD, float h, float V, float
 
 void BuoyancyForceGenerator::updateForce(Particle* p, float t)
 {
-<<<<<<< HEAD
 	float depth;
 
 	depth = p->getPos().y;
@@ -211,22 +204,6 @@ void BuoyancyForceGenerator::updateForce(Particle* p, float t)
 		float volFactor = (depthExt - depth) / (2 * maxDepth);
 		f.y = liquidDensity * volume * volFactor * gravity;
 	}
-
-=======
-	if (fabs(p->getInvMass()) < 1e-10) return;
-	float h = p->getPos().y;
-	float h0 = liquid->getPos().y;
-
-	Vector3 f(0, 0, 0);
-	float inmersed = 0.0;
-	if (h - h0 > height * 0.5)
-		inmersed = 0.0;
-	else if (h0 - h > height * 0.5)
-		inmersed = 1.0;
-	else
-		inmersed = (h0 - h) / height + 0.5;
-	f.y = liquidDensity * volume * inmersed * 9.8;
->>>>>>> parent of 8bac750... Aqui empieza el principio de mis desgracia
 	p->addForce(f);
 }
 

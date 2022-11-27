@@ -27,22 +27,18 @@ Particle::~Particle()
 	}
 }
 
-void Particle::integrate(float t)
+void Particle::integrate(double t)
 {
 	if (inverse_mass <= 0.0f) 
 		return;
-
-	pose = physx::PxTransform(pose.p.x + vel.x * t, pose.p.y + vel.y * t, pose.p.z + vel.z * t);
+	if (remainingTime <= 0) death = true;
+	pose.p += vel*t;
 
 	Vector3 totalAcceleration = ac;
 
-<<<<<<< HEAD
-	ac = force * inverse_mass;
-=======
-	totalAcceleration += force * inverse_mass;
->>>>>>> parent of 8bac750... Aqui empieza el principio de mis desgracia
-
 	vel += totalAcceleration * t;
+
+	ac = force * inverse_mass;
 
 	vel *= powf(damp, t);
 

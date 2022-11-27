@@ -35,16 +35,17 @@ protected:
 public:
 	ParticleSystem(typeParticleSystem pt);
 	void GenerateForceParticles(typeForceSystem tf);
-	void update(float t);
+	void update(double t);
 
-	void addGravity();
+	void addGravity(Particle* p=nullptr);
 	void deleteGravity();
-	void addWind();
+	void addWind(Particle* p=nullptr);
 	void deleteWind();
 	void addTorbellino();
 	void deleteTorbellino();
 	void addExplosion();
 
+	void changeWind(Vector3 v) { if (wind != nullptr) wind->changeWindForce(v); };
 	void generateSpringDemo();
 	void MuelleFijo();
 	void MuellesUnidos();

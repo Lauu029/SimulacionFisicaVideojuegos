@@ -35,6 +35,7 @@ public:
 	WindGenerator(float r, Vector3 v, Vector3 p);
 	virtual ~WindGenerator();
 	virtual void updateForce(Particle* p, float t) override;
+	void changeWindForce(Vector3 v) { vel = v; };
 protected:
 	bool checkDistance(Particle* p);
 	float radius = 0;

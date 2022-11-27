@@ -15,7 +15,7 @@ public:
 	Particle(particleType p, bool b);
 	~Particle();
 
-	void integrate(float t);
+	void integrate(double t);
 	
 	void setVelocity(Vector3 v) { vel = v; }
 	void setAcceleration(Vector3 a) { ac = a; }
@@ -35,6 +35,8 @@ public:
 	particleType getParticleType() { return type; };
 	float getInvMass() { return inverse_mass; };
 	float getMass() { return mass; };
+	bool particleDeath() { return death; };
+	void killParticle() { death = true; };
 
 	void clearForce() { force *= 0; };
 	void addForce(const Vector3& f) { 
@@ -56,6 +58,7 @@ protected:
 	Vector3 size;
 	Vector4 color;
 
+	bool death = false;
 };
 
 class Firework : public Particle {

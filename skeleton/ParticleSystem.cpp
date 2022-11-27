@@ -18,7 +18,7 @@ ParticleSystem::ParticleSystem(typeParticleSystem pt)
 		fireworks->setParticle(new Firework(PresetFirework(200), 0, FireworkType::random, false));
 		break;
 	case ForceGenerators:
-		gravity = new GravityGenerator({ 0,-29.8,0 });
+		gravity = new GravityGenerator({ 0,-9.8,0 });
 		GravityParticles = new UniformParticleGenerator({ 0,60,0 }, { 0,0,0 }, 100, false, 70);
 		GravityParticles->setParticle(new Particle(GravityParticle1({ 0,0,0 }, 0), false));
 
@@ -67,7 +67,7 @@ void ParticleSystem::GenerateForceParticles(typeForceSystem tf)
 		particles.push_back(a);
 	newParticles.clear();
 }
-void ParticleSystem::update(float t)
+void ParticleSystem::update(double t)
 {
 	if (fg != nullptr)
 		fg->updateForces(t);
@@ -117,11 +117,16 @@ void ParticleSystem::update(float t)
 		}
 	}
 }
-void ParticleSystem::addGravity()
+void ParticleSystem::addGravity(Particle* p)
 {
-	for (Particle* p : particles)
-	{
+	//si le pasan una partícula solo añade fuerza a esa partícula, si no se la añade a todas las partículas del sistema
+	if (p != nullptr)
 		fg->addRegistry(p, gravity);
+	else {
+		for (auto p : particles)
+		{
+			fg->addRegistry(p, gravity);
+		}
 	}
 }
 void ParticleSystem::deleteGravity()
@@ -131,11 +136,16 @@ void ParticleSystem::deleteGravity()
 		fg->deleteForce(gravity);
 	}
 }
-void ParticleSystem::addWind()
+void ParticleSystem::addWind(Particle* p)
 {
-	for (Particle* p : particles)
-	{
+	//si le pasan una partícula solo añade fuerza a esa partícula, si no se la añade a todas las partículas del sistema
+	if (p != nullptr)
 		fg->addRegistry(p, wind);
+	else {
+		for (auto p : particles)
+		{
+			fg->addRegistry(p, wind);
+		}
 	}
 }
 void ParticleSystem::deleteWind()
@@ -181,7 +191,7 @@ void ParticleSystem::generateSpringDemo()
 }
 void ParticleSystem::MuelleFijo()
 {
-	Particle* p3 = new Particle(MuelleParticula({ 70.0,50.0,0.0 }), true);
+	Particle* p3 = new Particle(MuelleParticula({ 70.0,90.0,0.0 }), true);
 	AnchoredSpringFG* f3 = new AnchoredSpringFG(1, 10, { 70.0,100.0,0.0 });
 	fg->addRegistry(p3, f3);
 	fg->addRegistry(p3, gravity);
@@ -209,11 +219,11 @@ void ParticleSystem::MuellesUnidos()
 void ParticleSystem::GomaElastica()
 {
 	Particle* p1 = new Particle(MuelleParticula({ 0.0,70.0,0.0 }), true);
-	Particle* p2 = new Particle(MuelleParticula1({ 10.0, 70.0,0.0 }), true);
+	Particle* p2 = new Particle(MuelleParticula1({ 20.0, 70.0,0.0 }), true);
 	p2->setMass(2.0);
-	GomaElasticaGenerator* f1 = new GomaElasticaGenerator(5, 10, p2);
+	GomaElasticaGenerator* f1 = new GomaElasticaGenerator(5, 20, p2);
 	fg->addRegistry(p1, f1);
-	GomaElasticaGenerator* f2 = new GomaElasticaGenerator(5, 10, p1);
+	GomaElasticaGenerator* f2 = new GomaElasticaGenerator(5, 20, p1);
 	fg->addRegistry(p2, f2);
 	fg->addRegistry(p1, gravity);
 	fg->addRegistry(p1, drag);
@@ -238,15 +248,13 @@ void ParticleSystem::addSlinky()
 		p1->setColor(colorAplica);
 		if (!i) {
 			p1->setMass(0.0);
-			p1->setDampling(0.0);
 		}
-<<<<<<< HEAD
-		fg->addRegistry(p1, drag);
-=======
-		else
+		else {
 			fg->addRegistry(p1, gravity);
 
->>>>>>> parent of 8bac750... Aqui empieza el principio de mis desgracia
+		}
+		fg->addRegistry(p1, drag);
+
 		particles.push_back(p1);
 		slinky.push_back(p1);
 		col.h += inc;
@@ -255,9 +263,9 @@ void ParticleSystem::addSlinky()
 	}
 	for (int i = 0; i < 9; i++)
 	{
-		SpringForceGenerator* sf = new SpringForceGenerator(20.0,10.0,slinky[i+1]);
+		SpringForceGenerator* sf = new SpringForceGenerator(20.0, 10.0, slinky[i + 1]);
 		fg->addRegistry(slinky[i], sf);
-		SpringForceGenerator* sf2 = new SpringForceGenerator(20.0,10.0, slinky[i]);
+		SpringForceGenerator* sf2 = new SpringForceGenerator(20.0, 10.0, slinky[i]);
 		fg->addRegistry(slinky[i + 1], sf2);
 		springGenerators.push_back(sf);
 		springGenerators.push_back(sf2);
@@ -265,7 +273,7 @@ void ParticleSystem::addSlinky()
 }
 void ParticleSystem::FlotationSim()
 {
-	BuoyancyForceGenerator* by = new BuoyancyForceGenerator(1.5,0.0, 0.25, 100, { -100.0, 0.0, 0.0 });
+	BuoyancyForceGenerator* by = new BuoyancyForceGenerator(1.5, 0.0, 0.25, 100, { -100.0, 0.0, 0.0 });
 	Particle* p = new Particle(Barquito({ -100.0,0.0,0.0 }), true);
 	fg->addRegistry(p, by);
 	fg->addRegistry(p, gravity);
