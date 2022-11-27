@@ -94,7 +94,7 @@ public:
 		vel = { 0.1,100,0.1 };
 		ac = { 0.0f, -0.5f, 0.0f };
 		damp = 0.9;
-		remainingTime = 60;
+		remainingTime = 600;
 		size = { 1.5,0,0 };
 
 		col = { 186.0f,0.77f,0.68f };

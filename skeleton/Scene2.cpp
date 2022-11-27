@@ -3,6 +3,7 @@
 void Scene2::initScene()
 {
 	pS = new ParticleSystem(typeParticleSystem::particleGenerators);
+	suelo = new Particle(Suelo(), true);
 }
 
 void Scene2::updateScene(double t)

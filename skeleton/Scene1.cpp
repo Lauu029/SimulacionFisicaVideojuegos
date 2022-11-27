@@ -4,6 +4,9 @@ void Scene1::initScene()
 {
 	suelo = new Particle(Suelo(), true);
 	pS = new ParticleSystem(typeParticleSystem::ForceGenerators);
+	pS->deleteExplosion();
+	pS->deleteTorbellino();
+	pS->deleteWind();
 }
 
 void Scene1::updateScene(double t)
@@ -42,8 +45,6 @@ void Scene1::keyPressed(unsigned char key)
 	case 'c':
 		p = new Particle(Fireball(GetCamera()->getDir(), pos, 100), true);
 		sceneParticles.push_back(p);
-		pS->changeWind({ 0, 1000.0, 0 });
-		pS->addWind(p);
 		pS->addGravity(p);
 		break;
 	case 'v':

@@ -15,6 +15,7 @@
 #include "Scene1.h"
 #include "Scene2.h"
 #include "Scene3.h"
+#include "Scene4.h"
 
 
 
@@ -35,7 +36,6 @@ PxDefaultCpuDispatcher* gDispatcher = NULL;
 PxScene* gScene = NULL;
 ContactReportCallback gContactReportCallback;
 
-ParticleSystem* partSysSprings = nullptr;
 physx::PxTransform floorPose = { 0,0,0 };
 Scene* mainScene = nullptr;
 
@@ -64,6 +64,8 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 
 	gScene = gPhysics->createScene(sceneDesc);
+	mainScene = new Scene4 ();
+	mainScene->initScene(); 
 }
 
 // Function to configure what happens in each step of physics
@@ -77,8 +79,6 @@ void stepPhysics(bool interactive, double t)
 	gScene->fetchResults(true);
 	if (mainScene != nullptr)
 		mainScene->updateScene(t);
-	if (partSysSprings != nullptr)
-		partSysSprings->update(t);
 }
 
 // Function to clean data
@@ -88,8 +88,6 @@ void cleanupPhysics(bool interactive)
 	PX_UNUSED(interactive);
 	if (mainScene != nullptr)
 		delete mainScene;
-	if (partSysSprings != nullptr)
-		delete partSysSprings;
 
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
@@ -138,22 +136,15 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		}
 		mainScene = new Scene3();
 		mainScene->initScene();
-		
 		break;
-		
 	case '3':
-		
-		break;
-	case 'z':
-if (partSysSprings != nullptr)
-			partSysSprings->GomaElastica();
-		break;
-		//Cañón/fuego aleatorio/gravedad(desactiva)
-
-
-		//Fuente/Torbellino(activa)
-
-		//Niebla/Torbellino(desactiva  
+		if (mainScene != nullptr) {
+			delete mainScene;
+			mainScene = nullptr;
+		}
+		mainScene = new Scene4();
+		mainScene->initScene();
+		break; 
 	default:
 		break;
 	}

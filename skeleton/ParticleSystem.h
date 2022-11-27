@@ -30,6 +30,7 @@ protected:
 	WindGenerator* wind = nullptr;
 	TorbellinoGenerator* torbellino = nullptr;
 	ExplosionGenerator* explosion = nullptr;
+	BuoyancyForceGenerator* bG = nullptr;
 
 	vector<SpringForceGenerator*> springGenerators;
 public:
@@ -37,6 +38,7 @@ public:
 	void GenerateForceParticles(typeForceSystem tf);
 	void update(double t);
 
+	//Añadir y quitar fuerzas
 	void addGravity(Particle* p=nullptr);
 	void deleteGravity();
 	void addWind(Particle* p=nullptr);
@@ -44,6 +46,7 @@ public:
 	void addTorbellino();
 	void deleteTorbellino();
 	void addExplosion();
+	void deleteExplosion();
 
 	void changeWind(Vector3 v) { if (wind != nullptr) wind->changeWindForce(v); };
 	void generateSpringDemo();

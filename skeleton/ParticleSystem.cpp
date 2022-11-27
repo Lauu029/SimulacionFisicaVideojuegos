@@ -119,6 +119,7 @@ void ParticleSystem::update(double t)
 }
 void ParticleSystem::addGravity(Particle* p)
 {
+	if (gravity == nullptr) gravity = new GravityGenerator({ 0,-9.8,0 });
 	//si le pasan una partícula solo añade fuerza a esa partícula, si no se la añade a todas las partículas del sistema
 	if (p != nullptr)
 		fg->addRegistry(p, gravity);
@@ -135,9 +136,12 @@ void ParticleSystem::deleteGravity()
 	{
 		fg->deleteForce(gravity);
 	}
+	delete gravity;
+	gravity = nullptr;
 }
 void ParticleSystem::addWind(Particle* p)
 {
+	if (wind == nullptr) wind = new WindGenerator(30, { -50,20,0 }, { 70,50,5 });
 	//si le pasan una partícula solo añade fuerza a esa partícula, si no se la añade a todas las partículas del sistema
 	if (p != nullptr)
 		fg->addRegistry(p, wind);
@@ -154,9 +158,12 @@ void ParticleSystem::deleteWind()
 	{
 		fg->deleteForce(wind);
 	}
+	delete wind;
+	wind = nullptr;
 }
 void ParticleSystem::addTorbellino()
 {
+	if (torbellino == nullptr) torbellino = new TorbellinoGenerator(50, { 10,10,10 }, { -70,40,10 });
 	for (Particle* p : particles)
 	{
 		fg->addRegistry(p, torbellino);
@@ -168,13 +175,25 @@ void ParticleSystem::deleteTorbellino()
 	{
 		fg->deleteForce(torbellino);
 	}
+	delete torbellino;
+	torbellino = nullptr;
 }
 void ParticleSystem::addExplosion()
 {
+	if(explosion==nullptr) explosion = new ExplosionGenerator(50, { 0,70,50 });
 	for (Particle* p : particles)
 	{
 		fg->addRegistry(p, explosion);
 	}
+}
+void ParticleSystem::deleteExplosion()
+{
+	for (Particle* p : particles)
+	{
+		fg->deleteForce(explosion);
+	}
+	delete explosion;
+	explosion = nullptr;
 }
 void ParticleSystem::generateSpringDemo()
 {
@@ -273,9 +292,9 @@ void ParticleSystem::addSlinky()
 }
 void ParticleSystem::FlotationSim()
 {
-	BuoyancyForceGenerator* by = new BuoyancyForceGenerator(1.5, 0.0, 0.25, 100, { -100.0, 0.0, 0.0 });
+	bG = new BuoyancyForceGenerator(1.5, 0.0, 0.25, 100, { -100.0, 0.0, 0.0 });
 	Particle* p = new Particle(Barquito({ -100.0,0.0,0.0 }), true);
-	fg->addRegistry(p, by);
+	fg->addRegistry(p, bG);
 	fg->addRegistry(p, gravity);
 	fg->addRegistry(p, drag);
 	particles.push_back(p);
@@ -350,6 +369,8 @@ ParticleSystem::~ParticleSystem()
 		delete torbellino;
 	if (explosion != nullptr)
 		delete explosion;
+	if (bG != nullptr)
+		delete bG;
 	for (auto s : springGenerators)
 		delete s;
 	springGenerators.clear();
