@@ -94,7 +94,7 @@ public:
 		vel = { 0.1,100,0.1 };
 		ac = { 0.0f, -0.5f, 0.0f };
 		damp = 0.9;
-		remainingTime = 600;
+		remainingTime = 200;
 		size = { 1.5,0,0 };
 
 		col = { 186.0f,0.77f,0.68f };
@@ -145,7 +145,7 @@ class PresetFirework : public particleType {
 public:
 	PresetFirework(int rT) {
 		mass = 1.0f;
-		vel = { 0.0f,30.0f,0.0f };
+		vel = { 0.0f,100.0f,0.0f };
 		ac = { 0.0f,0.0f, 0.0f };
 		damp = 0.5f;
 		remainingTime = rT;
@@ -155,7 +155,7 @@ public:
 		rgb rgb = hsv2rgb(col);
 		color = { rgb.r,rgb.g,rgb.b,1.0 };
 
-		pose = physx::PxTransform{ 0.0 ,0.0, 0.0 };
+		pose = physx::PxTransform{ 0.0 ,0.0, 100.0 };
 		s = particleShape::Sphere;
 	}
 };
@@ -173,7 +173,7 @@ public:
 		rgb rgb = hsv2rgb(col);
 		color = { rgb.r,rgb.g,rgb.b,1.0 };
 
-		pose = physx::PxTransform{ 0.0 ,0.0, 0.0 };
+		pose = physx::PxTransform{ 0.0 ,0.0, 150.0 };
 		s = particleShape::Sphere;
 	}
 };
@@ -191,7 +191,7 @@ public:
 		rgb rgb = hsv2rgb(col);
 		color = { rgb.r,rgb.g,rgb.b,1.0 };
 
-		pose = physx::PxTransform{ 0.0 ,0.0, 0.0 };
+		pose = physx::PxTransform{ 0.0 ,0.0, 100.0 };
 		s = particleShape::Sphere;
 	}
 };
@@ -199,7 +199,7 @@ class BatFireworks : public particleType {
 public:
 	BatFireworks(int rT) {
 		mass = 1.0f;
-		vel = { 0.0f,10.0f,0.0f };
+		vel = { 0.0f,30.0f,0.0f };
 		ac = { 0.0f,0.0f, 0.0f };
 		damp = 0.9f;
 		remainingTime = rT;
@@ -209,7 +209,7 @@ public:
 		rgb rgb = hsv2rgb(col);
 		color = { rgb.r,rgb.g,rgb.b,1.0 };
 
-		pose = physx::PxTransform{ 0.0 ,0.0, 0.0 };
+		pose = physx::PxTransform{ 0.0 ,0.0, 100.0 };
 		s = particleShape::Sphere;
 	}
 };

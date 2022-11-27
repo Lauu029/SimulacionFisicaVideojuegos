@@ -8,13 +8,13 @@ ParticleSystem::ParticleSystem(typeParticleSystem pt)
 	switch (pt)
 	{
 	case particleGenerators:
-		fuente = new UniformParticleGenerator({ 0,0,100 }, { 0,30,0 }, 10, true, 1);
+		fuente = new UniformParticleGenerator({ 0,0,100 }, { 0,50,0 }, 10, true, 1);
 		fuente->setParticle(new Particle(Agua(), false));
 
 		niebla = new GaussianParticleGenerator({ 10,50,150 }, { 0,0,0 });
 		niebla->setParticle(new Particle(Nube(), false));
 
-		fireworks = new FireworkGenerator({ 0,20,0 }, { 0,100,0 });
+		fireworks = new FireworkGenerator({ 0,20,10 }, { 0,200,0 });
 		fireworks->setParticle(new Firework(PresetFirework(200), 0, FireworkType::random, false));
 		break;
 	case ForceGenerators:
@@ -322,16 +322,16 @@ void ParticleSystem::generateFireworkSystem(FireworkType t)
 	switch (t)
 	{
 	case heart:
-		f.push_back(new Firework(PresetFirework(10), 50, t, true));
+		f.push_back(new Firework(PresetFirework(70), 50, t, true));
 		break;
 	case random:
-		f.push_back(new Firework(PresetFirework(10), 10, t, true));
+		f.push_back(new Firework(PresetFirework(30), 10, t, true));
 		break;
 	case circle:
-		f.push_back(new Firework(PresetFirework(10), 20, t, true));
+		f.push_back(new Firework(PresetFirework(70), 20, t, true));
 		break;
 	case batFuego:
-		f.push_back(new Firework(BatFireworks(5), 50, t, true));
+		f.push_back(new Firework(BatFireworks(50), 50, t, true));
 	default:
 		break;
 	}

@@ -24,18 +24,18 @@ list<Particle*> UniformParticleGenerator::generateParticles()
 		Vector3 newVel = meanVel;
 		float ac = model->getAcceleration().y;
 		if (move) {
-			newVel.x += distribution(gen) * 2;
-			newVel.y += distribution(gen);
-			newVel.z += distribution(gen) * 2;
+			newVel.x += distribution(gen) * 10;
+			newVel.y += distribution(gen)*.5;
+			newVel.z += distribution(gen) * 10;
 
-			ac += distribution(gen) * .3;
+			ac += distribution(gen)*20;
 		}
 		if (!move) newParticleType();
 		Particle* newP = new Particle(model->getParticleType(), true);
 		newP->setVelocity(newVel);
 		newP->setPosition(newPos);
 		if (move)
-			newP->setAcceleration({ 0,ac,0 });
+			newP->setAcceleration({ 0,-ac,0 });
 		else newP->setAcceleration({ 0,0,0 });
 
 		listParticles.push_back(newP);
@@ -164,8 +164,8 @@ void FireworkGenerator::FuegosCorazon(Vector3& newVel, float increase, Firework*
 	for (size_t i = 1; i <= parent->getNumHijos(); i++)
 	{
 		//Heart formula
-		newVel.x = (16 * pow(sin(increase * i), 3)) / 2;
-		newVel.y = (13 * cos(increase * i) - 5 * cos(2 * increase * i) - 2 * cos(3 * increase * i) - cos(4 * increase * i)) / 2;
+		newVel.x = (16 * pow(sin(increase * i), 3))*10;
+		newVel.y = (13 * cos(increase * i) - 5 * cos(2 * increase * i) - 2 * cos(3 * increase * i) - cos(4 * increase * i))*10;
 		newVel.z = 0;
 
 		Firework* newP = new Firework(FireworkHeart(15), 0, parent->type(), true);
@@ -178,8 +178,8 @@ void FireworkGenerator::CircleFirework(Vector3& newVel, float increase, Firework
 {
 	for (size_t i = 1; i <= parent->getNumHijos(); i++)
 	{
-		newVel.x = cos(increase * i);
-		newVel.y = sin(increase * i);
+		newVel.x = cos(increase * i)*20;
+		newVel.y = sin(increase * i)*20;
 		newVel.z = 1;
 		/*newVel.x = sqrt(pow(cos(increase * i), 2) / 2) * pow(-1, i);
 		newVel.y = sin(increase * i);
@@ -198,16 +198,16 @@ void FireworkGenerator::RandomFirework(Vector3& newVel, Firework* parent, Vector
 	for (size_t i = 1; i <= parent->getNumHijos(); i++)
 	{
 		//Uniform distribution
-		newVel.x += distribution(gen);
-		newVel.y += distribution(gen);
-		newVel.z += distribution(gen);
+		newVel.x += distribution(gen)*5;
+		newVel.y -= distribution(gen)*5;
+		newVel.z += distribution(gen)*5;
 
 		float color = 360.0 / parent->getNumHijos();
-		Firework* newP = new Firework(RandomFireworks(std::rand() % 14 + 14, { color,1.0f,0.5f }, parent->getSize().x / 2), parent->getNumHijos() / 2, parent->type(), true);
+		Firework* newP = new Firework(RandomFireworks(std::rand() % 50+ 14, { color,1.0f,0.5f }, parent->getSize().x / 2), parent->getNumHijos() -5, parent->type(), true);
 
 		newP->setPosition(parent->getPos());
 		newP->setVelocity(newVel);
-		newP->setAcceleration({ 0,-0.05,0 });
+		newP->setAcceleration({ 0,-0.5,0 });
 		listParticles.push_back(newP);
 	}
 }
@@ -216,8 +216,8 @@ void FireworkGenerator::CabezaBatFuegos(Vector3& newVel, Firework* parent, std::
 {
 	for (int j = 0; j < 10; j++)
 	{
-		newVel.x = 10 - j * .2;
-		newVel.y = 15 + j;
+		newVel.x = (10 - j * .2)*10;
+		newVel.y = (15 + j)*10;
 		Firework* newP = new Firework(parent->getParticleType(), 0, FireworkType::batFuego, true);
 		newP->setPosition(parent->getPos());
 		newP->setVelocity(newVel);
@@ -228,8 +228,8 @@ void FireworkGenerator::CabezaBatFuegos(Vector3& newVel, Firework* parent, std::
 		listParticles.push_back(newP2);
 
 		newVel = { 0,0,0 };
-		newVel.x = -4 - j * .5;
-		newVel.y = 20 + j * .4;
+		newVel.x = (- 4 - j * .5) * 10;
+		newVel.y = (20 + j * .4)*10;
 		Firework* newP3 = new Firework(parent->getParticleType(), 0, FireworkType::batFuego, true);
 		newP3->setPosition(parent->getPos());
 		newP3->setVelocity(newVel);
@@ -241,8 +241,8 @@ void FireworkGenerator::CabezaBatFuegos(Vector3& newVel, Firework* parent, std::
 	}
 	for (int k = 0; k < 7; k++)
 	{
-		newVel.x = -3 + k;
-		newVel.y = 20;
+		newVel.x = ( - 3 + k)*10;
+		newVel.y = 20*10;
 		Firework* newP = new Firework(parent->getParticleType(), 0, FireworkType::batFuego, true);
 		newP->setPosition(parent->getPos());
 		newP->setVelocity(newVel);
@@ -254,8 +254,8 @@ void FireworkGenerator::FinAlasBatFuegos(Vector3& newVel, int x, Firework* paren
 	newVel = { 0,0,0 };
 	if (sin(x) < 0 && cos(x) < 0) {
 
-		newVel.x = -10 + (10 * cos(x));
-		newVel.y = 25 + (10 * sin(x));
+		newVel.x = (- 10 + (10 * cos(x)))*10;
+		newVel.y = (25 + (10 * sin(x)))*10;
 	}
 	Firework* newP = new Firework(parent->getParticleType(), 0, FireworkType::batFuego, true);
 	newP->setPosition(parent->getPos());
@@ -271,12 +271,12 @@ void FireworkGenerator::ParentesisBatFuegos(int x, Vector3& newVel, Firework* pa
 	for (int l = 0; l < 30; l++)
 	{
 		if (cos(x) * 2 > 0) {
-			newVel.x = 20 + 5 * cos(x) * 2;
+			newVel.x =( 20 + 5 * cos(x) * 2)*10;
 		}
 		else {
-			newVel.x = 5 * cos(x) * 2 - 20;
+			newVel.x =( 5 * cos(x) * 2 - 20)*10;
 		}
-		newVel.y = 12 + 3 * sin(x) * 4;
+		newVel.y = (12 + 3 * sin(x) * 4)*10;
 		newVel.z = 0;
 
 		Firework* newP = new Firework(parent->getParticleType(), 0, FireworkType::batFuego, true);
@@ -290,8 +290,8 @@ void FireworkGenerator::PicosAbajoBatFuegos(int x, Vector3& newVel, Firework* pa
 	newVel = { 0,0,0 };
 	if (sin(x) > 0) {
 
-		newVel.x = -5 + 5 * cos(x);
-		newVel.y = 5 * sin(x);
+		newVel.x = ( - 5 + 5 * cos(x))*10;
+		newVel.y = (5 * sin(x))*10;
 	}
 	Firework* newP = new Firework(parent->getParticleType(), 0, FireworkType::batFuego, true);
 	newP->setPosition(parent->getPos());
@@ -299,11 +299,11 @@ void FireworkGenerator::PicosAbajoBatFuegos(int x, Vector3& newVel, Firework* pa
 	listParticles.push_back(newP);
 	Firework* newP2 = new Firework(parent->getParticleType(), 0, FireworkType::batFuego, true);
 	newP2->setPosition(parent->getPos());
-	newP2->setVelocity({ -20 - newVel.x,newVel.y,newVel.z });
+	newP2->setVelocity({ -200 - newVel.x,newVel.y,newVel.z });
 	listParticles.push_back(newP2);
 	Firework* newP3 = new Firework(parent->getParticleType(), 0, FireworkType::batFuego, true);
 	newP3->setPosition(parent->getPos());
-	newP3->setVelocity({ 20 + newVel.x,newVel.y,newVel.z });
+	newP3->setVelocity({ 200 + newVel.x,newVel.y,newVel.z });
 	listParticles.push_back(newP3);
 	Firework* newP4 = new Firework(parent->getParticleType(), 0, FireworkType::batFuego, true);
 	newP4->setPosition(parent->getPos());
