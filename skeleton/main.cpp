@@ -43,7 +43,7 @@ Scene* mainScene = nullptr;
 void initPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
-	srand(time(NULL));   
+	srand(time(NULL));
 
 	gFoundation = PxCreateFoundation(PX_FOUNDATION_VERSION, gAllocator, gErrorCallback);
 
@@ -64,8 +64,8 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 
 	gScene = gPhysics->createScene(sceneDesc);
-	mainScene = new Scene4 ();
-	mainScene->initScene(); 
+	mainScene = new Scene4();
+	mainScene->initScene();
 }
 
 // Function to configure what happens in each step of physics
@@ -74,11 +74,9 @@ void initPhysics(bool interactive)
 void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
-
 	gScene->simulate(t);
 	gScene->fetchResults(true);
-	if (mainScene != nullptr)
-		mainScene->updateScene(t);
+	mainScene->updateScene(t);
 }
 
 // Function to clean data
@@ -86,9 +84,7 @@ void stepPhysics(bool interactive, double t)
 void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
-	if (mainScene != nullptr)
-		delete mainScene;
-
+	delete mainScene;
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
 	gDispatcher->release();
@@ -104,10 +100,7 @@ void cleanupPhysics(bool interactive)
 void keyPress(unsigned char key, const PxTransform& camera)
 {
 	PX_UNUSED(camera);
-
-	Vector3 pos = GetCamera()->getTransform().p;
-	if (mainScene != nullptr)
-		mainScene->keyPressed(key);  
+	mainScene->keyPressed(key);
 	switch (tolower(key))
 	{
 		//Escena proyectiles
@@ -144,7 +137,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		}
 		mainScene = new Scene4();
 		mainScene->initScene();
-		break; 
+		break;
 	default:
 		break;
 	}

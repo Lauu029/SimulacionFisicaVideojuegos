@@ -371,6 +371,8 @@ ParticleSystem::~ParticleSystem()
 		delete explosion;
 	if (bG != nullptr)
 		delete bG;
+	if (drag != nullptr)
+		delete drag;
 	for (auto s : springGenerators)
 		delete s;
 	springGenerators.clear();

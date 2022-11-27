@@ -38,7 +38,7 @@ void Particle::integrate(double t)
 
 	vel += totalAcceleration * t;
 
-	ac + force * inverse_mass;
+	ac = force * inverse_mass;
 
 	vel *= powf(damp, t);
 
