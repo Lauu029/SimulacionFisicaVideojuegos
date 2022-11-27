@@ -20,9 +20,9 @@ public:
 class Pistol : public particleType {
 public:
 	Pistol(Vector3 dir, Vector3 pos, int rt) {
-		mass = 2.0f;
-		vel = dir * 100;
-		ac = { 10.0f, -1.0f, 0.0f };
+		mass = 0.20f;
+		vel = dir * 35;
+		ac = { 0.0f, -1.0f, 0.0f };
 		damp = 0.99;
 		remainingTime = rt;
 		size = { 1.0,0,0 };
@@ -36,8 +36,8 @@ public:
 class Artillery : public particleType {
 public:
 	Artillery(Vector3 dir, Vector3 pos, int rt) {
-		mass = 200.0f;
-		vel = dir * 50;
+		mass = 2.0f;
+		vel = dir * 100;
 		ac = { 0.0f, -200.0f, 0.0f };
 		damp = 0.99;
 		remainingTime = rt;
@@ -54,9 +54,9 @@ public:
 class Fireball : public particleType {
 public:
 	Fireball(Vector3 dir, Vector3 pos, int rt) {
-		mass = 10.0f;
-		vel = dir * 200;
-		ac = { 0.0f, 10.0f, 0.0f };
+		mass = 0.1f;
+		vel = dir * 100;
+		ac = { 0.0f, 6.0f, 0.0f };
 		damp = 0.9;
 		remainingTime = rt;
 		size = { 1.5,0,0 };

@@ -3,10 +3,6 @@
 void Scene1::initScene()
 {
 	suelo = new Particle(Suelo(), true);
-	pS = new ParticleSystem(typeParticleSystem::ForceGenerators);
-	pS->deleteExplosion();
-	pS->deleteTorbellino();
-	pS->deleteWind();
 }
 
 void Scene1::updateScene(double t)
@@ -23,7 +19,6 @@ void Scene1::updateScene(double t)
 		else
 			sceneParticles[i]->integrate(t);
 	}
-	pS->update(t);
 }
 
 void Scene1::keyPressed(unsigned char key)
@@ -33,24 +28,20 @@ void Scene1::keyPressed(unsigned char key)
 	switch (tolower(key))
 	{
 	case 'z':
-		p = new Particle(Pistol(GetCamera()->getDir(), pos, 100), true);
+		p = new Particle(Pistol(GetCamera()->getDir(), pos, 200), true);
 		sceneParticles.push_back(p);
-		pS->addGravity(p);
 		break;
 	case 'x':
-		p = new Particle(Artillery(GetCamera()->getDir(), pos, 100), true);
+		p = new Particle(Artillery(GetCamera()->getDir(), pos, 200), true);
 		sceneParticles.push_back(p);
-		pS->addGravity(p);
 		break;
 	case 'c':
-		p = new Particle(Fireball(GetCamera()->getDir(), pos, 100), true);
+		p = new Particle(Fireball(GetCamera()->getDir(), pos, 200), true);
 		sceneParticles.push_back(p);
-		pS->addGravity(p);
 		break;
 	case 'v':
-		p = new Particle(Laser(GetCamera()->getDir(), pos, 100), true);
+		p = new Particle(Laser(GetCamera()->getDir(), pos, 200), true);
 		sceneParticles.push_back(p);
-		pS->addGravity(p);
 		break;
 	default:
 		break;

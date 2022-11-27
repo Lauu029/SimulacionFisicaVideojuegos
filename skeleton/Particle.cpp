@@ -29,17 +29,19 @@ Particle::~Particle()
 
 void Particle::integrate(double t)
 {
-	if (inverse_mass <= 0.0f) 
+	if (inverse_mass <= 0.0f)
 		return;
-	if (remainingTime <= 0) death = true;
-	pose.p += vel*t;
+	if (remainingTime <= 0) 
+		death = true;
+
+	pose = physx::PxTransform(pose.p.x + vel.x * t, pose.p.y + vel.y * t, pose.p.z + vel.z * t);
 
 	Vector3 totalAcceleration = ac;
 
 	vel += totalAcceleration * t;
-
-	ac = force * inverse_mass;
-
+	//si hay fuerza actualiza la aceleración
+	if (force.magnitude() > 0)
+		ac = force * inverse_mass;
 	vel *= powf(damp, t);
 
 	remainingTime--;

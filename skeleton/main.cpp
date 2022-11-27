@@ -64,7 +64,7 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 
 	gScene = gPhysics->createScene(sceneDesc);
-	mainScene = new Scene4();
+	mainScene = new Scene2 ();
 	mainScene->initScene();
 }
 

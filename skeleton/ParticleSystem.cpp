@@ -8,10 +8,10 @@ ParticleSystem::ParticleSystem(typeParticleSystem pt)
 	switch (pt)
 	{
 	case particleGenerators:
-		fuente = new UniformParticleGenerator({ 0,0,0 }, { 0,10,0 }, 10, true, 1);
+		fuente = new UniformParticleGenerator({ 0,0,100 }, { 0,30,0 }, 10, true, 1);
 		fuente->setParticle(new Particle(Agua(), false));
 
-		niebla = new GaussianParticleGenerator({ 10,50,10 }, { 0,0,0 });
+		niebla = new GaussianParticleGenerator({ 10,50,150 }, { 0,0,0 });
 		niebla->setParticle(new Particle(Nube(), false));
 
 		fireworks = new FireworkGenerator({ 0,20,0 }, { 0,100,0 });
@@ -73,7 +73,7 @@ void ParticleSystem::update(double t)
 		fg->updateForces(t);
 	for (int i = 0; i < particles.size(); i++)
 	{
-		if (particles[i]->getRemainingTime() <= 0) {
+		if (particles[i]->particleDeath()) {
 			if (fg != nullptr) fg->deleteParticle(particles[i]);
 			delete particles[i];
 			particles.erase(particles.begin() + i);
@@ -85,7 +85,8 @@ void ParticleSystem::update(double t)
 
 		for (int i = 0; i < f.size(); i++)
 		{
-			if (f[i]->getPos().y < 0 || f[i]->getRemainingTime() <= 0) {
+			if (f[i]->getPos().y < 0)f[i]->killParticle();
+			if (f[i]->particleDeath()) {
 				f[i]->explode();
 			}
 			else
