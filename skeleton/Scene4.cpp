@@ -17,6 +17,21 @@ void Scene4::keyPressed(unsigned char key)
 	case'z':
 		pS->GomaElastica();
 		break;
+	case'x':
+		pS->addMasa();
+		break;
+	case'c':
+		pS->quitaMasa();
+		break;
+	case'v':
+		pS->changeLiquid(l1);
+		break;
+	case'b':
+		pS->changeLiquid(l2);
+		break;
+	case'n':
+		pS->changeLiquid(l3);
+		break;
 	default:
 		break;
 	}

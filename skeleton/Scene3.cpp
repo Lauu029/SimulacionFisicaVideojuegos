@@ -20,10 +20,10 @@ void Scene3::keyPressed(unsigned char key)
 	case 'x':
 		pS->addWind();
 		break;
-	case 'v':
+	case 'c':
 		pS->addTorbellino();
 		break;
-	case 'b':
+	case 'v':
 		pS->addExplosion();
 		break;
 	case 'p':

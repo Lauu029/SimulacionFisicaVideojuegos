@@ -37,6 +37,7 @@ ParticleSystem::ParticleSystem(typeParticleSystem pt)
 	case SpringsGenerators:
 		gravity = new GravityGenerator({ 0,-9.8,0 });
 		drag = new ParticleDragGenerator(0.01, 0.01);
+		liquidDrag = new ParticleDragGenerator(10, 0.0);
 		generateSpringDemo();
 		break;
 	default:
@@ -181,7 +182,7 @@ void ParticleSystem::deleteTorbellino()
 }
 void ParticleSystem::addExplosion()
 {
-	if(explosion==nullptr) explosion = new ExplosionGenerator(50, { 0,70,50 });
+	if (explosion == nullptr) explosion = new ExplosionGenerator(50, { 0,70,50 });
 	for (Particle* p : particles)
 	{
 		fg->addRegistry(p, explosion);
@@ -195,6 +196,15 @@ void ParticleSystem::deleteExplosion()
 	}
 	delete explosion;
 	explosion = nullptr;
+}
+void ParticleSystem::addMasa()
+{
+	barco->setMass(barco->getMass() + 1);
+}
+void ParticleSystem::quitaMasa()
+{
+	barco->setMass(barco->getMass() - 1);
+	if (barco->getMass() <= 0)barco->setMass(1);
 }
 void ParticleSystem::generateSpringDemo()
 {
@@ -212,7 +222,7 @@ void ParticleSystem::generateSpringDemo()
 void ParticleSystem::MuelleFijo()
 {
 	Particle* p3 = new Particle(MuelleParticula({ 70.0,90.0,0.0 }), true);
-	AnchoredSpringFG* f3 = new AnchoredSpringFG(1, 10, { 70.0,100.0,0.0 });
+	AnchoredSpringFG* f3 = new AnchoredSpringFG(10, 10, { 70.0,100.0,0.0 });
 	fg->addRegistry(p3, f3);
 	fg->addRegistry(p3, gravity);
 	fg->addRegistry(p3, drag);
@@ -293,12 +303,30 @@ void ParticleSystem::addSlinky()
 }
 void ParticleSystem::FlotationSim()
 {
-	bG = new BuoyancyForceGenerator(1.5, 0.0, 0.25, 100, { -100.0, 0.0, 0.0 });
-	Particle* p = new Particle(Barquito({ -100.0,0.0,0.0 }), true);
-	fg->addRegistry(p, bG);
-	fg->addRegistry(p, gravity);
-	fg->addRegistry(p, drag);
-	particles.push_back(p);
+	bG = new BuoyancyForceGenerator(1.5, 0.0, 0.25, 1000, { -100.0, 0.0, 0.0 });
+	barco = new Particle(Barquito({ -100.0,0.0,0.0 }), true);
+	fg->addRegistry(barco, bG);
+	fg->addRegistry(barco, gravity);
+	fg->addRegistry(barco, liquidDrag);
+	particles.push_back(barco);
+}
+void ParticleSystem::changeLiquid(liquidType l)
+{
+	bG->changeLiquid(l);
+	switch (l)
+	{
+	case l1:
+		liquidDrag->setk(10);
+		break;
+	case l2:
+		liquidDrag->setk(50);
+		break;
+	case l3:
+		liquidDrag->setk(5);
+		break;
+	default:
+		break;
+	}
 }
 ParticleGenerator* ParticleSystem::getParticleGenerator(typeParticleGenerator t)
 {
@@ -374,6 +402,8 @@ ParticleSystem::~ParticleSystem()
 		delete bG;
 	if (drag != nullptr)
 		delete drag;
+	if (liquidDrag != nullptr)
+		delete liquidDrag;
 	for (auto s : springGenerators)
 		delete s;
 	springGenerators.clear();

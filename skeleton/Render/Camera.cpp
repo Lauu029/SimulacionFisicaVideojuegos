@@ -38,102 +38,109 @@ using namespace physx;
 namespace Snippets
 {
 
-Camera::Camera(const PxVec3& eye, const PxVec3& dir)
-{
-	mEye = eye;
-	mDir = dir.getNormalized();
-	mMouseX = 0;
-	mMouseY = 0;
-}
-
-void Camera::handleMouse(int button, int state, int x, int y)
-{
-	PX_UNUSED(state);
-	PX_UNUSED(button);
-	mMouseX = x;
-	mMouseY = y;
-}
-
-//void Camera::handleMouseMotion(int x, int y)
-//{
-//	int dx = mMouseXx - x;
-//	int dy = mMouseYy - y;
-//
-//	PxVec3 viewY = mDird.cross(PxVec3(0, 1, 0)).getNormalized();
-//
-//	PxQuat qx(PxPi * dx / 180.0f, PxVec3(0, 1, 0));
-//	mDird = qx.rotate(mDird);
-//	PxQuat qy(PxPi * dy / 180.0f, viewY);
-//	mDird = qy.rotate(mDird);
-//
-//	mDird.normalize();
-//
-//	mMouseXx = x;
-//	mMouseYy = y;
-//}
-
-bool Camera::handleKey(unsigned char key, int x, int y, float speed)
-{
-	PX_UNUSED(x);
-	PX_UNUSED(y);
-
-	PxVec3 viewY = mDir.cross(PxVec3(0,1,0)).getNormalized();
-	switch(toupper(key))
+	Camera::Camera(const PxVec3& eye, const PxVec3& dir)
 	{
-	case 'W':	mEye += mDir*2.0f*speed;		break;
-	case 'S':	mEye -= mDir*2.0f*speed;		break;
-	case 'A':	mEye -= viewY*2.0f*speed;		break;
-	case 'D':	mEye += viewY*2.0f*speed;		break;
-	default:							return false;
+		mEye = eye;
+		mDir = dir.getNormalized();
+		mMouseX = 0;
+		mMouseY = 0;
+		mMouseXx = 0;
+		mMouseYy = 0;
 	}
-	return true;
-}
 
-void Camera::handleAnalogMove(float x, float y)
-{
-	PxVec3 viewY = mDir.cross(PxVec3(0,1,0)).getNormalized();
-	mEye += mDir*y;
-	mEye += viewY*x;
-}
+	void Camera::handleMouse(int button, int state, int x, int y)
+	{
+		PX_UNUSED(state);
+		PX_UNUSED(button);
+		mMouseX = x;
+		mMouseY = y;
+	}
 
-void Camera::handleMotion(int x, int y)
-{
-	int dx = mMouseX - x;
-	int dy = mMouseY - y;
+	void Camera::handleMouseMotion(int x, int y)
+	{
+		int dx = mMouseXx - x;
+		int dy = mMouseYy - y;
 
-	PxVec3 viewY = mDir.cross(PxVec3(0,1,0)).getNormalized();
+		PxVec3 viewY = mDird.cross(PxVec3(0, 1, 0)).getNormalized();
 
-	PxQuat qx(PxPi * dx / 180.0f, PxVec3(0,1,0));
-	mDir = qx.rotate(mDir);
-	PxQuat qy(PxPi * dy / 180.0f, viewY);
-	mDir = qy.rotate(mDir);
+		PxQuat qx(PxPi * dx / 180.0f, PxVec3(0, 1, 0));
+		mDird = qx.rotate(mDird);
+		PxQuat qy(PxPi * dy / 180.0f, viewY);
+		mDird = qy.rotate(mDird);
 
-	mDir.normalize();
+		mDird.normalize();
 
-	mMouseX = x;
-	mMouseY = y;
-}
+		mMouseXx = x;
+		mMouseYy = y;
+	}
 
-PxTransform Camera::getTransform() const
-{
-	PxVec3 viewY = mDir.cross(PxVec3(0,1,0));
+	bool Camera::handleKey(unsigned char key, int x, int y, float speed)
+	{
+		PX_UNUSED(x);
+		PX_UNUSED(y);
 
-	if(viewY.normalize()<1e-6f) 
-		return PxTransform(mEye);
+		PxVec3 viewY = mDir.cross(PxVec3(0, 1, 0)).getNormalized();
+		switch (toupper(key))
+		{
+		case 'W':	mEye += mDir * 2.0f * speed;
+			break;
+		case 'S':	mEye -= mDir * 2.0f * speed;
+			break;
+		case 'A':	mEye -= viewY * 2.0f * speed;
+			break;
+		case 'D':	mEye += viewY * 2.0f * speed;	
+			break;
+		default:	
+			return false;
+		}
+		return true;
+	}
 
-	PxMat33 m(mDir.cross(viewY), viewY, -mDir);
-	return PxTransform(mEye, PxQuat(m));
-}
+	void Camera::handleAnalogMove(float x, float y)
+	{
+		PxVec3 viewY = mDir.cross(PxVec3(0, 1, 0)).getNormalized();
+		mEye += mDir * y;
+		mEye += viewY * x;
+	}
 
-PxVec3 Camera::getEye() const
-{ 
-	return mEye; 
-}
+	void Camera::handleMotion(int x, int y)
+	{
+		int dx = mMouseX - x;
+		int dy = mMouseY - y;
 
-PxVec3 Camera::getDir() const
-{ 
-	return mDir; 
-}
+		PxVec3 viewY = mDir.cross(PxVec3(0, 1, 0)).getNormalized();
+
+		PxQuat qx(PxPi * dx / 180.0f, PxVec3(0, 1, 0));
+		mDir = qx.rotate(mDir);
+		PxQuat qy(PxPi * dy / 180.0f, viewY);
+		mDir = qy.rotate(mDir);
+
+		mDir.normalize();
+
+		mMouseX = x;
+		mMouseY = y;
+	}
+
+	PxTransform Camera::getTransform() const
+	{
+		PxVec3 viewY = mDir.cross(PxVec3(0, 1, 0));
+
+		if (viewY.normalize() < 1e-6f)
+			return PxTransform(mEye);
+
+		PxMat33 m(mDir.cross(viewY), viewY, -mDir);
+		return PxTransform(mEye, PxQuat(m));
+	}
+
+	PxVec3 Camera::getEye() const
+	{
+		return mEye;
+	}
+
+	PxVec3 Camera::getDir() const
+	{
+		return mDir;
+	}
 
 
 }

@@ -212,3 +212,30 @@ BuoyancyForceGenerator::~BuoyancyForceGenerator()
 	if (liquid != nullptr)
 		delete liquid;
 }
+
+void BuoyancyForceGenerator::changeLiquid(liquidType l)
+{
+	switch (l)
+	{
+	case l1:
+		liquidDensity = 1000;
+		col = { 165.0f,0.93f,0.70f };
+		rgb = hsv2rgb(col);
+		liquid->setColor({ rgb.r,rgb.g,rgb.b,1.0 });
+		break;
+	case l2:
+		liquidDensity = 5000;
+		col = { 65.0f,0.93f,0.70f };
+		rgb = hsv2rgb(col);
+		liquid->setColor({ rgb.r,rgb.g,rgb.b,1.0 });
+		break;
+	case l3:
+		liquidDensity = 500;
+		col = { 10.0f,0.93f,0.70f };
+		rgb = hsv2rgb(col);
+		liquid->setColor({ rgb.r,rgb.g,rgb.b,1.0 });
+		break;
+	default:
+		break;
+	}
+}

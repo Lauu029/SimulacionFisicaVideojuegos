@@ -26,6 +26,7 @@ public:
 	inline void setDrag(float _k1, float _k2) { k1 = _k1; k2 = _k2; };
 	inline float getk1() { return k1; };
 	inline float getk2() { return k2; };
+	void setk(float k) { k1 = k; };
 protected:
 	float k1;
 	float k2;
@@ -86,12 +87,13 @@ public:
 	~GomaElasticaGenerator(){};
 	virtual void updateForce(Particle* p, float t) override;
 };
-
+enum liquidType{l1,l2,l3};
 class BuoyancyForceGenerator : public ForceGenerator {
 public:
 	BuoyancyForceGenerator(float mD, float h, float V, float d, Vector3 pos);
 	virtual void updateForce(Particle* p, float t)override;
 	virtual ~BuoyancyForceGenerator();
+	void changeLiquid(liquidType l);
 protected:
 	float height;
 	float volume;
@@ -99,4 +101,6 @@ protected:
 	float maxDepth;
 	float gravity =9.8;
 	Particle* liquid = nullptr;
+	hsv col;
+	rgb rgb;
 };

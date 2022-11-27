@@ -27,11 +27,12 @@ protected:
 	ForceRegistry* fg = nullptr;
 	GravityGenerator* gravity = nullptr;
 	ParticleDragGenerator* drag = nullptr;
+	ParticleDragGenerator* liquidDrag = nullptr;
 	WindGenerator* wind = nullptr;
 	TorbellinoGenerator* torbellino = nullptr;
 	ExplosionGenerator* explosion = nullptr;
 	BuoyancyForceGenerator* bG = nullptr;
-
+	Particle* barco = nullptr;
 	vector<SpringForceGenerator*> springGenerators;
 public:
 	ParticleSystem(typeParticleSystem pt);
@@ -48,6 +49,8 @@ public:
 	void addExplosion();
 	void deleteExplosion();
 
+	void addMasa();
+	void quitaMasa();
 	void changeWind(Vector3 v) { if (wind != nullptr) wind->changeWindForce(v); };
 	void generateSpringDemo();
 	void MuelleFijo();
@@ -55,7 +58,7 @@ public:
 	void GomaElastica();
 	void addSlinky();
 	void FlotationSim();
-
+	void changeLiquid(liquidType l);
 	ParticleGenerator* getParticleGenerator(typeParticleGenerator t);
 	void generateFireworkSystem(FireworkType t);
 	~ParticleSystem();
