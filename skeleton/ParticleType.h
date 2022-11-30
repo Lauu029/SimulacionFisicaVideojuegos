@@ -131,7 +131,7 @@ public:
 		ac = { 0.0f,0.0f, 0.0f };
 		damp = 0.0f;
 		remainingTime = 0;
-		size = { 200.0f,1.0f,200.0f };
+		size = { 1000.0f,1.0f,1000.0f };
 
 		col = { 153.0f,1.0f,0.9f };
 		rgb rgb = hsv2rgb(col);

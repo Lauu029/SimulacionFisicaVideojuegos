@@ -16,6 +16,7 @@
 #include "Scene2.h"
 #include "Scene3.h"
 #include "Scene4.h"
+#include "PWSimulator.h"
 
 
 
@@ -64,7 +65,7 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 
 	gScene = gPhysics->createScene(sceneDesc);
-	mainScene = new Scene4 ();
+	mainScene = new Scene4();
 	mainScene->initScene();
 }
 
@@ -136,6 +137,14 @@ void keyPress(unsigned char key, const PxTransform& camera)
 			mainScene = nullptr;
 		}
 		mainScene = new Scene4();
+		mainScene->initScene();
+		break;
+	case'4':
+		if (mainScene != nullptr) {
+			delete mainScene;
+			mainScene = nullptr;
+		}
+		mainScene = new PWSimulator();
 		mainScene->initScene();
 		break;
 	default:

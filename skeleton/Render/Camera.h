@@ -46,9 +46,17 @@ namespace Snippets
 		void handleAnalogMove(float x, float y);
 		void handleMouseMotion(int x, int y);
 
-		physx::PxVec3 getEye()	const;
-		physx::PxVec3 getDir()	const;
+		physx::PxVec3 getEye() const;
+		physx::PxVec3 getDir() const;
+		physx::PxVec3 getDird() const;
+
 		physx::PxTransform getTransform() const;
+
+		int getMouseX()const;
+		int getMouseY()const;
+
+		void changeControl();
+		void setEye(physx::PxVec3 const& eye);
 	private:
 		physx::PxVec3 mEye;
 		physx::PxVec3 mDir;
