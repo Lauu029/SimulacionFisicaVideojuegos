@@ -4,7 +4,7 @@
 class Scene1 : public Scene
 {
 public:
-	Scene1() {};
+	Scene1(PxPhysics* gPhysics, PxScene* gScene):Scene(gPhysics,gScene) {};
 	~Scene1() {};
 	virtual void initScene()override;
 	virtual void updateScene(double t) override;

@@ -5,6 +5,9 @@
 #include <random>
 #include <complex>
 #include "Particle.h"
+#include <PxRigidDynamic.h>
+#include <PxRigidStatic.h>
+
 using namespace std;
 
 class ParticleGenerator
@@ -63,5 +66,9 @@ public:
 	FireworkGenerator(Vector3 _meanPos, Vector3 _meanVel);
 	list<Firework*> generateFireworks(Firework* parent);
 	list<Particle*> generateParticles() override;
+};
+
+class SolidsGenerator : public ParticleGenerator {
+
 };
 

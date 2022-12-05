@@ -7,7 +7,6 @@
     <ClCompile Include="Render\Render.cpp">
       <Filter>Render</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtils.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="Scene.cpp">
@@ -43,6 +42,12 @@
     <ClCompile Include="ParticleSystem.cpp">
       <Filter>Particles</Filter>
     </ClCompile>
+    <ClCompile Include="RenderUtils.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene5.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -52,10 +57,8 @@
     <ClInclude Include="Render\Render.h">
       <Filter>Render</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="checkML.h" />
-    <ClInclude Include="ColorHSV.h" />
     <ClInclude Include="Scene4.h">
       <Filter>Scenes</Filter>
     </ClInclude>
@@ -91,6 +94,15 @@
     </ClInclude>
     <ClInclude Include="ParticleType.h">
       <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderUtils.hpp">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorHSV.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene5.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

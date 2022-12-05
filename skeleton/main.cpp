@@ -9,13 +9,12 @@
 #include "callbacks.hpp"
 
 #include <iostream>
-#include "ParticleSystem.h"
-#include "ParticleType.h"
 #include "checkML.h"
 #include "Scene1.h"
 #include "Scene2.h"
 #include "Scene3.h"
 #include "Scene4.h"
+#include "Scene5.h"
 #include "PWSimulator.h"
 
 
@@ -65,7 +64,7 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 
 	gScene = gPhysics->createScene(sceneDesc);
-	mainScene = new Scene4();
+	mainScene = new Scene5(gPhysics, gScene);
 	mainScene->initScene();
 }
 
@@ -110,7 +109,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 			delete mainScene;
 			mainScene = nullptr;
 		}
-		mainScene = new Scene1();
+		mainScene = new Scene1(gPhysics, gScene);
 		mainScene->initScene();
 		break;
 		//Escena generadores partículas
@@ -119,7 +118,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 			delete mainScene;
 			mainScene = nullptr;
 		}
-		mainScene = new Scene2();
+		mainScene = new Scene2(gPhysics, gScene);
 		mainScene->initScene();
 		break;
 		//Escena fuerzas
@@ -128,7 +127,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 			delete mainScene;
 			mainScene = nullptr;
 		}
-		mainScene = new Scene3();
+		mainScene = new Scene3(gPhysics, gScene);
 		mainScene->initScene();
 		break;
 	case '3':
@@ -136,7 +135,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 			delete mainScene;
 			mainScene = nullptr;
 		}
-		mainScene = new Scene4();
+		mainScene = new Scene4(gPhysics, gScene);
 		mainScene->initScene();
 		break;
 	case'4':
@@ -144,7 +143,15 @@ void keyPress(unsigned char key, const PxTransform& camera)
 			delete mainScene;
 			mainScene = nullptr;
 		}
-		mainScene = new PWSimulator();
+		mainScene = new Scene5(gPhysics, gScene);
+		mainScene->initScene();
+		break;
+	case'5':
+		if (mainScene != nullptr) {
+			delete mainScene;
+			mainScene = nullptr;
+		}
+		mainScene = new PWSimulator(gPhysics, gScene);
 		mainScene->initScene();
 		break;
 	default:

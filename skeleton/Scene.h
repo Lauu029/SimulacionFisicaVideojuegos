@@ -5,7 +5,7 @@ using namespace physx;
 class Scene
 {
 public:
-	Scene() {};
+	Scene(PxPhysics* gPhysics, PxScene* gScene) { gP = gPhysics; gS = gScene; };
 	~Scene();
 	virtual void initScene()=0;
 	virtual void updateScene(double t)=0;
@@ -14,6 +14,7 @@ protected:
 	vector<Particle*> sceneParticles;
 	ParticleSystem* pS = nullptr;
 	Particle* suelo = nullptr;
-
+	PxPhysics* gP = nullptr;
+	PxScene* gS = nullptr;
 };
 
