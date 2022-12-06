@@ -5,8 +5,8 @@ using namespace physx;
 class Scene
 {
 public:
-	Scene(PxPhysics* gPhysics, PxScene* gScene) { gP = gPhysics; gS = gScene; };
-	~Scene();
+	Scene(PxPhysics* gPhysics, PxScene* gScene) ;
+	virtual ~Scene();
 	virtual void initScene()=0;
 	virtual void updateScene(double t)=0;
 	virtual void keyPressed(unsigned char key)=0;

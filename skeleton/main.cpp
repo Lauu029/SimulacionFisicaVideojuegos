@@ -1,13 +1,8 @@
 #include <ctype.h>
-
-#include <PxPhysicsAPI.h>
-
+#include "callbacks.hpp"
 #include <vector>
-
 #include "core.hpp"
 #include "RenderUtils.hpp"
-#include "callbacks.hpp"
-
 #include <iostream>
 #include "checkML.h"
 #include "Scene1.h"
@@ -64,7 +59,7 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 
 	gScene = gPhysics->createScene(sceneDesc);
-	mainScene = new Scene5(gPhysics, gScene);
+	mainScene = new Scene1(gPhysics, gScene);
 	mainScene->initScene();
 }
 
