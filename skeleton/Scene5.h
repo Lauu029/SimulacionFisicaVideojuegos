@@ -11,5 +11,6 @@ public:
 protected:
 	RenderItem* item=nullptr;
 	PxRigidStatic* floor=nullptr;
+	PxRigidStatic* wall=nullptr;
 };
 

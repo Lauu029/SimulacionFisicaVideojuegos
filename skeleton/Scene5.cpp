@@ -3,17 +3,30 @@
 
 Scene5::Scene5(PxPhysics* gPhysics, PxScene* gScene) : Scene(gPhysics, gScene)
 {
+	hsv color = { 25.0,0.73,0.7 };
+	rgb col = hsv2rgb(color);
+	//suelo
 	floor = gP->createRigidStatic(PxTransform({ 0, 0, 0 }));
 	PxShape* shape = CreateShape(PxBoxGeometry(500, 0.1,500));
 	floor->attachShape(*shape);
-	item = new RenderItem(shape, floor, { 1.0, 0.3 ,0.8,1 });
+	item = new RenderItem(shape, floor, { col.r, col.g ,col.b,1 });
 	gS->addActor(*floor);
+	//muro
+	wall = gP->createRigidStatic(PxTransform(PxVec3(10, 10, -30)));
+	PxShape* shape_suelo = CreateShape(PxBoxGeometry(40, 20, 5));
+	wall->attachShape(*shape_suelo);
+	color = { 154.0,0.73,0.7 };
+	col = hsv2rgb(color);
+	item = new RenderItem(shape_suelo, wall, { col.r, col.g ,col.b,1 });
+	gS->addActor(*wall);
 }
+
 
 Scene5::~Scene5()
 {
 	item->release();
 	gS->removeActor(*floor);
+	gS->removeActor(*wall);
 	floor = nullptr;
 }
 
