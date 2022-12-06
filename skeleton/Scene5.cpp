@@ -12,7 +12,7 @@ Scene5::Scene5(PxPhysics* gPhysics, PxScene* gScene) : Scene(gPhysics, gScene)
 
 Scene5::~Scene5()
 {
-	DeregisterRenderItem(item);
+	item->release();
 	gS->removeActor(*floor);
 	floor = nullptr;
 }

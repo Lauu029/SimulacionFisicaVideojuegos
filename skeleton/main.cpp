@@ -12,8 +12,6 @@
 #include "Scene5.h"
 #include "PWSimulator.h"
 
-
-
 using namespace physx;
 
 PxDefaultAllocator		gAllocator;
