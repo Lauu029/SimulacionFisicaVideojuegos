@@ -13,5 +13,7 @@ protected:
 	RenderItem* itemWall = nullptr;
 	PxRigidStatic* floor = nullptr;
 	PxRigidStatic* wall = nullptr;
+	GaussianSolidsGenerator* generator = nullptr;
+	list<PxRigidDynamic*> particles;
 };
 

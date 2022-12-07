@@ -72,6 +72,7 @@ void ParticleSystem::update(double t)
 {
 	if (fg != nullptr)
 		fg->updateForces(t);
+	
 	for (int i = 0; i < particles.size(); i++)
 	{
 		if (particles[i]->particleDeath()) {

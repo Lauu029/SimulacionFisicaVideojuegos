@@ -322,38 +322,41 @@ GaussianSolidsGenerator::GaussianSolidsGenerator(PxPhysics* gP, PxScene* gS, Vec
 
 list<PxRigidDynamic*> GaussianSolidsGenerator::generateRigids()
 {
-	list<PxRigidDynamic*> listRigids;
-	for (int i = 0; i < numParticles; i++)
-	{
-		hsv color = {};
-		color.h = dist(gen) * 10;
-		rgb col = hsv2rgb(color);
-		Vector3 newPos = meanPos;
-		newPos.x += dist(gen) * 10;
-		newPos.y += dist(gen) * 10;
-		newPos.z += dist(gen) * 10;
+		list<PxRigidDynamic*> listRigids;
+	if (gPhysics != nullptr) {
 
-		Vector3 newVel = meanVel;
-		newVel.x += dist(gen);
-		newVel.y += dist(gen);
-		newVel.z += dist(gen);
+		for (int i = 0; i < numParticles; i++)
+		{
+			hsv color = {};
+			color.h = dist(gen) * 10;
+			rgb col = hsv2rgb(color);
+			Vector3 newPos = meanPos;
+			newPos.x += dist(gen) * 10;
+			newPos.y += dist(gen) * 10;
+			newPos.z += dist(gen) * 10;
 
-		Vector3 size;
-		size.x = dist(gen);
-		size.y = dist(gen);
-		size.z = dist(gen);
+			Vector3 newVel = meanVel;
+			newVel.x += dist(gen);
+			newVel.y += dist(gen);
+			newVel.z += dist(gen);
+
+			Vector3 size;
+			size.x = dist(gen)*10;
+			size.y = dist(gen)*10;
+			size.z = dist(gen)*10;
 
 
-		PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform(newPos));
-		newRigid->setLinearVelocity((newVel));
-		newRigid->setAngularVelocity(PxVec3(0, 0, 0));
-		gShape = CreateShape(PxBoxGeometry(size));
-		newRigid->setMassSpaceInertiaTensor({ size.y * size.z, size.x * size.z, size.x * size.y });
-		gItem = new RenderItem(gShape, newRigid, { col.r,col.g,col.b,1.0 });
-		newRigid->attachShape(*gShape);
-		gScene->addActor(*newRigid);
-		listRigids.push_back(newRigid);
+			PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform(newPos));
+			newRigid->setLinearVelocity((newVel));
+			newRigid->setAngularVelocity(PxVec3(0, 0, 0));
+			PxShape* gShape  = CreateShape(PxBoxGeometry(size));
+			newRigid->setMassSpaceInertiaTensor({ size.y * size.z, size.x * size.z, size.x * size.y });
+			RenderItem* gItem = new RenderItem(gShape, newRigid, { col.r,col.g,col.b,1.0 });
+			newRigid->attachShape(*gShape);
+			gScene->addActor(*newRigid);
+			listRigids.push_back(newRigid);
 
+		}
 	}
-	return list<PxRigidDynamic*>();
+	return listRigids;
 }

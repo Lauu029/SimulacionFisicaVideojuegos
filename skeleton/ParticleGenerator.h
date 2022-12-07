@@ -55,8 +55,7 @@ class GaussianSolidsGenerator : public GaussianParticleGenerator
 protected:
 	PxPhysics* gPhysics = nullptr;
 	PxScene* gScene = nullptr;
-	PxShape* gShape = nullptr;
-	RenderItem* gItem = nullptr;
+	
 public:
 	GaussianSolidsGenerator(PxPhysics* gP, PxScene* gS,Vector3 _meanPos, Vector3 _meanVel);
 	Vector3 velWidth, posWidth;

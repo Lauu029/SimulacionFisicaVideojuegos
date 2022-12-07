@@ -7,7 +7,7 @@ Scene5::Scene5(PxPhysics* gPhysics, PxScene* gScene) : Scene(gPhysics, gScene)
 	rgb col = hsv2rgb(color);
 	//suelo
 	floor = gP->createRigidStatic(PxTransform({ 0, 0, 0 }));
-	PxShape* shape = CreateShape(PxBoxGeometry(500, 0.1,500));
+	PxShape* shape = CreateShape(PxBoxGeometry(500, 0.1, 500));
 	floor->attachShape(*shape);
 	item = new RenderItem(shape, floor, { col.r, col.g ,col.b, 1 });
 	gS->addActor(*floor);
@@ -19,6 +19,9 @@ Scene5::Scene5(PxPhysics* gPhysics, PxScene* gScene) : Scene(gPhysics, gScene)
 	col = hsv2rgb(color);
 	itemWall = new RenderItem(shape_suelo, wall, { col.r, col.g ,col.b,1 });
 	gS->addActor(*wall);
+
+	generator = new GaussianSolidsGenerator(gP, gS, { 0, 10, 0 }, { 0, 0, 0 });
+
 }
 
 Scene5::~Scene5()
@@ -27,6 +30,10 @@ Scene5::~Scene5()
 	item->release();
 	gS->removeActor(*floor);
 	gS->removeActor(*wall);
+	for (auto g : particles)
+	{
+		gS->removeActor(*g);
+	}
 	floor = nullptr;
 }
 
@@ -36,8 +43,23 @@ void Scene5::initScene()
 
 void Scene5::updateScene(double t)
 {
+	if (generator->isActive())
+	{
+		list<PxRigidDynamic*> solids = generator->generateRigids();
+		for (auto a : solids)
+			particles.push_back(a);
+		solids.clear();
+	}
 }
 
 void Scene5::keyPressed(unsigned char key)
 {
+	switch (tolower(key))
+	{
+	case'z':
+		generator->setActive();
+		break;
+	default:
+		break;
+	}
 }
