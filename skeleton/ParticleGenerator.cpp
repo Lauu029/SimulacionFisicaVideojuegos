@@ -25,10 +25,10 @@ list<Particle*> UniformParticleGenerator::generateParticles()
 		float ac = model->getAcceleration().y;
 		if (move) {
 			newVel.x += distribution(gen) * 10;
-			newVel.y += distribution(gen)*.5;
+			newVel.y += distribution(gen) * .5;
 			newVel.z += distribution(gen) * 10;
 
-			ac += distribution(gen)*20;
+			ac += distribution(gen) * 20;
 		}
 		if (!move) newParticleType();
 		Particle* newP = new Particle(model->getParticleType(), true);
@@ -164,8 +164,8 @@ void FireworkGenerator::FuegosCorazon(Vector3& newVel, float increase, Firework*
 	for (size_t i = 1; i <= parent->getNumHijos(); i++)
 	{
 		//Heart formula
-		newVel.x = (16 * pow(sin(increase * i), 3))*10;
-		newVel.y = (13 * cos(increase * i) - 5 * cos(2 * increase * i) - 2 * cos(3 * increase * i) - cos(4 * increase * i))*10;
+		newVel.x = (16 * pow(sin(increase * i), 3)) * 10;
+		newVel.y = (13 * cos(increase * i) - 5 * cos(2 * increase * i) - 2 * cos(3 * increase * i) - cos(4 * increase * i)) * 10;
 		newVel.z = 0;
 
 		Firework* newP = new Firework(FireworkHeart(15), 0, parent->type(), true);
@@ -178,12 +178,9 @@ void FireworkGenerator::CircleFirework(Vector3& newVel, float increase, Firework
 {
 	for (size_t i = 1; i <= parent->getNumHijos(); i++)
 	{
-		newVel.x = cos(increase * i)*20;
-		newVel.y = sin(increase * i)*20;
+		newVel.x = cos(increase * i) * 20;
+		newVel.y = sin(increase * i) * 20;
 		newVel.z = 1;
-		/*newVel.x = sqrt(pow(cos(increase * i), 2) / 2) * pow(-1, i);
-		newVel.y = sin(increase * i);
-		newVel.z = -sqrt(pow(cos(increase * i), 2) / 2) * pow(-1, i);*/
 		float color = 360.0 - parent->getNumHijos();
 		Firework* newP = new Firework(RandomFireworks(std::rand() % 20 + 14, { color,1.0f,0.5f }, parent->getSize().x / 2), parent->getNumHijos() - 10, parent->type(), true);
 
@@ -198,12 +195,12 @@ void FireworkGenerator::RandomFirework(Vector3& newVel, Firework* parent, Vector
 	for (size_t i = 1; i <= parent->getNumHijos(); i++)
 	{
 		//Uniform distribution
-		newVel.x += distribution(gen)*5;
-		newVel.y -= distribution(gen)*5;
-		newVel.z += distribution(gen)*5;
+		newVel.x += distribution(gen) * 5;
+		newVel.y -= distribution(gen) * 5;
+		newVel.z += distribution(gen) * 5;
 
 		float color = 360.0 / parent->getNumHijos();
-		Firework* newP = new Firework(RandomFireworks(std::rand() % 50+ 14, { color,1.0f,0.5f }, parent->getSize().x / 2), parent->getNumHijos() -5, parent->type(), true);
+		Firework* newP = new Firework(RandomFireworks(std::rand() % 50 + 14, { color,1.0f,0.5f }, parent->getSize().x / 2), parent->getNumHijos() - 5, parent->type(), true);
 
 		newP->setPosition(parent->getPos());
 		newP->setVelocity(newVel);
@@ -216,8 +213,8 @@ void FireworkGenerator::CabezaBatFuegos(Vector3& newVel, Firework* parent, std::
 {
 	for (int j = 0; j < 10; j++)
 	{
-		newVel.x = (10 - j * .2)*10;
-		newVel.y = (15 + j)*10;
+		newVel.x = (10 - j * .2) * 10;
+		newVel.y = (15 + j) * 10;
 		Firework* newP = new Firework(parent->getParticleType(), 0, FireworkType::batFuego, true);
 		newP->setPosition(parent->getPos());
 		newP->setVelocity(newVel);
@@ -228,8 +225,8 @@ void FireworkGenerator::CabezaBatFuegos(Vector3& newVel, Firework* parent, std::
 		listParticles.push_back(newP2);
 
 		newVel = { 0,0,0 };
-		newVel.x = (- 4 - j * .5) * 10;
-		newVel.y = (20 + j * .4)*10;
+		newVel.x = (-4 - j * .5) * 10;
+		newVel.y = (20 + j * .4) * 10;
 		Firework* newP3 = new Firework(parent->getParticleType(), 0, FireworkType::batFuego, true);
 		newP3->setPosition(parent->getPos());
 		newP3->setVelocity(newVel);
@@ -241,8 +238,8 @@ void FireworkGenerator::CabezaBatFuegos(Vector3& newVel, Firework* parent, std::
 	}
 	for (int k = 0; k < 7; k++)
 	{
-		newVel.x = ( - 3 + k)*10;
-		newVel.y = 20*10;
+		newVel.x = (-3 + k) * 10;
+		newVel.y = 20 * 10;
 		Firework* newP = new Firework(parent->getParticleType(), 0, FireworkType::batFuego, true);
 		newP->setPosition(parent->getPos());
 		newP->setVelocity(newVel);
@@ -254,8 +251,8 @@ void FireworkGenerator::FinAlasBatFuegos(Vector3& newVel, int x, Firework* paren
 	newVel = { 0,0,0 };
 	if (sin(x) < 0 && cos(x) < 0) {
 
-		newVel.x = (- 10 + (10 * cos(x)))*10;
-		newVel.y = (25 + (10 * sin(x)))*10;
+		newVel.x = (-10 + (10 * cos(x))) * 10;
+		newVel.y = (25 + (10 * sin(x))) * 10;
 	}
 	Firework* newP = new Firework(parent->getParticleType(), 0, FireworkType::batFuego, true);
 	newP->setPosition(parent->getPos());
@@ -271,12 +268,12 @@ void FireworkGenerator::ParentesisBatFuegos(int x, Vector3& newVel, Firework* pa
 	for (int l = 0; l < 30; l++)
 	{
 		if (cos(x) * 2 > 0) {
-			newVel.x =( 20 + 5 * cos(x) * 2)*10;
+			newVel.x = (20 + 5 * cos(x) * 2) * 10;
 		}
 		else {
-			newVel.x =( 5 * cos(x) * 2 - 20)*10;
+			newVel.x = (5 * cos(x) * 2 - 20) * 10;
 		}
-		newVel.y = (12 + 3 * sin(x) * 4)*10;
+		newVel.y = (12 + 3 * sin(x) * 4) * 10;
 		newVel.z = 0;
 
 		Firework* newP = new Firework(parent->getParticleType(), 0, FireworkType::batFuego, true);
@@ -290,8 +287,8 @@ void FireworkGenerator::PicosAbajoBatFuegos(int x, Vector3& newVel, Firework* pa
 	newVel = { 0,0,0 };
 	if (sin(x) > 0) {
 
-		newVel.x = ( - 5 + 5 * cos(x))*10;
-		newVel.y = (5 * sin(x))*10;
+		newVel.x = (-5 + 5 * cos(x)) * 10;
+		newVel.y = (5 * sin(x)) * 10;
 	}
 	Firework* newP = new Firework(parent->getParticleType(), 0, FireworkType::batFuego, true);
 	newP->setPosition(parent->getPos());
@@ -314,4 +311,49 @@ void FireworkGenerator::PicosAbajoBatFuegos(int x, Vector3& newVel, Firework* pa
 list<Particle*> FireworkGenerator::generateParticles()
 {
 	return list<Particle*>();
+}
+
+GaussianSolidsGenerator::GaussianSolidsGenerator(PxPhysics* gP, PxScene* gS, Vector3 _meanPos, Vector3 _meanVel) : GaussianParticleGenerator(_meanPos, _meanVel)
+{
+	numParticles = 30;
+	gPhysics = gP;
+	gScene = gS;
+}
+
+list<PxRigidDynamic*> GaussianSolidsGenerator::generateRigids()
+{
+	list<PxRigidDynamic*> listRigids;
+	for (int i = 0; i < numParticles; i++)
+	{
+		hsv color = {};
+		color.h = dist(gen) * 10;
+		rgb col = hsv2rgb(color);
+		Vector3 newPos = meanPos;
+		newPos.x += dist(gen) * 10;
+		newPos.y += dist(gen) * 10;
+		newPos.z += dist(gen) * 10;
+
+		Vector3 newVel = meanVel;
+		newVel.x += dist(gen);
+		newVel.y += dist(gen);
+		newVel.z += dist(gen);
+
+		Vector3 size;
+		size.x = dist(gen);
+		size.y = dist(gen);
+		size.z = dist(gen);
+
+
+		PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform(newPos));
+		newRigid->setLinearVelocity((newVel));
+		newRigid->setAngularVelocity(PxVec3(0, 0, 0));
+		gShape = CreateShape(PxBoxGeometry(size));
+		newRigid->setMassSpaceInertiaTensor({ size.y * size.z, size.x * size.z, size.x * size.y });
+		gItem = new RenderItem(gShape, newRigid, { col.r,col.g,col.b,1.0 });
+		newRigid->attachShape(*gShape);
+		gScene->addActor(*newRigid);
+		listRigids.push_back(newRigid);
+
+	}
+	return list<PxRigidDynamic*>();
 }

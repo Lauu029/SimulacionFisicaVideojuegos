@@ -9,8 +9,9 @@ public:
 	virtual void updateScene(double t) override;
 	virtual void keyPressed(unsigned char key) override;
 protected:
-	RenderItem* item=nullptr;
-	PxRigidStatic* floor=nullptr;
-	PxRigidStatic* wall=nullptr;
+	RenderItem* item = nullptr;
+	RenderItem* itemWall = nullptr;
+	PxRigidStatic* floor = nullptr;
+	PxRigidStatic* wall = nullptr;
 };
 
