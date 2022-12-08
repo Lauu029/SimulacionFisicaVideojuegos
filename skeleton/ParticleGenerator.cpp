@@ -318,37 +318,38 @@ GaussianSolidsGenerator::GaussianSolidsGenerator(PxPhysics* gP, PxScene* gS, Vec
 	numParticles = 30;
 	gPhysics = gP;
 	gScene = gS;
+	model = nullptr;
 }
 
-void GaussianSolidsGenerator::addRigids()
+Solids* GaussianSolidsGenerator::addRigids()
 {
-		hsv color = {};
-		color.h = dist(gen) * 10;
-		rgb col = hsv2rgb(color);
-		Vector3 newPos = meanPos;
-		newPos.x += dist(gen) * 100;
-		newPos.y += dist(gen) * 100;
-		newPos.z += dist(gen) * 100;
+	gen.seed(rd());
+	Solids* rigids;
+	hsv color = {};
+	color.h = dist(gen) * 100;
+	color.s = 0.9;
+	color.v = 0.9;
+	rgb col = hsv2rgb(color);
+	Vector3 newPos = meanPos;
+	newPos.x += dist(gen) * 100;
+	newPos.y += dist(gen) * 100;
+	newPos.z += dist(gen) * 100;
 
-		Vector3 newVel = meanVel;
-		newVel.x += dist(gen);
-		newVel.y += dist(gen);
-		newVel.z += dist(gen);
+	Vector3 newVel = meanVel;
+	newVel.x += dist(gen);
+	newVel.y += dist(gen);
+	newVel.z += dist(gen);
 
-		PxReal size;
-		size = dist(gen) * 10;
+	PxReal size;
+	size = dist(gen) * 20;
 
- 		PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform(newPos));
-		
-		solids.push_back(new Solids(meanPos,meanVel, { col.r,col.g,col.b,1.0 }, size,
-			CreateShape(PxBoxGeometry(size, size, size)), newRigid));
-		gScene->addActor(*newRigid);
+	PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform(newPos));
+	rigids = new Solids(meanPos, meanVel, { col.r,col.g,col.b,1.0 }, size,
+		CreateShape(PxBoxGeometry(size, size, size)), newRigid);
+	gScene->addActor(*newRigid);
+	return rigids;
 }
 
 GaussianSolidsGenerator::~GaussianSolidsGenerator()
 {
-	for (auto s : solids)
-	{
-		delete s;
-	}
 }

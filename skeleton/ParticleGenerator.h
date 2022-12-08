@@ -17,13 +17,14 @@ protected:
 	int numParticles;
 	Particle* model;
 	bool active;
-	
+
 public:
 	void setParticle(Particle* _m) { model = _m; };
 	virtual list <Particle*> generateParticles() = 0;
 	void setActive() { active = !active; };
 	bool isActive() { return active; };
 	~ParticleGenerator();
+	std::random_device rd;
 	std::default_random_engine gen;
 	std::uniform_real_distribution<> distribution{ -1,1 };
 	std::normal_distribution<> dist{ 0.5, 0.5 };
@@ -35,7 +36,7 @@ protected:
 	bool move;
 	int sep;
 public:
-	UniformParticleGenerator(Vector3 _meanPos, Vector3 _meanVel,int n,bool m,int s);
+	UniformParticleGenerator(Vector3 _meanPos, Vector3 _meanVel, int n, bool m, int s);
 	Vector3 velWidth, posWidth;
 	list<Particle*> generateParticles() override;
 	void newParticleType();
@@ -58,17 +59,18 @@ protected:
 	PxShape* gShape = nullptr;
 	list<Solids*> solids;
 public:
-	GaussianSolidsGenerator(PxPhysics* gP, PxScene* gS,Vector3 _meanPos, Vector3 _meanVel);
+	GaussianSolidsGenerator(PxPhysics* gP, PxScene* gS, Vector3 _meanPos, Vector3 _meanVel);
 	Vector3 velWidth, posWidth;
-	void addRigids();
+	Solids* addRigids();
 	~GaussianSolidsGenerator();
+	list<Solids*> getSolids() { return solids; };
 };
 class FireworkGenerator : public ParticleGenerator
 {
 protected:
 	void FuegosCorazon(Vector3& newVel, float increase, Firework* parent, std::list<Firework*>& listParticles);
 	void RandomFirework(Vector3& newVel, Firework* parent, Vector3& newPos, std::list<Firework*>& listParticles);
-	void CircleFirework(Vector3& newVel, float increase,  Firework* parent, Vector3& newPos, std::list<Firework*>& listParticles);
+	void CircleFirework(Vector3& newVel, float increase, Firework* parent, Vector3& newPos, std::list<Firework*>& listParticles);
 	void BatFirework(Vector3& newVel, float increase, Firework* parent, Vector3& newPos, std::list<Firework*>& listParticles);
 
 	void CabezaBatFuegos(Vector3& newVel, Firework* parent, std::list<Firework*>& listParticles);

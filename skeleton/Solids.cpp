@@ -12,6 +12,7 @@ Solids::Solids(Vector3 _meanPos, Vector3 _meanVel, Vector4 col, PxReal s,
 	gShape = _gShape;
 	rigid->attachShape(*gShape);
 	item = new RenderItem(gShape, rigid, col);
+	time = 0;
 }
 
 Solids::~Solids()

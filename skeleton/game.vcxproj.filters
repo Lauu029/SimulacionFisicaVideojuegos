@@ -51,6 +51,7 @@
     <ClCompile Include="Solids.cpp">
       <Filter>Particles</Filter>
     </ClCompile>
+    <ClCompile Include="SolidsSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -110,6 +111,7 @@
     <ClInclude Include="Solids.h">
       <Filter>Particles</Filter>
     </ClInclude>
+    <ClInclude Include="SolidsSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

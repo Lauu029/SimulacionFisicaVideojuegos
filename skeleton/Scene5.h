@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene.h"
+#include "SolidsSystem.h"
 class Scene5 : public Scene
 {
 public:
@@ -9,13 +10,6 @@ public:
 	virtual void updateScene(double t) override;
 	virtual void keyPressed(unsigned char key) override;
 protected:
-	RenderItem* item = nullptr;
-	RenderItem* itemWall = nullptr;
-	PxRigidStatic* floor = nullptr;
-	PxRigidStatic* wall = nullptr;
-	GaussianSolidsGenerator* generator = nullptr;
-	list<PxRigidDynamic*> particles;
-	int maxParticles = 20;
-	int numParticles = 0;
+	SolidsSystem* system = nullptr;
 };
 

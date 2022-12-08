@@ -271,6 +271,7 @@
     <ClCompile Include="Scene4.cpp" />
     <ClCompile Include="Scene5.cpp" />
     <ClCompile Include="Solids.cpp" />
+    <ClCompile Include="SolidsSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="callbacks.hpp" />
@@ -294,6 +295,7 @@
     <ClInclude Include="Scene4.h" />
     <ClInclude Include="Scene5.h" />
     <ClInclude Include="Solids.h" />
+    <ClInclude Include="SolidsSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
