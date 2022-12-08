@@ -48,6 +48,9 @@
     <ClCompile Include="Scene5.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Solids.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -103,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="Scene5.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Solids.h">
+      <Filter>Particles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

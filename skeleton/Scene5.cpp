@@ -20,7 +20,7 @@ Scene5::Scene5(PxPhysics* gPhysics, PxScene* gScene) : Scene(gPhysics, gScene)
 	itemWall = new RenderItem(shape_suelo, wall, { col.r, col.g ,col.b,1 });
 	gS->addActor(*wall);
 
-	generator = new GaussianSolidsGenerator(gP, gS, { 0, 10, 0 }, { 0, 0, 0 });
+	generator = new GaussianSolidsGenerator(gP, gS, { 0, 100, 0 }, { 0, 0, 0 });
 
 }
 
@@ -39,16 +39,21 @@ Scene5::~Scene5()
 
 void Scene5::initScene()
 {
+	for (int i = 0; i < 3; i++)
+	{
+
+	generator->addRigids();
+	}
+
 }
 
 void Scene5::updateScene(double t)
 {
 	if (generator->isActive())
 	{
-		list<PxRigidDynamic*> solids = generator->generateRigids();
-		for (auto a : solids)
-			particles.push_back(a);
-		solids.clear();
+		if (numParticles < maxParticles) {
+			numParticles++;
+		}
 	}
 }
 

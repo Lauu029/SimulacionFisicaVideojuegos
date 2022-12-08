@@ -15,5 +15,7 @@ protected:
 	PxRigidStatic* wall = nullptr;
 	GaussianSolidsGenerator* generator = nullptr;
 	list<PxRigidDynamic*> particles;
+	int maxParticles = 20;
+	int numParticles = 0;
 };
 

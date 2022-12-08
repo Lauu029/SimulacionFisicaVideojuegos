@@ -5,8 +5,7 @@
 #include <random>
 #include <complex>
 #include "Particle.h"
-#include <PxRigidDynamic.h>
-#include <PxRigidStatic.h>
+#include "Solids.h"
 
 using namespace std;
 using namespace physx;
@@ -55,11 +54,14 @@ class GaussianSolidsGenerator : public GaussianParticleGenerator
 protected:
 	PxPhysics* gPhysics = nullptr;
 	PxScene* gScene = nullptr;
-	
+	RenderItem* gItem = nullptr;
+	PxShape* gShape = nullptr;
+	list<Solids*> solids;
 public:
 	GaussianSolidsGenerator(PxPhysics* gP, PxScene* gS,Vector3 _meanPos, Vector3 _meanVel);
 	Vector3 velWidth, posWidth;
-	list<PxRigidDynamic*> generateRigids();
+	void addRigids();
+	~GaussianSolidsGenerator();
 };
 class FireworkGenerator : public ParticleGenerator
 {
@@ -78,8 +80,3 @@ public:
 	list<Firework*> generateFireworks(Firework* parent);
 	list<Particle*> generateParticles() override;
 };
-
-class SolidsGenerator : public ParticleGenerator {
-
-};
-
