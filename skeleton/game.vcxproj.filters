@@ -51,7 +51,9 @@
     <ClCompile Include="Solids.cpp">
       <Filter>Particles</Filter>
     </ClCompile>
-    <ClCompile Include="SolidsSystem.cpp" />
+    <ClCompile Include="SolidsSystem.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -111,7 +113,9 @@
     <ClInclude Include="Solids.h">
       <Filter>Particles</Filter>
     </ClInclude>
-    <ClInclude Include="SolidsSystem.h" />
+    <ClInclude Include="SolidsSystem.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

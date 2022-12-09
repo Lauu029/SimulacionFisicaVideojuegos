@@ -3,6 +3,7 @@
 SolidsSystem::SolidsSystem(PxPhysics* gPhysics, PxScene* gScene) {
 	sP = gPhysics;
 	sC = gScene;
+	timeSinceLastAdding = 0;
 	generator = new GaussianSolidsGenerator(sP, sC, { 0, 100, 0 }, { 0, 0, 0 });
 
 }
@@ -27,11 +28,13 @@ void SolidsSystem::initSystem() {
 
 void SolidsSystem::update(double t)
 {
-	if (generator->isActive())
+	timeSinceLastAdding++;
+	if (generator->isActive()&&timeSinceLastAdding>20)
 	{
 		if (numParticles < maxParticles) {
 			solidParticles.push_back(generator->addRigids());
 			numParticles++;
+			timeSinceLastAdding = 0;
 		}
 	}
 	for (int i = 0; i < solidParticles.size(); i++)
@@ -40,7 +43,9 @@ void SolidsSystem::update(double t)
 			solidParticles[i]->kill();
 		if (!solidParticles[i]->isAlive()) {
 			sC->removeActor(*solidParticles[i]->getRigid());
+			delete solidParticles[i];
 			solidParticles.erase(solidParticles.begin() + i);
+			numParticles--;
 		}
 		else solidParticles[i]->time++;
 	}

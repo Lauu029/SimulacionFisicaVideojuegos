@@ -1,11 +1,10 @@
 #include "Solids.h"
 
-Solids::Solids(Vector3 _meanPos, Vector3 _meanVel, Vector4 col, PxReal s,
+Solids::Solids(Vector3 _meanPos, Vector3 _meanVel, Vector4 col,
 	PxShape* _gShape, PxRigidDynamic* rig)
 {
 	pos = _meanPos;
 	vel = _meanVel;
-	size = s;
 	rigid = rig;
 	rigid->setLinearVelocity((vel));
 	rigid->setAngularVelocity(PxVec3(0, 0, 0));

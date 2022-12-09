@@ -12,7 +12,8 @@ protected:
 	PxScene* sC = nullptr;
 	PxPhysics* sP = nullptr;
 	int numParticles=0;
-	int maxParticles=7;
+	int maxParticles=15;
+	int timeSinceLastAdding;
 public:
 	SolidsSystem(PxPhysics* gPhysics, PxScene* gScene);
 	void initSystem();

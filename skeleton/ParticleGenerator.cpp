@@ -344,7 +344,7 @@ Solids* GaussianSolidsGenerator::addRigids()
 	size = dist(gen) * 20;
 
 	PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform(newPos));
-	rigids = new Solids(meanPos, meanVel, { col.r,col.g,col.b,1.0 }, size,
+	rigids = new Solids(meanPos, meanVel, { col.r,col.g,col.b,1.0 },
 		CreateShape(PxBoxGeometry(size, size, size)), newRigid);
 	gScene->addActor(*newRigid);
 	return rigids;

@@ -16,10 +16,10 @@ protected:
 	PxShape* gShape = nullptr;
 	Vector4 color;
 	bool alive = true;
-	PxReal size;
+	Vector3 size;
 public:
 	int time;
-	Solids(Vector3 _meanPos, Vector3 _meanVel,Vector4 col, PxReal s,
+	Solids(Vector3 _meanPos, Vector3 _meanVel,Vector4 col,
 	 PxShape* _gShape, PxRigidDynamic* rig);
 	
 	void kill() { alive = false; };
