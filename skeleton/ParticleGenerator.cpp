@@ -327,8 +327,8 @@ Solids* GaussianSolidsGenerator::addRigids()
 	Solids* rigids;
 	hsv color = {};
 	color.h = dist(gen) * 100;
-	color.s = 0.9;
-	color.v = 0.9;
+	color.s = 0.87;
+	color.v = 0.97;
 	rgb col = hsv2rgb(color);
 	Vector3 newPos = meanPos;
 	newPos.x += dist(gen) * 100;
@@ -340,12 +340,17 @@ Solids* GaussianSolidsGenerator::addRigids()
 	newVel.y += dist(gen);
 	newVel.z += dist(gen);
 
-	PxReal size;
-	size = dist(gen) * 20;
+	PxReal sizeX, sizeY, sizeZ;
+	sizeX = std::abs(dist(gen) * 20);
+	sizeY = std::abs(dist(gen) * 20);
+	sizeZ = std::abs(dist(gen) * 20);
 
+	PxMaterial* mat;
+	mat = gPhysics->createMaterial((float)(rand() % 11) / 10, (float)(rand() % 11) / 10, (float)(rand() % 101) / 100);
+	std::cout << mat->getStaticFriction() << " " << mat->getDynamicFriction() << " " << mat->getRestitution() << std::endl;
 	PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform(newPos));
-	rigids = new Solids(meanPos, meanVel, { col.r,col.g,col.b,1.0 },
-		CreateShape(PxBoxGeometry(size, size, size)), newRigid);
+	rigids = new Solids(meanPos, meanVel, { col.r,col.g,col.b,1.0 },{sizeX,sizeY,sizeZ},
+		gPhysics->createShape(PxBoxGeometry(sizeX,sizeY,sizeZ),*mat), newRigid);
 	gScene->addActor(*newRigid);
 	return rigids;
 }

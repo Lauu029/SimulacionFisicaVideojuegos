@@ -29,7 +29,7 @@ void SolidsSystem::initSystem() {
 void SolidsSystem::update(double t)
 {
 	timeSinceLastAdding++;
-	if (generator->isActive()&&timeSinceLastAdding>20)
+	if (generator->isActive() && timeSinceLastAdding > 100)
 	{
 		if (numParticles < maxParticles) {
 			solidParticles.push_back(generator->addRigids());
@@ -38,16 +38,14 @@ void SolidsSystem::update(double t)
 		}
 	}
 	for (int i = 0; i < solidParticles.size(); i++)
-	{
-		if (solidParticles[i]->time > 500)
-			solidParticles[i]->kill();
+	{		
 		if (!solidParticles[i]->isAlive()) {
 			sC->removeActor(*solidParticles[i]->getRigid());
 			delete solidParticles[i];
 			solidParticles.erase(solidParticles.begin() + i);
 			numParticles--;
 		}
-		else solidParticles[i]->time++;
+		else solidParticles[i]->update(t);
 	}
 }
 
