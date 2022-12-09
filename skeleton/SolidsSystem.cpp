@@ -56,6 +56,7 @@ SolidsSystem::~SolidsSystem()
 	for (auto s : solidParticles)
 	{
 		sC->removeActor(*s->getRigid());
+		delete s;
 	}
 	solidParticles.clear();
 	if (generator != nullptr)

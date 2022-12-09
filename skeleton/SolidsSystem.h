@@ -11,8 +11,8 @@ protected:
 	PxRigidStatic* wall = nullptr;
 	PxScene* sC = nullptr;
 	PxPhysics* sP = nullptr;
-	int numParticles=0;
-	int maxParticles=15;
+	int numParticles = 0;
+	int maxParticles = 20;
 	int timeSinceLastAdding;
 public:
 	SolidsSystem(PxPhysics* gPhysics, PxScene* gScene);
