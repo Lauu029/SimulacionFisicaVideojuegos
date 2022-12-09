@@ -28,6 +28,12 @@ void Scene5::keyPressed(unsigned char key)
 	case'z':
 		system->getGen()->setActive();
 		break;
+	case'x':
+		system->addWind();
+		break;
+	case'c':
+		system->deleteWind();
+		break;
 	default:
 		break;
 	}

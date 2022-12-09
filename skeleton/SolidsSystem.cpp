@@ -5,7 +5,7 @@ SolidsSystem::SolidsSystem(PxPhysics* gPhysics, PxScene* gScene) {
 	sC = gScene;
 	timeSinceLastAdding = 0;
 	generator = new GaussianSolidsGenerator(sP, sC, { 0, 100, 0 }, { 0, 0, 0 });
-
+	sFR = new SolidsForceRegistry();
 }
 void SolidsSystem::initSystem() {
 	hsv color = { 25.0,0.73,0.7 };
@@ -33,12 +33,14 @@ void SolidsSystem::update(double t)
 	{
 		if (numParticles < maxParticles) {
 			solidParticles.push_back(generator->addRigids());
+			if(wind!=nullptr)
+				sFR->addRegistry(solidParticles.back(), wind);
 			numParticles++;
 			timeSinceLastAdding = 0;
 		}
 	}
 	for (int i = 0; i < solidParticles.size(); i++)
-	{		
+	{
 		if (!solidParticles[i]->isAlive()) {
 			sC->removeActor(*solidParticles[i]->getRigid());
 			delete solidParticles[i];
@@ -47,6 +49,8 @@ void SolidsSystem::update(double t)
 		}
 		else solidParticles[i]->update(t);
 	}
+	if (sFR != nullptr)
+		sFR->updateForces(t);
 }
 
 SolidsSystem::~SolidsSystem()
@@ -63,4 +67,28 @@ SolidsSystem::~SolidsSystem()
 	item->release();
 	sC->removeActor(*floor);
 	sC->removeActor(*wall);
+	if (wind != nullptr) {
+		delete wind;
+		wind = nullptr;
+	}
+	if (sFR != nullptr)
+		delete sFR;
+}
+void SolidsSystem::addWind()
+{
+	if (wind == nullptr) wind = new SolidsWindGenerator(100, { -50,20,0 }, { 70,50,5 });
+	for (auto p : solidParticles)
+	{
+		if (p->isAlive())
+			sFR->addRegistry(p, wind);
+	}
+}
+void SolidsSystem::deleteWind()
+{
+	for (auto p : solidParticles)
+	{
+		sFR->deleteForce(wind);
+	}
+	delete wind;
+	wind = nullptr;
 }

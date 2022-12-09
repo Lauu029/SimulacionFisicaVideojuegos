@@ -18,6 +18,7 @@ protected:
 	bool alive = true;
 	Vector3 size;
 	int time;
+	Vector3 force;
 public:
 	Solids(Vector3 _meanPos, Vector3 _meanVel,Vector4 col, Vector3 s,
 	 PxShape* _gShape, PxRigidDynamic* rig);
@@ -25,6 +26,9 @@ public:
 	void kill() { alive = false; };
 	bool isAlive() { return alive; };
 	PxRigidDynamic* getRigid() { return rigid; };
+	void addForce(Vector3 f) { force += f; };
+	Vector3 getPos() { return rigid->getGlobalPose().p; };
+	Vector3 getVel() { return rigid->getLinearVelocity(); };
 	~Solids();
 };
 

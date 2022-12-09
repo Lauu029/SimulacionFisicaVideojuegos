@@ -54,6 +54,12 @@
     <ClCompile Include="SolidsSystem.cpp">
       <Filter>Particles</Filter>
     </ClCompile>
+    <ClCompile Include="SolidsForceGenerator.cpp">
+      <Filter>Forces</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidsForceRegistry.cpp">
+      <Filter>Forces</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -115,6 +121,12 @@
     </ClInclude>
     <ClInclude Include="SolidsSystem.h">
       <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidsForceRegistry.h">
+      <Filter>Forces</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidsForceGenerator.h">
+      <Filter>Forces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
