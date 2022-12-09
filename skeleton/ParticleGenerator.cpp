@@ -347,7 +347,6 @@ Solids* GaussianSolidsGenerator::addRigids()
 
 	PxMaterial* mat;
 	mat = gPhysics->createMaterial((float)(rand() % 11) / 10, (float)(rand() % 11) / 10, (float)(rand() % 101) / 100);
-	std::cout << mat->getStaticFriction() << " " << mat->getDynamicFriction() << " " << mat->getRestitution() << std::endl;
 	PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform(newPos));
 	rigids = new Solids(meanPos, meanVel, { col.r,col.g,col.b,1.0 },{sizeX,sizeY,sizeZ},
 		gPhysics->createShape(PxBoxGeometry(sizeX,sizeY,sizeZ),*mat), newRigid);

@@ -43,6 +43,7 @@ void SolidsSystem::update(double t)
 	{
 		if (!solidParticles[i]->isAlive()) {
 			sC->removeActor(*solidParticles[i]->getRigid());
+			sFR->deleteSolid(solidParticles[i]);
 			delete solidParticles[i];
 			solidParticles.erase(solidParticles.begin() + i);
 			numParticles--;
@@ -79,7 +80,7 @@ void SolidsSystem::addWind()
 	if (wind == nullptr) wind = new SolidsWindGenerator(100, { -50,20,0 }, { 70,50,5 });
 	for (auto p : solidParticles)
 	{
-		if (p->isAlive())
+		if (p!=nullptr)
 			sFR->addRegistry(p, wind);
 	}
 }
