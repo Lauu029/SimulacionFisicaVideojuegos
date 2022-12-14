@@ -2,6 +2,7 @@
 #include "ParticleSystem.h"
 #include <foundation/PxTransform.h>
 #include "checkML.h"
+#include "SolidsSystem.h"
 using namespace physx;
 class Scene
 {

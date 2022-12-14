@@ -1,6 +1,6 @@
 #pragma once
 #include "Scene.h"
-#include "SolidsSystem.h"
+
 class Scene5 : public Scene
 {
 public:
