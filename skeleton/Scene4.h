@@ -9,4 +9,3 @@ public:
 	virtual void updateScene(double t) override;
 	virtual void keyPressed(unsigned char key) override;
 };
-

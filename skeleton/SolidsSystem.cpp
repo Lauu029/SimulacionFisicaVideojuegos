@@ -1,29 +1,70 @@
 #include "SolidsSystem.h"
 
-SolidsSystem::SolidsSystem(PxPhysics* gPhysics, PxScene* gScene) {
-	sP = gPhysics;
-	sC = gScene;
+SolidsSystem::SolidsSystem(PxPhysics* _gPhysics, PxScene* _gScene, typeSolidSystem type) {
+	gPhysics = _gPhysics;
+	gScene = _gScene;
 	timeSinceLastAdding = 0;
-	generator = new GaussianSolidsGenerator(sP, sC, { 0, 100, 0 }, { 0, 0, 0 });
+	generator = new GaussianSolidsGenerator(gPhysics, gScene, { 0, 100, 0 }, { 0, 0, 0 });
 	sFR = new SolidsForceRegistry();
+	t = type;
 }
 void SolidsSystem::initSystem() {
+	
+	switch (t)
+	{
+	case PowerWash:
+		createPWSystem();
+		break;
+	case NormalSolids:
+		CreateNormalSystem();
+		break;
+	default:
+		break;
+	}
+}
+
+void SolidsSystem::CreateNormalSystem()
+{
 	hsv color = { 25.0,0.73,0.7 };
 	rgb col = hsv2rgb(color);
 	//suelo
-	floor = sP->createRigidStatic(PxTransform({ 0, 0, 0 }));
+	floor = gPhysics->createRigidStatic(PxTransform({ 0, 0, 0 }));
 	PxShape* shape = CreateShape(PxBoxGeometry(500, 0.1, 500));
 	floor->attachShape(*shape);
 	item = new RenderItem(shape, floor, { col.r, col.g ,col.b, 1 });
-	sC->addActor(*floor);
+	gScene->addActor(*floor);
 	//muro
-	wall = sP->createRigidStatic(PxTransform(PxVec3(10, 10, -30)));
-	PxShape* shape_suelo = CreateShape(PxBoxGeometry(40, 20, 5));
-	wall->attachShape(*shape_suelo);
+	wall = gPhysics->createRigidStatic(PxTransform(PxVec3(10, 10, -30)));
+	shape = CreateShape(PxBoxGeometry(40, 20, 5));
+	wall->attachShape(*shape);
 	color = { 154.0,0.73,0.7 };
 	col = hsv2rgb(color);
-	itemWall = new RenderItem(shape_suelo, wall, { col.r, col.g ,col.b,1 });
-	sC->addActor(*wall);
+	itemWall = new RenderItem(shape, wall, { col.r, col.g ,col.b,1 });
+	gScene->addActor(*wall);
+}
+
+void SolidsSystem::createPWSystem()
+{
+	hsv color = { 55.0,0.73,0.7 };
+	rgb col = hsv2rgb(color);
+	//suelo
+	floor = gPhysics->createRigidStatic(PxTransform({ 0, 0, 0 }));
+	PxShape* shape = CreateShape(PxBoxGeometry(500, 0.1, 500));
+	floor->attachShape(*shape);
+	item = new RenderItem(shape, floor, { col.r, col.g ,col.b, 1 });
+	gScene->addActor(*floor);
+	//Personaje
+	color = {150.0, 0.8, 0.9};
+	col = hsv2rgb(color);
+	PxMaterial* mat;
+	mat = gPhysics->createMaterial(0.5,  0.5, 0.1);
+	PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform({ 0,10,0 }));
+	mainCharacter = new Solids({ 0,10,0 }, { 0,0,0 }, { col.r,col.g,col.b,1.0 }, { 10,10,10 },
+		gPhysics->createShape(PxBoxGeometry(10, 10, 10), *mat), newRigid);
+	
+	gScene->addActor(*newRigid);
+	//mainCharacter->getRigid()->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
+	mainCharacter->setMass(10);
 }
 
 void SolidsSystem::update(double t)
@@ -33,7 +74,7 @@ void SolidsSystem::update(double t)
 	{
 		if (numParticles < maxParticles) {
 			solidParticles.push_back(generator->addRigids());
-			if(wind!=nullptr)
+			if (wind != nullptr)
 				sFR->addRegistry(solidParticles.back(), wind);
 			numParticles++;
 			timeSinceLastAdding = 0;
@@ -42,7 +83,7 @@ void SolidsSystem::update(double t)
 	for (int i = 0; i < solidParticles.size(); i++)
 	{
 		if (!solidParticles[i]->isAlive()) {
-			sC->removeActor(*solidParticles[i]->getRigid());
+			gScene->removeActor(*solidParticles[i]->getRigid());
 			sFR->deleteSolid(solidParticles[i]);
 			delete solidParticles[i];
 			solidParticles.erase(solidParticles.begin() + i);
@@ -58,29 +99,35 @@ SolidsSystem::~SolidsSystem()
 {
 	for (auto s : solidParticles)
 	{
-		sC->removeActor(*s->getRigid());
+		gScene->removeActor(*s->getRigid());
 		delete s;
 	}
 	solidParticles.clear();
 	if (generator != nullptr)
 		delete generator;
-	itemWall->release();
-	item->release();
-	sC->removeActor(*floor);
-	sC->removeActor(*wall);
+	if (itemWall != nullptr)
+		itemWall->release();
+	if (item != nullptr)
+		item->release();
+	if (floor != nullptr)
+		gScene->removeActor(*floor);
+	if (wall != nullptr)
+		gScene->removeActor(*wall);
 	if (wind != nullptr) {
 		delete wind;
 		wind = nullptr;
 	}
 	if (sFR != nullptr)
 		delete sFR;
+	if (mainCharacter != nullptr) 
+		delete mainCharacter;
 }
 void SolidsSystem::addWind()
 {
 	if (wind == nullptr) wind = new SolidsWindGenerator(100, { -50,20,0 }, { 70,50,5 });
 	for (auto p : solidParticles)
 	{
-		if (p!=nullptr)
+		if (p != nullptr)
 			sFR->addRegistry(p, wind);
 	}
 }
@@ -92,4 +139,9 @@ void SolidsSystem::deleteWind()
 	}
 	delete wind;
 	wind = nullptr;
+}
+
+void SolidsSystem::moveCharacter(Vector3 dir)
+{
+	mainCharacter->move(dir);
 }

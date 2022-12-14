@@ -29,6 +29,8 @@ public:
 	void addForce(Vector3 f) { force += f; };
 	Vector3 getPos() { return rigid->getGlobalPose().p; };
 	Vector3 getVel() { return rigid->getLinearVelocity(); };
+	void move(Vector3 v);
+	void setMass(float m) { rigid->setMass(m); };
 	~Solids();
 };
 

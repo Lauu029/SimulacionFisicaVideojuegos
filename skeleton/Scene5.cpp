@@ -3,7 +3,7 @@
 
 Scene5::Scene5(PxPhysics* gPhysics, PxScene* gScene) : Scene(gPhysics, gScene)
 {
-	system = new SolidsSystem(gPhysics, gScene);
+	system = new SolidsSystem(gPhysics, gScene, typeSolidSystem::NormalSolids);
 }
 
 Scene5::~Scene5()
