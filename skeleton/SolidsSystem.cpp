@@ -61,10 +61,11 @@ void SolidsSystem::createPWSystem()
 	PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform({ 0,10,0 }));
 	mainCharacter = new Solids({ 0,10,0 }, { 0,0,0 }, { col.r,col.g,col.b,1.0 }, { 10,10,10 },
 		gPhysics->createShape(PxBoxGeometry(10, 10, 10), *mat), newRigid);
-	
+	mainCharacter->getRigid()->setMass(15);
+	mainCharacter->getRigid()->setMassSpaceInertiaTensor(PxVec3(0.0f, 0.0f, 0.0f));
 	gScene->addActor(*newRigid);
 	//mainCharacter->getRigid()->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
-	mainCharacter->setMass(10);
+	//mainCharacter->setMass(10);
 }
 
 void SolidsSystem::update(double t)

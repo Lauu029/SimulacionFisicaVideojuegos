@@ -64,6 +64,8 @@ void keyboardCallback(unsigned char key, int x, int y)
 void mouseCallback(int button, int state, int x, int y)
 {
 	sCamera->handleMouse(button, state, x, y);
+
+	ShowCursor(state);
 }
 
 void passiveMotionCallback(int x, int y) {

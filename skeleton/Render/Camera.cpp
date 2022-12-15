@@ -50,6 +50,7 @@ namespace Snippets
 
 	void Camera::handleMouse(int button, int state, int x, int y)
 	{
+		// LEFT: 0 - RIGHT: 2 - MIDDLE: 1 ///// DOWN : 0 - UP : 1
 		PX_UNUSED(state);
 		PX_UNUSED(button);
 		mMouseX = x;
