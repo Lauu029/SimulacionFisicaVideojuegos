@@ -64,6 +64,9 @@ void SolidsSystem::createPWSystem()
 	mainCharacter->getRigid()->setMass(15);
 	mainCharacter->getRigid()->setMassSpaceInertiaTensor(PxVec3(0.0f, 0.0f, 0.0f));
 	gScene->addActor(*newRigid);
+	//Manguera
+	manguera = new UniformSolidsGenerator(gPhysics, gScene, { 0, 0, 100 }, { 0,50,0 }, 10);
+	manguera->setActive();
 	//mainCharacter->getRigid()->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
 	//mainCharacter->setMass(10);
 }

@@ -8,6 +8,7 @@ protected:
 	vector<Solids*>solidParticles;
 	Solids* mainCharacter = nullptr;
 	GaussianSolidsGenerator* generator = nullptr;
+	UniformSolidsGenerator* manguera = nullptr;
 	RenderItem* item = nullptr;
 	RenderItem* itemWall = nullptr;
 	PxRigidStatic* floor = nullptr;

@@ -65,6 +65,20 @@ public:
 	~GaussianSolidsGenerator();
 	list<Solids*> getSolids() { return solids; };
 };
+class UniformSolidsGenerator : public UniformParticleGenerator
+{
+protected:
+	/*bool move;
+	int sep;*/
+	PxPhysics* gPhysics = nullptr;
+	PxScene* gScene = nullptr;
+	Vector3 velWidth, posWidth;
+public:
+	UniformSolidsGenerator(PxPhysics* gP, PxScene* gS, Vector3 _meanPos, Vector3 _meanVel, int n);
+	Solids* addRigids();
+	void changePos(Vector3 pos) { meanPos = pos; };
+	void changeVel(Vector3 vel) { meanVel = vel; };
+};
 class FireworkGenerator : public ParticleGenerator
 {
 protected:

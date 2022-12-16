@@ -348,12 +348,50 @@ Solids* GaussianSolidsGenerator::addRigids()
 	PxMaterial* mat;
 	mat = gPhysics->createMaterial((float)(rand() % 11) / 10, (float)(rand() % 11) / 10, (float)(rand() % 101) / 100);
 	PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform(newPos));
-	rigids = new Solids(meanPos, meanVel, { col.r,col.g,col.b,1.0 },{sizeX,sizeY,sizeZ},
-		gPhysics->createShape(PxBoxGeometry(sizeX,sizeY,sizeZ),*mat), newRigid);
+	rigids = new Solids(meanPos, meanVel, { col.r,col.g,col.b,1.0 }, { sizeX,sizeY,sizeZ },
+		gPhysics->createShape(PxBoxGeometry(sizeX, sizeY, sizeZ), *mat), newRigid);
 	gScene->addActor(*newRigid);
 	return rigids;
 }
 
 GaussianSolidsGenerator::~GaussianSolidsGenerator()
 {
+}
+
+UniformSolidsGenerator::UniformSolidsGenerator(PxPhysics* gP, PxScene* gS, Vector3 _meanPos, Vector3 _meanVel, int n):UniformParticleGenerator(_meanPos,_meanVel,n,false,0)
+{
+	meanPos = _meanPos;
+	meanVel = _meanVel;
+	gPhysics = gP;
+	gScene = gS;
+	numParticles = n;
+}
+
+Solids* UniformSolidsGenerator::addRigids()
+{
+	Vector3 newPos = meanPos;
+	newPos.x += distribution(gen);
+	newPos.y += distribution(gen);
+	newPos.z += distribution(gen);
+
+
+	Vector3 newVel = meanVel;
+	float ac = model->getAcceleration().y;
+
+	newVel.x += distribution(gen) * 10;
+	newVel.y += distribution(gen) * .5;
+	newVel.z += distribution(gen) * 10;
+
+	ac += distribution(gen) * 20;
+	PxReal size = 10;
+	Solids* rigids;
+	hsv color = { 240.0,1.0,1.0 };
+	rgb col = hsv2rgb(color);
+	PxMaterial* mat;
+	mat = gPhysics->createMaterial((float)(rand() % 11) / 10, (float)(rand() % 11) / 10, (float)(rand() % 101) / 100);
+	PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform(newPos));
+	rigids = new Solids(meanPos, meanVel, { col.r,col.g,col.b,1.0 }, { size,size,size },
+		gPhysics->createShape(PxSphereGeometry(size), *mat), newRigid);
+	gScene->addActor(*newRigid);
+	return rigids;
 }

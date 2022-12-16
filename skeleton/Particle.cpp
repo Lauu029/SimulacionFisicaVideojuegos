@@ -34,11 +34,12 @@ void Particle::integrate(double t)
 	if (remainingTime <= 0) 
 		death = true;
 
-	pose = physx::PxTransform(pose.p.x + vel.x * t, pose.p.y + vel.y * t, pose.p.z + vel.z * t);
 
 	Vector3 totalAcceleration = ac;
 
 	vel += totalAcceleration * t;
+
+	pose = physx::PxTransform(pose.p.x + vel.x * t, pose.p.y + vel.y * t, pose.p.z + vel.z * t);
 	//si hay fuerza actualiza la aceleración
 	if (force.magnitude() > 0)
 		ac = force * inverse_mass;
