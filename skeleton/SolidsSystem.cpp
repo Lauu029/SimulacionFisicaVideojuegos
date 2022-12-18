@@ -4,12 +4,11 @@ SolidsSystem::SolidsSystem(PxPhysics* _gPhysics, PxScene* _gScene, typeSolidSyst
 	gPhysics = _gPhysics;
 	gScene = _gScene;
 	timeSinceLastAdding = 0;
-	generator = new GaussianSolidsGenerator(gPhysics, gScene, { 0, 100, 0 }, { 0, 0, 0 });
 	sFR = new SolidsForceRegistry();
 	t = type;
 }
 void SolidsSystem::initSystem() {
-	
+
 	switch (t)
 	{
 	case PowerWash:
@@ -25,6 +24,7 @@ void SolidsSystem::initSystem() {
 
 void SolidsSystem::CreateNormalSystem()
 {
+	generator = new GaussianSolidsGenerator(gPhysics, gScene, { 0, 100, 0 }, { 0, 0, 0 });
 	hsv color = { 25.0,0.73,0.7 };
 	rgb col = hsv2rgb(color);
 	//suelo
@@ -54,10 +54,10 @@ void SolidsSystem::createPWSystem()
 	item = new RenderItem(shape, floor, { col.r, col.g ,col.b, 1 });
 	gScene->addActor(*floor);
 	//Personaje
-	color = {150.0, 0.8, 0.9};
+	color = { 150.0, 0.8, 0.9 };
 	col = hsv2rgb(color);
 	PxMaterial* mat;
-	mat = gPhysics->createMaterial(0.5,  0.5, 0.1);
+	mat = gPhysics->createMaterial(0.5, 0.5, 0.1);
 	PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform({ 0,10,0 }));
 	mainCharacter = new Solids({ 0,10,0 }, { 0,0,0 }, { col.r,col.g,col.b,1.0 }, { 10,10,10 },
 		gPhysics->createShape(PxBoxGeometry(10, 10, 10), *mat), newRigid);
@@ -65,7 +65,7 @@ void SolidsSystem::createPWSystem()
 	mainCharacter->getRigid()->setMassSpaceInertiaTensor(PxVec3(0.0f, 0.0f, 0.0f));
 	gScene->addActor(*newRigid);
 	//Manguera
-	manguera = new UniformSolidsGenerator(gPhysics, gScene, { 0, 0, 100 }, { 0,50,0 }, 10);
+	manguera = new UniformSolidsGenerator(gPhysics, gScene, { 0, 0, 100 }, { 200,0,0 }, 10);
 	manguera->setActive();
 	//mainCharacter->getRigid()->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
 	//mainCharacter->setMass(10);
@@ -73,15 +73,29 @@ void SolidsSystem::createPWSystem()
 
 void SolidsSystem::update(double t)
 {
-	timeSinceLastAdding++;
-	if (generator->isActive() && timeSinceLastAdding > 100)
-	{
-		if (numParticles < maxParticles) {
-			solidParticles.push_back(generator->addRigids());
-			if (wind != nullptr)
-				sFR->addRegistry(solidParticles.back(), wind);
-			numParticles++;
-			timeSinceLastAdding = 0;
+	if (generator != nullptr) {
+
+		timeSinceLastAdding++;
+		if (generator->isActive() && timeSinceLastAdding > 100)
+		{
+			if (numParticles < maxParticles) {
+				solidParticles.push_back(generator->addRigids());
+				if (wind != nullptr)
+					sFR->addRegistry(solidParticles.back(), wind);
+				numParticles++;
+				timeSinceLastAdding = 0;
+			}
+		}
+	}
+	if (manguera != nullptr) {
+		Vector3 pos = GetCamera()->getTransform().p;
+		manguera->changePos({ pos.x, pos.y, pos.z });
+		//manguera->changePos({ pos.x, pos.y - 10, pos.z });
+		manguera->changeDir(GetCamera()->getDir());
+		if (manguera->isActive())
+		{
+			if(solidParticles.size()<100)
+			solidParticles.push_back(manguera->addRigids());
 		}
 	}
 	for (int i = 0; i < solidParticles.size(); i++)
@@ -127,7 +141,7 @@ SolidsSystem::~SolidsSystem()
 	}
 	if (sFR != nullptr)
 		delete sFR;
-	if (mainCharacter != nullptr) 
+	if (mainCharacter != nullptr)
 		delete mainCharacter;
 }
 void SolidsSystem::addWind()

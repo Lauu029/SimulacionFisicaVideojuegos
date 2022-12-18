@@ -9,6 +9,7 @@ UniformParticleGenerator::UniformParticleGenerator(Vector3 _meanPos, Vector3 _me
 	sep = s;
 	active = false;
 }
+
 list<Particle*> UniformParticleGenerator::generateParticles()
 {
 	list<Particle*> listParticles;
@@ -42,6 +43,7 @@ list<Particle*> UniformParticleGenerator::generateParticles()
 	}
 	return listParticles;
 }
+
 void UniformParticleGenerator::newParticleType()
 {
 	int t = rand() % 4 + 1;
@@ -78,6 +80,7 @@ GaussianParticleGenerator::GaussianParticleGenerator(Vector3 _meanPos, Vector3 _
 	numParticles = 200;
 	active = false;
 }
+
 list<Particle*> GaussianParticleGenerator::generateParticles()
 {
 	list<Particle*> listParticles;
@@ -104,6 +107,7 @@ list<Particle*> GaussianParticleGenerator::generateParticles()
 	}
 	return listParticles;
 }
+
 ParticleGenerator::~ParticleGenerator()
 {
 	if (model != nullptr) {
@@ -111,6 +115,7 @@ ParticleGenerator::~ParticleGenerator()
 		model = nullptr;
 	}
 }
+
 //Fuegos artificiales
 FireworkGenerator::FireworkGenerator(Vector3 _meanPos, Vector3 _meanVel)
 {
@@ -119,6 +124,7 @@ FireworkGenerator::FireworkGenerator(Vector3 _meanPos, Vector3 _meanVel)
 	numParticles = 10;
 	active = false;
 }
+
 list<Firework*> FireworkGenerator::generateFireworks(Firework* parent)
 {
 	std::list<Firework*> listParticles;
@@ -159,6 +165,7 @@ void FireworkGenerator::BatFirework(Vector3& newVel, float increase, Firework* p
 		PicosAbajoBatFuegos(x, newVel, parent, listParticles);
 	}
 }
+
 void FireworkGenerator::FuegosCorazon(Vector3& newVel, float increase, Firework* parent, std::list<Firework*>& listParticles)
 {
 	for (size_t i = 1; i <= parent->getNumHijos(); i++)
@@ -174,6 +181,7 @@ void FireworkGenerator::FuegosCorazon(Vector3& newVel, float increase, Firework*
 		listParticles.push_back(newP);
 	}
 }
+
 void FireworkGenerator::CircleFirework(Vector3& newVel, float increase, Firework* parent, Vector3& newPos, std::list<Firework*>& listParticles)
 {
 	for (size_t i = 1; i <= parent->getNumHijos(); i++)
@@ -190,6 +198,7 @@ void FireworkGenerator::CircleFirework(Vector3& newVel, float increase, Firework
 		listParticles.push_back(newP);
 	}
 }
+
 void FireworkGenerator::RandomFirework(Vector3& newVel, Firework* parent, Vector3& newPos, std::list<Firework*>& listParticles)
 {
 	for (size_t i = 1; i <= parent->getNumHijos(); i++)
@@ -246,6 +255,7 @@ void FireworkGenerator::CabezaBatFuegos(Vector3& newVel, Firework* parent, std::
 		listParticles.push_back(newP);
 	}
 }
+
 void FireworkGenerator::FinAlasBatFuegos(Vector3& newVel, int x, Firework* parent, std::list<Firework*>& listParticles)
 {
 	newVel = { 0,0,0 };
@@ -263,6 +273,7 @@ void FireworkGenerator::FinAlasBatFuegos(Vector3& newVel, int x, Firework* paren
 	newP2->setVelocity({ -newVel.x,newVel.y,newVel.z });
 	listParticles.push_back(newP2);
 }
+
 void FireworkGenerator::ParentesisBatFuegos(int x, Vector3& newVel, Firework* parent, std::list<Firework*>& listParticles)
 {
 	for (int l = 0; l < 30; l++)
@@ -282,6 +293,7 @@ void FireworkGenerator::ParentesisBatFuegos(int x, Vector3& newVel, Firework* pa
 		listParticles.push_back(newP);
 	}
 }
+
 void FireworkGenerator::PicosAbajoBatFuegos(int x, Vector3& newVel, Firework* parent, std::list<Firework*>& listParticles)
 {
 	newVel = { 0,0,0 };
@@ -376,16 +388,16 @@ Solids* UniformSolidsGenerator::addRigids()
 
 
 	Vector3 newVel = meanVel;
-	float ac = model->getAcceleration().y;
+	//float ac = model->getAcceleration().y;
 
 	newVel.x += distribution(gen) * 10;
 	newVel.y += distribution(gen) * .5;
 	newVel.z += distribution(gen) * 10;
 
-	ac += distribution(gen) * 20;
-	PxReal size = 10;
+	//ac += distribution(gen) * 20;
+	PxReal size = 0.5;
 	Solids* rigids;
-	hsv color = { 240.0,1.0,1.0 };
+	hsv color = { 240.0,0.7,0.7 };
 	rgb col = hsv2rgb(color);
 	PxMaterial* mat;
 	mat = gPhysics->createMaterial((float)(rand() % 11) / 10, (float)(rand() % 11) / 10, (float)(rand() % 101) / 100);
@@ -394,4 +406,10 @@ Solids* UniformSolidsGenerator::addRigids()
 		gPhysics->createShape(PxSphereGeometry(size), *mat), newRigid);
 	gScene->addActor(*newRigid);
 	return rigids;
+}
+
+void UniformSolidsGenerator::changeDir(Vector3 dir)
+{
+	dir.normalize();
+	meanVel = { meanVel.x * dir.x, meanVel.y * dir.y, meanVel.z * dir.z };
 }

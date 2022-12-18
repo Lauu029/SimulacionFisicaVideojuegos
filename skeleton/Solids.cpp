@@ -18,13 +18,14 @@ Solids::Solids(Vector3 _meanPos, Vector3 _meanVel, Vector4 col, Vector3 s,
 }
 void Solids::update(double t) {
 	time++;
-	if (time > 1000) kill();
+	if (time > 100) kill();
 	if (rigid->getGlobalPose().p.y < 0) kill();
 	if (force.magnitude() > 0) {
 		rigid->addForce(force, PxForceMode::eFORCE);
 		force *= 0;
 		rigid->addForce(Vector3(0, 0, 0));
 	}
+	
 }
 
 void Solids::move(Vector3 v) {

@@ -78,6 +78,7 @@ public:
 	Solids* addRigids();
 	void changePos(Vector3 pos) { meanPos = pos; };
 	void changeVel(Vector3 vel) { meanVel = vel; };
+	void changeDir(Vector3 dir);
 };
 class FireworkGenerator : public ParticleGenerator
 {
