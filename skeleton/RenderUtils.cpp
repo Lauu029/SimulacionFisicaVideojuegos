@@ -145,7 +145,7 @@ void renderLoop()
 	StartCounter();
 	sCamera = new Camera(PxVec3(0.0f, 40.0f, 250.0f), PxVec3(-0.5f,-0.2f,-30.0f));
 
-	setupDefaultWindow("Simulacion Fisica Videojuegos");
+	setupDefaultWindow("Power Wash Simulator");
 	setupDefaultRenderState();
 
 	glutIdleFunc(idleCallback);

@@ -17,6 +17,7 @@ void PWSimulator::initScene()
 
 void PWSimulator::updateScene(double t)
 {
+	system->update(t);
 }
 
 void PWSimulator::keyPressed(unsigned char key)

@@ -57,6 +57,8 @@ namespace Snippets
 
 		void changeControl();
 		void setEye(physx::PxVec3 const& eye);
+		//void update(int x, int y);
+		//void setPos(physx::PxVec3 const& eye);
 	private:
 		physx::PxVec3 mEye;
 		physx::PxVec3 mDir;
@@ -67,6 +69,7 @@ namespace Snippets
 		int	mMouseYy;
 
 		bool controlled = false;
+		bool freeControl = false;
 	};
 }
 

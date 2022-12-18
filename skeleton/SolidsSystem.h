@@ -30,6 +30,7 @@ public:
 	void addWind();
 	void deleteWind();
 	void moveCharacter(Vector3 dir);
+	void keyPressed(unsigned char key);
 	~SolidsSystem();
 	GaussianSolidsGenerator* getGen() { return generator; };
 };
