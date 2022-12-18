@@ -53,6 +53,8 @@ namespace Snippets
 		// LEFT: 0 - RIGHT: 2 - MIDDLE: 1 ///// DOWN : 0 - UP : 1
 		PX_UNUSED(state);
 		PX_UNUSED(button);
+		if(button==1)
+			freeControl = !freeControl;
 		mMouseX = x;
 		mMouseY = y;
 	}

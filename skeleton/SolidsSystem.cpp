@@ -97,6 +97,10 @@ void SolidsSystem::update(double t)
 	}
 	if (sFR != nullptr)
 		sFR->updateForces(t);
+	if (mainCharacter != nullptr) {
+		//GetCamera()->setEye(mainCharacter->getPos() + Vector3(200, 0, 0));
+
+	}
 }
 
 SolidsSystem::~SolidsSystem()
