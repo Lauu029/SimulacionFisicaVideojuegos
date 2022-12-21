@@ -89,9 +89,9 @@ void SolidsSystem::update(double t)
 	}
 	if (manguera != nullptr) {
 		Vector3 pos = GetCamera()->getTransform().p;
-		manguera->changePos({ pos.x, pos.y, pos.z });
+		//manguera->changePos({20+ pos.x, pos.y, pos.z });
 		//manguera->changePos({ pos.x, pos.y - 10, pos.z });
-		manguera->changeDir(GetCamera()->getDir());
+		//manguera->changeDir(GetCamera()->getDir());
 		if (manguera->isActive())
 		{
 			if(solidParticles.size()<100)
