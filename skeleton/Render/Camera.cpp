@@ -87,14 +87,14 @@ namespace Snippets
 			PxVec3 viewX = PxVec3(0, 1, 0);
 			switch (key)
 			{
-			/*case 'w':	mEye += mDir * 2.0f * speed;
+			case 'w':	mEye += mDir * 2.0f * speed;
 				break;
 			case 's':	mEye -= mDir * 2.0f * speed;
 				break;
 			case 'a':	mEye -= viewY * 2.0f * speed;
 				break;
 			case 'd':	mEye += viewY * 2.0f * speed;
-				break;*/
+				break;
 			case 'W':   mEye += viewX * 2.0f * speed;
 				break;
 			case 'S':   mEye -= viewX * 2.0f * speed;

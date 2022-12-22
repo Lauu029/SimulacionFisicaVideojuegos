@@ -59,13 +59,13 @@ void SolidsSystem::createPWSystem()
 	PxMaterial* mat;
 	mat = gPhysics->createMaterial(0.5, 0.5, 0.1);
 	PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform({ 0,10,0 }));
-	mainCharacter = new Solids({ 0,10,0 }, { 0,0,0 }, { col.r,col.g,col.b,1.0 }, { 10,10,10 },
-		gPhysics->createShape(PxBoxGeometry(10, 10, 10), *mat), newRigid);
+	mainCharacter = new Solids({ 0,10,0 }, { 0,0,0 }, { col.r,col.g,col.b,1.0 }, { 3,3,3 },
+		gPhysics->createShape(PxBoxGeometry(10, 10, 10), *mat), newRigid,false);
 	mainCharacter->getRigid()->setMass(15);
 	mainCharacter->getRigid()->setMassSpaceInertiaTensor(PxVec3(0.0f, 0.0f, 0.0f));
 	gScene->addActor(*newRigid);
 	//Manguera
-	manguera = new UniformSolidsGenerator(gPhysics, gScene, { 0, 0, 100 }, { 200,0,0 }, 10);
+	manguera = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 20,0, 0 }, 10);
 	manguera->setActive();
 	//mainCharacter->getRigid()->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
 	//mainCharacter->setMass(10);
@@ -94,8 +94,10 @@ void SolidsSystem::update(double t)
 		//manguera->changeDir(GetCamera()->getDir());
 		if (manguera->isActive())
 		{
-			if(solidParticles.size()<100)
-			solidParticles.push_back(manguera->addRigids());
+			manguera->changePos({ pos.x, pos.y - 3, pos.z });
+			manguera->setVel(GetCamera()->getDir());
+			if (solidParticles.size() < 100)
+				solidParticles.push_back(manguera->addRigids());
 		}
 	}
 	for (int i = 0; i < solidParticles.size(); i++)
@@ -113,8 +115,14 @@ void SolidsSystem::update(double t)
 		sFR->updateForces(t);
 	if (mainCharacter != nullptr) {
 		//GetCamera()->setEye(mainCharacter->getPos() + Vector3(200, 0, 0));
-
+		Vector3 playerPos = mainCharacter->getPos();
+		GetCamera()->setEye({ playerPos.x+10, playerPos.y + 10.0f, playerPos.z });
 	}
+}
+
+void SolidsSystem::changeFontActive()
+{
+	manguera->setActive();
 }
 
 SolidsSystem::~SolidsSystem()
@@ -152,6 +160,10 @@ void SolidsSystem::addWind()
 		if (p != nullptr)
 			sFR->addRegistry(p, wind);
 	}
+}
+void SolidsSystem::changeWaterVel(bool inc)
+{
+	manguera->changeVel(inc);
 }
 void SolidsSystem::deleteWind()
 {

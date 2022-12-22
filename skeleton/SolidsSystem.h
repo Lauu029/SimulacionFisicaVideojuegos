@@ -28,9 +28,11 @@ public:
 	void createPWSystem();
 	void update(double t);
 	void addWind();
+	void changeWaterVel(bool inc);
 	void deleteWind();
 	void moveCharacter(Vector3 dir);
 	void keyPressed(unsigned char key);
+	void changeFontActive();
 	~SolidsSystem();
 	GaussianSolidsGenerator* getGen() { return generator; };
 };

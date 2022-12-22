@@ -21,7 +21,7 @@ protected:
 	Vector3 force;
 public:
 	Solids(Vector3 _meanPos, Vector3 _meanVel,Vector4 col, Vector3 s,
-	 PxShape* _gShape, PxRigidDynamic* rig);
+	 PxShape* _gShape, PxRigidDynamic* rig, bool render);
 	void update(double t);
 	void kill() { alive = false; };
 	bool isAlive() { return alive; };

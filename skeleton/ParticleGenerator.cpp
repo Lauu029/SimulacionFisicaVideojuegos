@@ -361,7 +361,7 @@ Solids* GaussianSolidsGenerator::addRigids()
 	mat = gPhysics->createMaterial((float)(rand() % 11) / 10, (float)(rand() % 11) / 10, (float)(rand() % 101) / 100);
 	PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform(newPos));
 	rigids = new Solids(meanPos, meanVel, { col.r,col.g,col.b,1.0 }, { sizeX,sizeY,sizeZ },
-		gPhysics->createShape(PxBoxGeometry(sizeX, sizeY, sizeZ), *mat), newRigid);
+		gPhysics->createShape(PxBoxGeometry(sizeX, sizeY, sizeZ), *mat), newRigid, true);
 	gScene->addActor(*newRigid);
 	return rigids;
 }
@@ -370,7 +370,7 @@ GaussianSolidsGenerator::~GaussianSolidsGenerator()
 {
 }
 
-UniformSolidsGenerator::UniformSolidsGenerator(PxPhysics* gP, PxScene* gS, Vector3 _meanPos, Vector3 _meanVel, int n):UniformParticleGenerator(_meanPos,_meanVel,n,false,0)
+UniformSolidsGenerator::UniformSolidsGenerator(PxPhysics* gP, PxScene* gS, Vector3 _meanPos, Vector3 _meanVel, int n) :UniformParticleGenerator(_meanPos, _meanVel, n, false, 0)
 {
 	meanPos = _meanPos;
 	meanVel = _meanVel;
@@ -395,17 +395,32 @@ Solids* UniformSolidsGenerator::addRigids()
 	newVel.z += distribution(gen) * 10;
 
 	//ac += distribution(gen) * 20;
-	PxReal size = 0.5;
+	PxReal size = 0.3;
 	Solids* rigids;
-	hsv color = { 240.0,0.7,0.7 };
+	hsv color = {185.0,0.93,0.65 };
 	rgb col = hsv2rgb(color);
 	PxMaterial* mat;
 	mat = gPhysics->createMaterial((float)(rand() % 11) / 10, (float)(rand() % 11) / 10, (float)(rand() % 101) / 100);
 	PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform(newPos));
 	rigids = new Solids(meanPos, meanVel, { col.r,col.g,col.b,1.0 }, { size,size,size },
-		gPhysics->createShape(PxSphereGeometry(size), *mat), newRigid);
+		gPhysics->createShape(PxSphereGeometry(size), *mat), newRigid,true);
 	gScene->addActor(*newRigid);
 	return rigids;
+}
+
+void UniformSolidsGenerator::changeVel(bool inc)
+{
+	if (inc) {
+		if (meanVel.x < 100)
+			meanVel.x++;
+	}
+	else if (meanVel.x > 10)
+		meanVel.x--;
+}
+
+void UniformSolidsGenerator::setVel(Vector3 dir)
+{
+	meanVel = dir * 30;
 }
 
 void UniformSolidsGenerator::changeDir(Vector3 dir)

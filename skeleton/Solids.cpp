@@ -1,7 +1,7 @@
 #include "Solids.h"
 
 Solids::Solids(Vector3 _meanPos, Vector3 _meanVel, Vector4 col, Vector3 s,
-	PxShape* _gShape, PxRigidDynamic* rig)
+	PxShape* _gShape, PxRigidDynamic* rig, bool render)
 {
 	pos = _meanPos;
 	vel = _meanVel;
@@ -11,6 +11,7 @@ Solids::Solids(Vector3 _meanPos, Vector3 _meanVel, Vector4 col, Vector3 s,
 	gShape = _gShape;
 	rigid->attachShape(*gShape);
 	rigid->setMassSpaceInertiaTensor({ s.y * s.z, s.x * s.z, s.x * s.y });
+	if (render)
 	item = new RenderItem(gShape, rigid, col);
 	time = 0;
 	force = { 0, 0, 0 };
@@ -36,5 +37,6 @@ void Solids::move(Vector3 v) {
 
 Solids::~Solids()
 {
+	if(item!=nullptr)
 	item->release();
 }

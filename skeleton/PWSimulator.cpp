@@ -24,7 +24,7 @@ void PWSimulator::keyPressed(unsigned char key)
 {
 	switch (key)
 	{
-	case'w':
+	/*case'w':
 		system->moveCharacter(Vector3(0, 0, -1000));
 		break;
 	case's':
@@ -35,9 +35,12 @@ void PWSimulator::keyPressed(unsigned char key)
 		break;
 	case'd':
 		system->moveCharacter(Vector3(1000, 0, 0));
-		break;
+		break;*/
 	case ' ':
 		system->moveCharacter(Vector3(0, 10000, 0));
+		break;
+	case 'p':
+		system->changeFontActive();
 		break;
 		
 	default:

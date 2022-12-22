@@ -77,7 +77,8 @@ public:
 	UniformSolidsGenerator(PxPhysics* gP, PxScene* gS, Vector3 _meanPos, Vector3 _meanVel, int n);
 	Solids* addRigids();
 	void changePos(Vector3 pos) { meanPos = pos; };
-	void changeVel(Vector3 vel) { meanVel = vel; };
+	void changeVel(bool inc);
+	void setVel(Vector3 dir);
 	void changeDir(Vector3 dir);
 };
 class FireworkGenerator : public ParticleGenerator
