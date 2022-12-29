@@ -95,10 +95,10 @@ namespace Snippets
 				break;
 			case 'd':	mEye += viewY * 2.0f * speed;
 				break;
-			case 'W':   mEye += viewX * 2.0f * speed;
+			/*case 'W':   mEye += viewX * 2.0f * speed;
 				break;
 			case 'S':   mEye -= viewX * 2.0f * speed;
-				break;
+				break;*/
 			default:							
 				return false;
 			}

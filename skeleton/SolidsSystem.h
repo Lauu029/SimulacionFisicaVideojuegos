@@ -8,7 +8,9 @@ protected:
 	vector<Solids*>solidParticles;
 	Solids* mainCharacter = nullptr;
 	GaussianSolidsGenerator* generator = nullptr;
-	UniformSolidsGenerator* manguera = nullptr;
+	UniformSolidsGenerator* manguera1 = nullptr;
+	UniformSolidsGenerator* manguera2 = nullptr;
+	UniformSolidsGenerator* manguera3 = nullptr;
 	RenderItem* item = nullptr;
 	RenderItem* itemWall = nullptr;
 	PxRigidStatic* floor = nullptr;
@@ -21,6 +23,7 @@ protected:
 	SolidsForceRegistry* sFR = nullptr;
 	SolidsWindGenerator* wind = nullptr;
 	typeSolidSystem t;
+	Camera* cam = nullptr;
 public:
 	SolidsSystem(PxPhysics* gPhysics, PxScene* gScene, typeSolidSystem type);
 	void initSystem();
@@ -32,7 +35,7 @@ public:
 	void deleteWind();
 	void moveCharacter(Vector3 dir);
 	void keyPressed(unsigned char key);
-	void changeFontActive();
+	void changeFontActive(int numFuente, bool act);
 	~SolidsSystem();
 	GaussianSolidsGenerator* getGen() { return generator; };
 };

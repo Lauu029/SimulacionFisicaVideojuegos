@@ -21,7 +21,8 @@ protected:
 public:
 	void setParticle(Particle* _m) { model = _m; };
 	virtual list <Particle*> generateParticles() = 0;
-	void setActive() { active = !active; };
+	void changeActive() { active = !active; };
+	void setActive(bool act) { active = act; }
 	bool isActive() { return active; };
 	~ParticleGenerator();
 	std::random_device rd;

@@ -411,8 +411,10 @@ Solids* UniformSolidsGenerator::addRigids()
 void UniformSolidsGenerator::changeVel(bool inc)
 {
 	if (inc) {
-		if (meanVel.x < 100)
+		if (meanVel.magnitude() < 100) {
+			cout << meanVel.x << " " << meanVel.y << " " << meanVel.z << "\n";
 			meanVel.x++;
+		}
 	}
 	else if (meanVel.x > 10)
 		meanVel.x--;

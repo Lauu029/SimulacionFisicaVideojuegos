@@ -26,7 +26,7 @@ void Scene5::keyPressed(unsigned char key)
 	switch (tolower(key))
 	{
 	case'z':
-		system->getGen()->setActive();
+		system->getGen()->changeActive();
 		break;
 	case'x':
 		system->addWind();

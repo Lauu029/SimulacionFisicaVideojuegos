@@ -28,10 +28,10 @@ void Scene2::keyPressed(unsigned char key)
 		pS->generateFireworkSystem(FireworkType::batFuego);
 		break;
 	case 'b':
-			pS->getParticleGenerator(typeParticleGenerator::font)->setActive();
+			pS->getParticleGenerator(typeParticleGenerator::font)->changeActive();
 		break;
 	case 'n':
-			pS->getParticleGenerator(typeParticleGenerator::fog)->setActive();
+			pS->getParticleGenerator(typeParticleGenerator::fog)->changeActive();
 		break;
 	default:
 		break;

@@ -6,6 +6,7 @@ SolidsSystem::SolidsSystem(PxPhysics* _gPhysics, PxScene* _gScene, typeSolidSyst
 	timeSinceLastAdding = 0;
 	sFR = new SolidsForceRegistry();
 	t = type;
+	cam = GetCamera();
 }
 void SolidsSystem::initSystem() {
 
@@ -60,15 +61,15 @@ void SolidsSystem::createPWSystem()
 	mat = gPhysics->createMaterial(0.5, 0.5, 0.1);
 	PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform({ 0,10,0 }));
 	mainCharacter = new Solids({ 0,10,0 }, { 0,0,0 }, { col.r,col.g,col.b,1.0 }, { 3,3,3 },
-		gPhysics->createShape(PxBoxGeometry(10, 10, 10), *mat), newRigid,false);
+		gPhysics->createShape(PxBoxGeometry(10, 10, 10), *mat), newRigid, true);
 	mainCharacter->getRigid()->setMass(15);
 	mainCharacter->getRigid()->setMassSpaceInertiaTensor(PxVec3(0.0f, 0.0f, 0.0f));
 	gScene->addActor(*newRigid);
-	//Manguera
-	manguera = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 20,0, 0 }, 10);
-	manguera->setActive();
-	//mainCharacter->getRigid()->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
-	//mainCharacter->setMass(10);
+	//Mangueras
+	manguera1 = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 20,0, 0 }, 10);
+	manguera1->changeActive();
+	manguera2 = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 100,0, 0 }, 40);
+	manguera3 = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 1,0, 0 }, 10);
 }
 
 void SolidsSystem::update(double t)
@@ -87,17 +88,34 @@ void SolidsSystem::update(double t)
 			}
 		}
 	}
-	if (manguera != nullptr) {
-		Vector3 pos = GetCamera()->getTransform().p;
-		//manguera->changePos({20+ pos.x, pos.y, pos.z });
-		//manguera->changePos({ pos.x, pos.y - 10, pos.z });
-		//manguera->changeDir(GetCamera()->getDir());
-		if (manguera->isActive())
+	if (manguera1 != nullptr) {
+		Vector3 pos = cam->getTransform().p;
+		if (manguera1->isActive())
 		{
-			manguera->changePos({ pos.x, pos.y - 3, pos.z });
-			manguera->setVel(GetCamera()->getDir());
+			manguera1->changePos({ pos.x, pos.y - 3, pos.z });
+			manguera1->setVel(cam->getDir());
 			if (solidParticles.size() < 100)
-				solidParticles.push_back(manguera->addRigids());
+				solidParticles.push_back(manguera1->addRigids());
+		}
+	}
+	if (manguera2 != nullptr) {
+		Vector3 pos = cam->getTransform().p;
+		if (manguera2->isActive())
+		{
+			manguera2->changePos({ pos.x, pos.y - 3, pos.z });
+			manguera2->setVel(cam->getDir()*10);
+			if (solidParticles.size() < 100)
+				solidParticles.push_back(manguera2->addRigids());
+		}
+	}
+	if (manguera3 != nullptr) {
+		Vector3 pos = cam->getTransform().p;
+		if (manguera3->isActive())
+		{
+			manguera3->changePos({ pos.x, pos.y - 3, pos.z });
+			manguera3->setVel(cam->getDir()*0.5);
+			if (solidParticles.size() < 100)
+				solidParticles.push_back(manguera3->addRigids());
 		}
 	}
 	for (int i = 0; i < solidParticles.size(); i++)
@@ -116,13 +134,26 @@ void SolidsSystem::update(double t)
 	if (mainCharacter != nullptr) {
 		//GetCamera()->setEye(mainCharacter->getPos() + Vector3(200, 0, 0));
 		Vector3 playerPos = mainCharacter->getPos();
-		GetCamera()->setEye({ playerPos.x+10, playerPos.y + 10.0f, playerPos.z });
+		//cam->setEye({ playerPos.x+10, playerPos.y + 10.0f, playerPos.z });
 	}
 }
 
-void SolidsSystem::changeFontActive()
+void SolidsSystem::changeFontActive(int numFuente, bool act)
 {
-	manguera->setActive();
+	switch (numFuente)
+	{
+	case 1:
+		manguera1->setActive(act);
+		break;
+	case 2:
+		manguera2->setActive(act);
+		break;
+	case 3:
+		manguera3->setActive(act);
+		break;
+	default:
+		break;
+	}
 }
 
 SolidsSystem::~SolidsSystem()
@@ -163,7 +194,7 @@ void SolidsSystem::addWind()
 }
 void SolidsSystem::changeWaterVel(bool inc)
 {
-	manguera->changeVel(inc);
+	manguera1->changeVel(inc);
 }
 void SolidsSystem::deleteWind()
 {
@@ -178,4 +209,65 @@ void SolidsSystem::deleteWind()
 void SolidsSystem::moveCharacter(Vector3 dir)
 {
 	mainCharacter->move(dir);
+}
+void SolidsSystem::keyPressed(unsigned char key) {
+	switch (key)
+	{
+	case 'W':
+	{
+		PxVec3 mDir = cam->getDir();
+		PxVec3 force(mDir.x * 2.0f * 100, 0.0f, mDir.z * 2.0f * 100);
+		mainCharacter->addForce(force);
+		break;
+	}
+	case 'S':
+	{
+		PxVec3 mDir = cam->getDir();
+		PxVec3 force(mDir.x * 2.0f * 100, 0.0f, mDir.z * 2.0f * 100);
+		mainCharacter->addForce(-force);
+		break;
+	}
+	case 'A':
+	{
+		PxVec3 mDir = cam->getDir();
+		PxVec3 viewY = mDir.cross(PxVec3(0, 1, 0)).getNormalized();
+		PxVec3 force(viewY.x * 2.0f * 100, 0.0f, viewY.z * 2.0f * 100);
+		mainCharacter->addForce(-force);
+		break;
+	}
+	case 'D':
+	{
+		PxVec3 mDir = cam->getDir();
+		PxVec3 viewY = mDir.cross(PxVec3(0, 1, 0)).getNormalized();
+		PxVec3 force(viewY.x * 2.0f * 100, 0.0f, viewY.z * 2.0f * 100);
+		mainCharacter->addForce(force);
+		break;
+	}
+	case ' ':
+		moveCharacter(Vector3(0, 10000, 0));
+		break;
+	case 'z':
+		changeFontActive(1,!manguera1->isActive());
+		changeFontActive(2,false);
+		changeFontActive(3,false);
+		break;
+	case 'x':
+		changeFontActive(2, !manguera2->isActive());
+		changeFontActive(1, false);
+		changeFontActive(3, false);
+		break;
+	case 'c':
+		changeFontActive(3, !manguera3->isActive());
+		changeFontActive(2, false);
+		changeFontActive(1, false);
+		break;
+	case'o':
+		manguera1->changeVel(false);
+		break;
+	case'p':
+		manguera1->changeVel(true);
+		break;
+	default:
+		break;
+	}
 }
