@@ -288,7 +288,7 @@ void SolidsSystem::keyPressed(unsigned char key) {
 }
 void SolidsSystem::createDirtWall() {
 	//Muro
-	wall = gPhysics->createRigidStatic(PxTransform(PxVec3(10, 10,50)));
+	wall = gPhysics->createRigidStatic(PxTransform(PxVec3(10, 20, 50)));
 	PxShape* shape = CreateShape(PxBoxGeometry(40, 20, 5));
 	wall->attachShape(*shape);
 	hsv color = { 154.0,0.73,0.7 };
@@ -298,12 +298,36 @@ void SolidsSystem::createDirtWall() {
 
 	//suciedad
 	Suciedades = new UniformSolidsGenerator(gPhysics, gScene,
-		{ 10, 10, 55 }, { 0,0, 0 }, 10, Type1Dirt(),40,20,0);
-	for (int i = 0; i < 500; i++)
+		{ 10, 20, 55 }, { 0,0, 0 }, 10, Type1Dirt(), 40, 20, 0);
+	//Parte alante/atrás
+	for (int i = 0; i < 200; i++)
 	{
 		Solids* d = Suciedades->addRigids();
 		d->getRigid()->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
 		dirt.push_back(d);
 	}
-
+	Suciedades->changePos({10, 20, 45});
+	for (int i = 0; i < 200; i++)
+	{
+		Solids* d = Suciedades->addRigids();
+		d->getRigid()->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
+		dirt.push_back(d);
+	}
+	//laterales
+	Suciedades->changePos({ -30,20,50 });
+	Suciedades->changefactors(0, 20, 5);
+	for (int i = 0; i < 50; i++)
+	{
+		Solids* d = Suciedades->addRigids();
+		d->getRigid()->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
+		dirt.push_back(d);
+	}
+	Suciedades->changePos({ 50,20,50 });
+	Suciedades->changefactors(0, 20, 5);
+	for (int i = 0; i < 50; i++)
+	{
+		Solids* d = Suciedades->addRigids();
+		d->getRigid()->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
+		dirt.push_back(d);
+	}
 }

@@ -60,7 +60,7 @@ class Type1Dirt :public SolidType {
 public:
 	Type1Dirt()
 	{
-		size = { 20,20,20 };
+		size = {50,50,50 };
 		colorHsv = { 37.0,0.65,0.13 };
 		transformColor();
 		fade = false;

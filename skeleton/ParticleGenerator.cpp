@@ -436,3 +436,7 @@ void UniformSolidsGenerator::changeDir(Vector3 dir)
 	dir.normalize();
 	meanVel = { meanVel.x * dir.x, meanVel.y * dir.y, meanVel.z * dir.z };
 }
+
+void UniformSolidsGenerator::changefactors(int x, int y, int z) {
+	facX = x; facY = y; facZ = z;
+}
