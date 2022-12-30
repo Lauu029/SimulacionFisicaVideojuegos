@@ -15,7 +15,7 @@ class ParticleGenerator
 protected:
 	Vector3 meanPos, meanVel;
 	int numParticles;
-	Particle* model;
+	Particle* model = nullptr;
 	bool active;
 
 public:
@@ -74,8 +74,9 @@ protected:
 	PxPhysics* gPhysics = nullptr;
 	PxScene* gScene = nullptr;
 	Vector3 velWidth, posWidth;
+	SolidType type;
 public:
-	UniformSolidsGenerator(PxPhysics* gP, PxScene* gS, Vector3 _meanPos, Vector3 _meanVel, int n);
+	UniformSolidsGenerator(PxPhysics* gP, PxScene* gS, Vector3 _meanPos, Vector3 _meanVel, int n, SolidType t);
 	Solids* addRigids();
 	void changePos(Vector3 pos) { meanPos = pos; };
 	void changeVel(bool inc);

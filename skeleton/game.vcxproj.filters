@@ -48,17 +48,17 @@
     <ClCompile Include="Scene5.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Solids.cpp">
-      <Filter>Particles</Filter>
-    </ClCompile>
-    <ClCompile Include="SolidsSystem.cpp">
-      <Filter>Particles</Filter>
-    </ClCompile>
     <ClCompile Include="SolidsForceGenerator.cpp">
       <Filter>Forces</Filter>
     </ClCompile>
     <ClCompile Include="SolidsForceRegistry.cpp">
       <Filter>Forces</Filter>
+    </ClCompile>
+    <ClCompile Include="Solids.cpp">
+      <Filter>Solids</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidsSystem.cpp">
+      <Filter>Solids</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -116,17 +116,20 @@
     <ClInclude Include="Scene5.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Solids.h">
-      <Filter>Particles</Filter>
-    </ClInclude>
-    <ClInclude Include="SolidsSystem.h">
-      <Filter>Particles</Filter>
-    </ClInclude>
     <ClInclude Include="SolidsForceRegistry.h">
       <Filter>Forces</Filter>
     </ClInclude>
     <ClInclude Include="SolidsForceGenerator.h">
       <Filter>Forces</Filter>
+    </ClInclude>
+    <ClInclude Include="Solids.h">
+      <Filter>Solids</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidsSystem.h">
+      <Filter>Solids</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidType.h">
+      <Filter>Solids</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -141,6 +144,9 @@
     </Filter>
     <Filter Include="Particles">
       <UniqueIdentifier>{a94c0c77-547f-460a-92e5-b3a93ee15e3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Solids">
+      <UniqueIdentifier>{9c2aa668-e86f-44c2-9954-5eb0260e2a01}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

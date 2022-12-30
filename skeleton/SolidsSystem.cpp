@@ -55,21 +55,21 @@ void SolidsSystem::createPWSystem()
 	item = new RenderItem(shape, floor, { col.r, col.g ,col.b, 1 });
 	gScene->addActor(*floor);
 	//Personaje
-	color = { 150.0, 0.8, 0.9 };
-	col = hsv2rgb(color);
 	PxMaterial* mat;
 	mat = gPhysics->createMaterial(0.5, 0.5, 0.1);
 	PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform({ 0,10,0 }));
-	mainCharacter = new Solids({ 0,10,0 }, { 0,0,0 }, { col.r,col.g,col.b,1.0 }, { 3,3,3 },
-		gPhysics->createShape(PxBoxGeometry(10, 10, 10), *mat), newRigid, true);
+	SolidType solT;
+	
+	mainCharacter = new Solids({ 0,10,0 }, { 0,0,0 },
+		gPhysics->createShape(PxBoxGeometry(10, 10, 10), *mat),newRigid, PWSCharacter());
 	mainCharacter->getRigid()->setMass(15);
 	mainCharacter->getRigid()->setMassSpaceInertiaTensor(PxVec3(0.0f, 0.0f, 0.0f));
 	gScene->addActor(*newRigid);
 	//Mangueras
-	manguera1 = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 20,0, 0 }, 10);
+	manguera1 = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 20,0, 0 }, 10, Manguera1Features());
 	manguera1->changeActive();
-	manguera2 = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 100,0, 0 }, 40);
-	manguera3 = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 1,0, 0 }, 10);
+	manguera2 = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 100,0, 0 }, 40,Manguera2Features());
+	manguera3 = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 1,0, 0 }, 10,Manguera3Features());
 }
 
 void SolidsSystem::update(double t)
@@ -182,6 +182,12 @@ SolidsSystem::~SolidsSystem()
 		delete sFR;
 	if (mainCharacter != nullptr)
 		delete mainCharacter;
+	if (manguera1 != nullptr)
+		delete manguera1;
+	if (manguera2 != nullptr)
+		delete manguera2;
+	if (manguera3 != nullptr)
+		delete manguera3;
 }
 void SolidsSystem::addWind()
 {

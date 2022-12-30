@@ -5,8 +5,10 @@
 #include "core.hpp"
 #include "RenderUtils.hpp"
 #include "checkML.h"
+#include "SolidType.h"
 
 using namespace physx;
+
 class Solids
 {
 protected:
@@ -19,9 +21,9 @@ protected:
 	Vector3 size;
 	int time;
 	Vector3 force;
+	SolidType type;
 public:
-	Solids(Vector3 _meanPos, Vector3 _meanVel,Vector4 col, Vector3 s,
-	 PxShape* _gShape, PxRigidDynamic* rig, bool render);
+	Solids(Vector3 _meanPos, Vector3 _meanVel, PxShape* _gShape, PxRigidDynamic* rig, SolidType _t);
 	void update(double t);
 	void kill() { alive = false; };
 	bool isAlive() { return alive; };

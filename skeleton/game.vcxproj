@@ -300,6 +300,7 @@
     <ClInclude Include="SolidsForceGenerator.h" />
     <ClInclude Include="SolidsForceRegistry.h" />
     <ClInclude Include="SolidsSystem.h" />
+    <ClInclude Include="SolidType.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

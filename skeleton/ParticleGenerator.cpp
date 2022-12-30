@@ -356,12 +356,14 @@ Solids* GaussianSolidsGenerator::addRigids()
 	sizeX = std::abs(dist(gen) * 20);
 	sizeY = std::abs(dist(gen) * 20);
 	sizeZ = std::abs(dist(gen) * 20);
-
+	SolidType ty;
+	ty.size = { sizeX,sizeY,sizeZ };
+	ty.col = { col.r,col.g,col.b,1.0 };
 	PxMaterial* mat;
 	mat = gPhysics->createMaterial((float)(rand() % 11) / 10, (float)(rand() % 11) / 10, (float)(rand() % 101) / 100);
 	PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform(newPos));
-	rigids = new Solids(meanPos, meanVel, { col.r,col.g,col.b,1.0 }, { sizeX,sizeY,sizeZ },
-		gPhysics->createShape(PxBoxGeometry(sizeX, sizeY, sizeZ), *mat), newRigid, true);
+	rigids = new Solids(meanPos, meanVel,
+		gPhysics->createShape(PxBoxGeometry(sizeX, sizeY, sizeZ), *mat), newRigid, ty);
 	gScene->addActor(*newRigid);
 	return rigids;
 }
@@ -370,13 +372,14 @@ GaussianSolidsGenerator::~GaussianSolidsGenerator()
 {
 }
 
-UniformSolidsGenerator::UniformSolidsGenerator(PxPhysics* gP, PxScene* gS, Vector3 _meanPos, Vector3 _meanVel, int n) :UniformParticleGenerator(_meanPos, _meanVel, n, false, 0)
+UniformSolidsGenerator::UniformSolidsGenerator(PxPhysics* gP, PxScene* gS, Vector3 _meanPos, Vector3 _meanVel, int n, SolidType t) :UniformParticleGenerator(_meanPos, _meanVel, n, false, 0)
 {
 	meanPos = _meanPos;
 	meanVel = _meanVel;
 	gPhysics = gP;
 	gScene = gS;
 	numParticles = n;
+	type = t;
 }
 
 Solids* UniformSolidsGenerator::addRigids()
@@ -397,13 +400,11 @@ Solids* UniformSolidsGenerator::addRigids()
 	//ac += distribution(gen) * 20;
 	PxReal size = 0.3;
 	Solids* rigids;
-	hsv color = {185.0,0.93,0.65 };
-	rgb col = hsv2rgb(color);
+	
 	PxMaterial* mat;
 	mat = gPhysics->createMaterial((float)(rand() % 11) / 10, (float)(rand() % 11) / 10, (float)(rand() % 101) / 100);
 	PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform(newPos));
-	rigids = new Solids(meanPos, meanVel, { col.r,col.g,col.b,1.0 }, { size,size,size },
-		gPhysics->createShape(PxSphereGeometry(size), *mat), newRigid,true);
+	rigids = new Solids(meanPos, meanVel, gPhysics->createShape(PxSphereGeometry(size), *mat), newRigid, type);
 	gScene->addActor(*newRigid);
 	return rigids;
 }
