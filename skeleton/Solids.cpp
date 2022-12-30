@@ -17,7 +17,7 @@ Solids::Solids(Vector3 _meanPos, Vector3 _meanVel,
 	item = new RenderItem(gShape, rigid, type.col);
 	time = 0;
 	force = { 0, 0, 0 };
-	
+	gst = type.gst;
 }
 void Solids::update(double t) {
 	time++;

@@ -1,5 +1,6 @@
 #pragma once
 #include "ColorHSV.h"
+enum generalSolidType { Man1, Man2, Man3, Dirt1, Dirt2, Dirt3, General };
 class SolidType {
 public:
 	Vector3 size;
@@ -7,6 +8,7 @@ public:
 	Vector4 col;
 	bool fade;
 	bool render;
+	generalSolidType gst;
 protected:
 	void transformColor() {
 		rgb rgbTransf = hsv2rgb(colorHsv);
@@ -21,6 +23,7 @@ public:
 		transformColor();
 		fade = false;
 		render = true;
+		gst = generalSolidType::General;
 	}
 };
 class Manguera1Features :public SolidType {
@@ -32,6 +35,7 @@ public:
 		transformColor();
 		fade = true;
 		render = true;
+		gst = generalSolidType::Man1;
 	}
 };
 class Manguera2Features :public SolidType {
@@ -43,6 +47,7 @@ public:
 		transformColor();
 		fade = true;
 		render = true;
+		gst = generalSolidType::Man2;
 	}
 };
 class Manguera3Features :public SolidType {
@@ -54,16 +59,18 @@ public:
 		transformColor();
 		fade = true;
 		render = true;
+		gst = generalSolidType::Man3;
 	}
 };
 class Type1Dirt :public SolidType {
 public:
 	Type1Dirt()
 	{
-		size = {50,50,50 };
+		size = {3,3,3 };
 		colorHsv = { 37.0,0.65,0.13 };
 		transformColor();
 		fade = false;
 		render = true;
+		gst = generalSolidType::Dirt1;
 	}
 };

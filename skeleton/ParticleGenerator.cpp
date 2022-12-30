@@ -409,7 +409,7 @@ Solids* UniformSolidsGenerator::addRigids()
 	PxMaterial* mat;
 	mat = gPhysics->createMaterial((float)(rand() % 11) / 10, (float)(rand() % 11) / 10, (float)(rand() % 101) / 100);
 	PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform(newPos));
-	rigids = new Solids(meanPos, meanVel, gPhysics->createShape(PxSphereGeometry(size), *mat), newRigid, type);
+	rigids = new Solids(meanPos, meanVel, gPhysics->createShape(PxSphereGeometry(type.size.x), *mat), newRigid, type);
 	gScene->addActor(*newRigid);
 	return rigids;
 }

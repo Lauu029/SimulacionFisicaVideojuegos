@@ -22,6 +22,7 @@ protected:
 	int time;
 	Vector3 force;
 	SolidType type;
+	generalSolidType gst = General;
 public:
 	Solids(Vector3 _meanPos, Vector3 _meanVel, PxShape* _gShape, PxRigidDynamic* rig, SolidType _t);
 	void update(double t);
