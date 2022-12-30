@@ -11,6 +11,7 @@ protected:
 	UniformSolidsGenerator* manguera1 = nullptr;
 	UniformSolidsGenerator* manguera2 = nullptr;
 	UniformSolidsGenerator* manguera3 = nullptr;
+	UniformSolidsGenerator* Suciedades = nullptr;
 	RenderItem* item = nullptr;
 	RenderItem* itemWall = nullptr;
 	PxRigidStatic* floor = nullptr;
@@ -24,11 +25,13 @@ protected:
 	SolidsWindGenerator* wind = nullptr;
 	typeSolidSystem t;
 	Camera* cam = nullptr;
+	vector<Solids*> dirt;
 public:
 	SolidsSystem(PxPhysics* gPhysics, PxScene* gScene, typeSolidSystem type);
 	void initSystem();
 	void CreateNormalSystem();
 	void createPWSystem();
+	void createDirtWall();
 	void update(double t);
 	void addWind();
 	void changeWaterVel(bool inc);

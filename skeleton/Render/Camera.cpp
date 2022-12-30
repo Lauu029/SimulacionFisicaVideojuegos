@@ -33,6 +33,9 @@
 #include <ctype.h>
 #include "foundation/PxMat33.h"
 
+#include <glut.h>
+#include <Windows.h>
+
 using namespace physx;
 
 namespace Snippets
@@ -53,8 +56,6 @@ namespace Snippets
 		// LEFT: 0 - RIGHT: 2 - MIDDLE: 1 ///// DOWN : 0 - UP : 1
 		PX_UNUSED(state);
 		PX_UNUSED(button);
-		if(button==1)
-			freeControl = !freeControl;
 		mMouseX = x;
 		mMouseY = y;
 	}
@@ -129,7 +130,8 @@ namespace Snippets
 		mDir.normalize();
 
 		mMouseX = x;
-		mMouseY = y;
+		mMouseY = y;		
+		
 	}
 
 	PxTransform Camera::getTransform() const

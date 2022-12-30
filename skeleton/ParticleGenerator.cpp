@@ -372,7 +372,8 @@ GaussianSolidsGenerator::~GaussianSolidsGenerator()
 {
 }
 
-UniformSolidsGenerator::UniformSolidsGenerator(PxPhysics* gP, PxScene* gS, Vector3 _meanPos, Vector3 _meanVel, int n, SolidType t) :UniformParticleGenerator(_meanPos, _meanVel, n, false, 0)
+UniformSolidsGenerator::UniformSolidsGenerator(PxPhysics* gP, PxScene* gS, Vector3 _meanPos, Vector3 _meanVel, int n,
+	SolidType t, int x, int y, int z) :UniformParticleGenerator(_meanPos, _meanVel, n, false, 0)
 {
 	meanPos = _meanPos;
 	meanVel = _meanVel;
@@ -380,14 +381,18 @@ UniformSolidsGenerator::UniformSolidsGenerator(PxPhysics* gP, PxScene* gS, Vecto
 	gScene = gS;
 	numParticles = n;
 	type = t;
+	facX = x;
+	facY = y;
+	facZ = z;
+
 }
 
 Solids* UniformSolidsGenerator::addRigids()
 {
 	Vector3 newPos = meanPos;
-	newPos.x += distribution(gen);
-	newPos.y += distribution(gen);
-	newPos.z += distribution(gen);
+	newPos.x += distribution(gen) * facX;
+	newPos.y += distribution(gen) * facY;
+	newPos.z += distribution(gen) * facZ;
 
 
 	Vector3 newVel = meanVel;

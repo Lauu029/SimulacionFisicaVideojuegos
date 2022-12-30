@@ -69,7 +69,6 @@ namespace Snippets
 		int	mMouseYy;
 
 		bool controlled = false;
-		bool freeControl = false;
 	};
 }
 

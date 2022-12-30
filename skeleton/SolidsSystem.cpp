@@ -54,22 +54,24 @@ void SolidsSystem::createPWSystem()
 	floor->attachShape(*shape);
 	item = new RenderItem(shape, floor, { col.r, col.g ,col.b, 1 });
 	gScene->addActor(*floor);
+	//Muro
+	createDirtWall();
 	//Personaje
 	PxMaterial* mat;
 	mat = gPhysics->createMaterial(0.5, 0.5, 0.1);
-	PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform({ 0,10,0 }));
-	SolidType solT;
-	
+	PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform({ 0,2,0 }));
+
 	mainCharacter = new Solids({ 0,10,0 }, { 0,0,0 },
-		gPhysics->createShape(PxBoxGeometry(10, 10, 10), *mat),newRigid, PWSCharacter());
+		gPhysics->createShape(PxBoxGeometry(10, 10, 10), *mat), newRigid, PWSCharacter());
 	mainCharacter->getRigid()->setMass(15);
 	mainCharacter->getRigid()->setMassSpaceInertiaTensor(PxVec3(0.0f, 0.0f, 0.0f));
+	mainCharacter->getRigid()->setAngularDamping(0.2);
 	gScene->addActor(*newRigid);
 	//Mangueras
 	manguera1 = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 20,0, 0 }, 10, Manguera1Features());
 	manguera1->changeActive();
-	manguera2 = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 100,0, 0 }, 40,Manguera2Features());
-	manguera3 = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 1,0, 0 }, 10,Manguera3Features());
+	manguera2 = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 100,0, 0 }, 40, Manguera2Features());
+	manguera3 = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 1,0, 0 }, 10, Manguera3Features());
 }
 
 void SolidsSystem::update(double t)
@@ -103,7 +105,7 @@ void SolidsSystem::update(double t)
 		if (manguera2->isActive())
 		{
 			manguera2->changePos({ pos.x, pos.y - 3, pos.z });
-			manguera2->setVel(cam->getDir()*10);
+			manguera2->setVel(cam->getDir() * 10);
 			if (solidParticles.size() < 100)
 				solidParticles.push_back(manguera2->addRigids());
 		}
@@ -113,7 +115,7 @@ void SolidsSystem::update(double t)
 		if (manguera3->isActive())
 		{
 			manguera3->changePos({ pos.x, pos.y - 3, pos.z });
-			manguera3->setVel(cam->getDir()*0.5);
+			manguera3->setVel(cam->getDir() * 0.5);
 			if (solidParticles.size() < 100)
 				solidParticles.push_back(manguera3->addRigids());
 		}
@@ -164,6 +166,11 @@ SolidsSystem::~SolidsSystem()
 		delete s;
 	}
 	solidParticles.clear();
+	for (auto d : dirt) {
+		gScene->removeActor(*d->getRigid());
+		delete d;
+	}
+	dirt.clear();
 	if (generator != nullptr)
 		delete generator;
 	if (itemWall != nullptr)
@@ -188,6 +195,8 @@ SolidsSystem::~SolidsSystem()
 		delete manguera2;
 	if (manguera3 != nullptr)
 		delete manguera3;
+	if (Suciedades != nullptr)
+		delete Suciedades;
 }
 void SolidsSystem::addWind()
 {
@@ -253,9 +262,9 @@ void SolidsSystem::keyPressed(unsigned char key) {
 		moveCharacter(Vector3(0, 10000, 0));
 		break;
 	case 'z':
-		changeFontActive(1,!manguera1->isActive());
-		changeFontActive(2,false);
-		changeFontActive(3,false);
+		changeFontActive(1, !manguera1->isActive());
+		changeFontActive(2, false);
+		changeFontActive(3, false);
 		break;
 	case 'x':
 		changeFontActive(2, !manguera2->isActive());
@@ -276,4 +285,25 @@ void SolidsSystem::keyPressed(unsigned char key) {
 	default:
 		break;
 	}
+}
+void SolidsSystem::createDirtWall() {
+	//Muro
+	wall = gPhysics->createRigidStatic(PxTransform(PxVec3(10, 10,50)));
+	PxShape* shape = CreateShape(PxBoxGeometry(40, 20, 5));
+	wall->attachShape(*shape);
+	hsv color = { 154.0,0.73,0.7 };
+	rgb col = hsv2rgb(color);
+	itemWall = new RenderItem(shape, wall, { col.r, col.g ,col.b,1 });
+	gScene->addActor(*wall);
+
+	//suciedad
+	Suciedades = new UniformSolidsGenerator(gPhysics, gScene,
+		{ 10, 10, 55 }, { 0,0, 0 }, 10, Type1Dirt(),40,20,0);
+	for (int i = 0; i < 500; i++)
+	{
+		Solids* d = Suciedades->addRigids();
+		d->getRigid()->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
+		dirt.push_back(d);
+	}
+
 }

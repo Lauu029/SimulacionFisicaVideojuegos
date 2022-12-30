@@ -75,8 +75,10 @@ protected:
 	PxScene* gScene = nullptr;
 	Vector3 velWidth, posWidth;
 	SolidType type;
+	int facX, facY, facZ;
 public:
-	UniformSolidsGenerator(PxPhysics* gP, PxScene* gS, Vector3 _meanPos, Vector3 _meanVel, int n, SolidType t);
+	UniformSolidsGenerator(PxPhysics* gP, PxScene* gS, Vector3 _meanPos, Vector3 _meanVel, int n, 
+		SolidType t,  int x=1, int y=1, int z=1);
 	Solids* addRigids();
 	void changePos(Vector3 pos) { meanPos = pos; };
 	void changeVel(bool inc);
