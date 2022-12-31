@@ -175,7 +175,7 @@ void FireworkGenerator::FuegosCorazon(Vector3& newVel, float increase, Firework*
 		newVel.y = (13 * cos(increase * i) - 5 * cos(2 * increase * i) - 2 * cos(3 * increase * i) - cos(4 * increase * i)) * 10;
 		newVel.z = 0;
 
-		Firework* newP = new Firework(FireworkHeart(15), 0, parent->type(), true);
+		Firework* newP = new Firework(FireworkHeart(15, { 0.0 ,0.0, 150.0 }), 0, parent->type(), true);
 		newP->setPosition(parent->getPos());
 		newP->setVelocity(newVel);
 		listParticles.push_back(newP);
@@ -190,7 +190,7 @@ void FireworkGenerator::CircleFirework(Vector3& newVel, float increase, Firework
 		newVel.y = sin(increase * i) * 20;
 		newVel.z = 1;
 		float color = 360.0 - parent->getNumHijos();
-		Firework* newP = new Firework(RandomFireworks(std::rand() % 20 + 14, { color,1.0f,0.5f }, parent->getSize().x / 2), parent->getNumHijos() - 10, parent->type(), true);
+		Firework* newP = new Firework(RandomFireworks(std::rand() % 20 + 14, { color,1.0f,0.5f }, parent->getSize().x / 2, { 0.0 ,0.0, 100.0 }), parent->getNumHijos() - 10, parent->type(), true);
 
 		newP->setPosition(parent->getPos());
 		newP->setVelocity(newVel);
@@ -209,7 +209,7 @@ void FireworkGenerator::RandomFirework(Vector3& newVel, Firework* parent, Vector
 		newVel.z += distribution(gen) * 5;
 
 		float color = 360.0 / parent->getNumHijos();
-		Firework* newP = new Firework(RandomFireworks(std::rand() % 50 + 14, { color,1.0f,0.5f }, parent->getSize().x / 2), parent->getNumHijos() - 5, parent->type(), true);
+		Firework* newP = new Firework(RandomFireworks(std::rand() % 50 + 14, { color,1.0f,0.5f }, parent->getSize().x / 2, { 0.0 ,0.0, 100.0 }), parent->getNumHijos() - 5, parent->type(), true);
 
 		newP->setPosition(parent->getPos());
 		newP->setVelocity(newVel);

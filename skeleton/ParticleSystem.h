@@ -60,6 +60,6 @@ public:
 	void FlotationSim();
 	void changeLiquid(liquidType l);
 	ParticleGenerator* getParticleGenerator(typeParticleGenerator t);
-	void generateFireworkSystem(FireworkType t);
+	void generateFireworkSystem(FireworkType t, Vector3 pos);
 	~ParticleSystem();
 };

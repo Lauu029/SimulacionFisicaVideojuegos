@@ -189,8 +189,8 @@ SolidsSystem::~SolidsSystem()
 		item->release();
 	if (floor != nullptr)
 		gScene->removeActor(*floor);
-	if (wall != nullptr)
-		gScene->removeActor(*wall);
+	for (auto a : objetos)
+		gScene->removeActor(*a);
 	if (wind != nullptr) {
 		delete wind;
 		wind = nullptr;
@@ -288,11 +288,12 @@ void SolidsSystem::keyPressed(unsigned char key) {
 		changeFontActive(2, false);
 		changeFontActive(1, false);
 		break;
-	case'o':
-		manguera1->changeVel(false);
-		break;
 	case'p':
-		manguera1->changeVel(true);
+		for (auto d : dirt) {
+			gScene->removeActor(*d->getRigid());
+			delete d;
+		}
+		dirt.clear();
 		break;
 	default:
 		break;
@@ -303,20 +304,63 @@ void SolidsSystem::createLevel1() {
 	//Muro
 	Vector3 posMuro = { 10, 20, 50 };
 	Vector3 sizeMuro = { 40, 20, 10 };
-	wall = gPhysics->createRigidStatic(PxTransform(posMuro));
+	PxRigidStatic* wall = gPhysics->createRigidStatic(PxTransform(posMuro));
 	PxShape* shape = CreateShape(PxBoxGeometry(sizeMuro));
 	wall->attachShape(*shape);
 	hsv color = { 154.0,0.73,0.7 };
 	rgb col = hsv2rgb(color);
 	itemWall = new RenderItem(shape, wall, { col.r, col.g ,col.b,1 });
+	objetos.push_back(wall);
 	gScene->addActor(*wall);
 
 	//suciedad
 	Suciedades = new UniformSolidsGenerator(gPhysics, gScene,
 		{ posMuro.x,posMuro.y, posMuro.z + sizeMuro.z }, { 0,0, 0 }, 10, Type1Dirt(), sizeMuro.x, sizeMuro.y, 0);
 	putDirt(posMuro, sizeMuro, Type1Dirt(), 100);
-	putDirt(posMuro, sizeMuro, Type2Dirt(), 150);
-	putDirt(posMuro, sizeMuro, Type3Dirt(), 50);
+	putDirt(posMuro, sizeMuro, Type2Dirt(), 70);
+	putDirt(posMuro, sizeMuro, Type3Dirt(), 30);
+
+}
+void SolidsSystem::createLevel2() {
+	//Muro
+	Vector3 posMuro = {80, 10, -3 };
+	Vector3 sizeMuro = { 100, 10, 10 };
+	PxRigidStatic* wall = gPhysics->createRigidStatic(PxTransform(posMuro));
+	PxShape* shape = CreateShape(PxBoxGeometry(sizeMuro));
+	wall->attachShape(*shape);
+	hsv color = { 340, 1.0 , 1.0 };
+	rgb col = hsv2rgb(color);
+	itemWall = new RenderItem(shape, wall, { col.r, col.g ,col.b,1 });
+	objetos.push_back(wall);
+	gScene->addActor(*wall);
+
+	//suciedad
+	Suciedades = new UniformSolidsGenerator(gPhysics, gScene,
+		{ posMuro.x,posMuro.y, posMuro.z + sizeMuro.z }, { 0,0, 0 }, 10, Type1Dirt(), sizeMuro.x, sizeMuro.y, 0);
+	putDirt(posMuro, sizeMuro, Type1Dirt(), 100);
+	putDirt(posMuro, sizeMuro, Type2Dirt(), 70);
+	putDirt(posMuro, sizeMuro, Type3Dirt(), 30);
+
+}
+void SolidsSystem::createLevel3() {
+	//Muro
+	Vector3 posMuro = { 10, 20, 50 };
+	Vector3 sizeMuro = { 40, 20, 10 };
+	wall = gPhysics->createRigidStatic(PxTransform(posMuro));
+	PxShape* shape = CreateShape(PxBoxGeometry(sizeMuro));
+	wall->attachShape(*shape);
+	hsv color = { 154.0,0.73,0.7 };
+	rgb col = hsv2rgb(color);
+	itemWall = new RenderItem(shape, wall, { col.r, col.g ,col.b,1 });
+	objetos.push_back(wall);
+	gScene->addActor(*wall);
+
+	//suciedad
+	Suciedades = new UniformSolidsGenerator(gPhysics, gScene,
+		{ posMuro.x,posMuro.y, posMuro.z + sizeMuro.z }, { 0,0, 0 }, 10, Type1Dirt(), sizeMuro.x, sizeMuro.y, 0);
+	putDirt(posMuro, sizeMuro, Type1Dirt(), 100);
+	putDirt(posMuro, sizeMuro, Type2Dirt(), 70);
+	putDirt(posMuro, sizeMuro, Type3Dirt(), 30);
 
 }
 
@@ -332,7 +376,7 @@ void SolidsSystem::putDirt(Vector3 const& posMuro, Vector3 const& sizeMuro, Soli
 		d->getRigid()->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
 		dirt.push_back(d);
 	}
-	Suciedades->changePos({ posMuro.x,posMuro.y, posMuro.z - sizeMuro.z -  tipeDirt.size.x });
+	Suciedades->changePos({ posMuro.x,posMuro.y, posMuro.z - sizeMuro.z - tipeDirt.size.x });
 	max = (rand() % 2) * minAmount;
 	for (int i = 0; i < max; i++)
 	{
@@ -358,4 +402,18 @@ void SolidsSystem::putDirt(Vector3 const& posMuro, Vector3 const& sizeMuro, Soli
 		d->getRigid()->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
 		dirt.push_back(d);
 	}
+}
+void SolidsSystem::clearLevel() {
+	changeFontActive(2, false);
+	changeFontActive(1, false);
+	changeFontActive(3, false);
+	for (auto a : objetos) {
+		gScene->removeActor(*a);
+	}
+	objetos.clear();
+	//wall = nullptr;
+	if (itemWall != nullptr)
+		itemWall->release();
+	//itemWall->release();
+
 }

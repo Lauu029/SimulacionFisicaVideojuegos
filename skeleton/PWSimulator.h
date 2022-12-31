@@ -10,10 +10,12 @@ public:
 	virtual void initScene() override;
 	virtual void updateScene(double t) override;
 	virtual void keyPressed(unsigned char key) override;
+protected:
+	void clearLevel();
 	void changeLevel();
 	int contadorFuegos;
-protected:
 	SolidsSystem* system = nullptr;
 	int level;
+	bool shouldIChange = true;
 };
 

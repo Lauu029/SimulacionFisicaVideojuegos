@@ -143,7 +143,7 @@ public:
 };
 class PresetFirework : public particleType {
 public:
-	PresetFirework(int rT) {
+	PresetFirework(int rT, Vector3 pos) {
 		mass = 1.0f;
 		vel = { 0.0f,100.0f,0.0f };
 		ac = { 0.0f,0.0f, 0.0f };
@@ -155,13 +155,13 @@ public:
 		rgb rgb = hsv2rgb(col);
 		color = { rgb.r,rgb.g,rgb.b,1.0 };
 
-		pose = physx::PxTransform{ 0.0 ,0.0, 100.0 };
+		pose = physx::PxTransform (pos);
 		s = particleShape::Sphere;
 	}
 };
 class FireworkHeart : public particleType {
 public:
-	FireworkHeart(int rT) {
+	FireworkHeart(int rT, Vector3 pos) {
 		mass = 1.0f;
 		vel = { 0.0f,30.0f,0.0f };
 		ac = { 0.0f,0.0f, 0.0f };
@@ -173,13 +173,13 @@ public:
 		rgb rgb = hsv2rgb(col);
 		color = { rgb.r,rgb.g,rgb.b,1.0 };
 
-		pose = physx::PxTransform{ 0.0 ,0.0, 150.0 };
+		pose = physx::PxTransform(pos);
 		s = particleShape::Sphere;
 	}
 };
 class RandomFireworks : public particleType {
 public:
-	RandomFireworks(int rT, Vector3 _color, float _s) {
+	RandomFireworks(int rT, Vector3 _color, float _s, Vector3 pos) {
 		mass = 1.0f;
 		vel = { 0.0f,30.0f,0.0f };
 		ac = { 0.0f,0.0f, 0.0f };
@@ -191,13 +191,13 @@ public:
 		rgb rgb = hsv2rgb(col);
 		color = { rgb.r,rgb.g,rgb.b,1.0 };
 
-		pose = physx::PxTransform{ 0.0 ,0.0, 100.0 };
+		pose = physx::PxTransform(pos);
 		s = particleShape::Sphere;
 	}
 };
 class BatFireworks : public particleType {
 public:
-	BatFireworks(int rT) {
+	BatFireworks(int rT, Vector3 pos) {
 		mass = 1.0f;
 		vel = { 0.0f,30.0f,0.0f };
 		ac = { 0.0f,0.0f, 0.0f };
@@ -209,7 +209,7 @@ public:
 		rgb rgb = hsv2rgb(col);
 		color = { rgb.r,rgb.g,rgb.b,1.0 };
 
-		pose = physx::PxTransform{ 0.0 ,0.0, 100.0 };
+		pose = physx::PxTransform(pos);
 		s = particleShape::Sphere;
 	}
 };

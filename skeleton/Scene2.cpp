@@ -16,16 +16,16 @@ void Scene2::keyPressed(unsigned char key)
 	switch (tolower(key))
 	{
 	case 'z':
-		pS->generateFireworkSystem(FireworkType::heart);
+		pS->generateFireworkSystem(FireworkType::heart, { 0.0 ,0.0, 150.0 });
 		break;
 	case 'x':
-		pS->generateFireworkSystem(FireworkType::random);
+		pS->generateFireworkSystem(FireworkType::random, { 0.0 ,0.0, 100.0 });
 		break;
 	case 'c':
-		pS->generateFireworkSystem(FireworkType::circle);
+		pS->generateFireworkSystem(FireworkType::circle, { 0.0 ,0.0, 100.0 });
 		break;
 	case 'v':
-		pS->generateFireworkSystem(FireworkType::batFuego);
+		pS->generateFireworkSystem(FireworkType::batFuego, { 0.0 ,0.0, 100.0 });
 		break;
 	case 'b':
 			pS->getParticleGenerator(typeParticleGenerator::font)->changeActive();

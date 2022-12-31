@@ -4,7 +4,7 @@ PWSimulator::PWSimulator(PxPhysics* gPhysics, PxScene* gScene) : Scene(gPhysics,
 {
 	level = 1;
 	pS = new ParticleSystem(typeParticleSystem::particleGenerators);
-	contadorFuegos = 100;
+	contadorFuegos = -1;
 }
 
 PWSimulator::~PWSimulator()
@@ -23,12 +23,24 @@ void PWSimulator::updateScene(double t)
 {
 	if (system != nullptr) {
 		system->update(t);
-		if (system->getDirtAmount() <= 0) changeLevel();
+		if (system->getDirtAmount() <= 0 && shouldIChange) {
+			shouldIChange = false;
+			changeLevel();
+			level++;
+		}
 	}
-	else if(contadorFuegos>=0) {
-		if (contadorFuegos % 5 == 0)
-			pS->generateFireworkSystem(FireworkType::random);
+	if (contadorFuegos >= 0) {
+		if (contadorFuegos % 15 == 0)
+			pS->generateFireworkSystem(FireworkType::random, { (float)(rand() % 100),0,(float)(rand() % 100) });
+		if (contadorFuegos % 32 == 0)
+			pS->generateFireworkSystem(FireworkType::heart, { (float)(rand() % 100),0,(float)(rand() % 100) });
+		if (contadorFuegos % 78 == 0)
+			pS->generateFireworkSystem(FireworkType::batFuego, { (float)(rand() % 100),0,(float)(rand() % 100) });
+		if (contadorFuegos % 23 == 0)
+			pS->generateFireworkSystem(FireworkType::circle, { (float)(rand() % 100),0,(float)(rand() % 100) });
 		contadorFuegos--;
+		if (contadorFuegos == 0)
+			changeLevel();
 	}
 	if (pS != nullptr) {
 		pS->update(t);
@@ -40,10 +52,18 @@ void PWSimulator::keyPressed(unsigned char key)
 	system->keyPressed(key);
 }
 
+void PWSimulator::clearLevel() {
+	system->clearLevel();
+	contadorFuegos = 200;
+}
+
 void PWSimulator::changeLevel() {
-	delete system;
-	system = nullptr;
-	GetCamera()->setEye(PxVec3(0.0f, 40.0f, 250.0f));
-	GetCamera()->setDir(PxVec3(-0.5f, -0.2f, -30.0f));
-	contadorFuegos = 100;
+	switch (level)
+	{
+	case 2:
+		system->createLevel2();
+		break;
+	default:
+		break;
+	}
 }

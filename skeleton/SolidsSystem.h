@@ -27,6 +27,7 @@ protected:
 	typeSolidSystem t;
 	Camera* cam = nullptr;
 	vector<Solids*> dirt;
+	vector<PxRigidStatic*> objetos;
 	MyPxSimulationEventCallback* callback = nullptr;
 	int level;
 public:
@@ -35,6 +36,8 @@ public:
 	void CreateNormalSystem();
 	void createPWSystem();
 	void createLevel1();
+	void createLevel2();
+	void createLevel3();
 	void update(double t);
 	void addWind();
 	void changeWaterVel(bool inc);
@@ -44,7 +47,7 @@ public:
 	void changeFontActive(int numFuente, bool act);
 	void putDirt(Vector3 const& posMuro, Vector3 const& sizeMuro, SolidType tipeDirt, int minAmount);
 	int getDirtAmount() { return dirt.size(); };
-	
+	void clearLevel();
 	~SolidsSystem();
 	GaussianSolidsGenerator* getGen() { return generator; };
 };
