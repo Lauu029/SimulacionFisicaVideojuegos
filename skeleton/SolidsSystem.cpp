@@ -47,7 +47,7 @@ void SolidsSystem::CreateNormalSystem()
 
 void SolidsSystem::createPWSystem()
 {
-	MyPxSimulationEventCallback* callback = new MyPxSimulationEventCallback();
+	callback = new MyPxSimulationEventCallback();
 	gScene->setSimulationEventCallback(callback);
 	hsv color = { 55.0,0.73,0.7 };
 	rgb col = hsv2rgb(color);
@@ -72,14 +72,13 @@ void SolidsSystem::createPWSystem()
 	gScene->addActor(*newRigid);
 	//Mangueras
 	manguera1 = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 20,0, 0 }, 10, Manguera1Features());
-	manguera2 = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 100,0, 0 }, 40, Manguera2Features());
+	manguera2 = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 50,0, 0 }, 100, Manguera2Features());
 	manguera3 = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 1,0, 0 }, 10, Manguera3Features());
 }
 
 void SolidsSystem::update(double t)
 {
 	if (generator != nullptr) {
-
 		timeSinceLastAdding++;
 		if (generator->isActive() && timeSinceLastAdding > 100)
 		{
@@ -208,6 +207,8 @@ SolidsSystem::~SolidsSystem()
 		delete manguera3;
 	if (Suciedades != nullptr)
 		delete Suciedades;
+	if (callback != nullptr)
+		delete callback;
 }
 void SolidsSystem::addWind()
 {
@@ -300,8 +301,10 @@ void SolidsSystem::keyPressed(unsigned char key) {
 
 void SolidsSystem::createLevel1() {
 	//Muro
-	wall = gPhysics->createRigidStatic(PxTransform(PxVec3(10, 20, 50)));
-	PxShape* shape = CreateShape(PxBoxGeometry(40, 20, 5));
+	Vector3 posMuro = { 10, 20, 50 };
+	Vector3 sizeMuro = { 40, 20, 10 };
+	wall = gPhysics->createRigidStatic(PxTransform(posMuro));
+	PxShape* shape = CreateShape(PxBoxGeometry(sizeMuro));
 	wall->attachShape(*shape);
 	hsv color = { 154.0,0.73,0.7 };
 	rgb col = hsv2rgb(color);
@@ -310,8 +313,18 @@ void SolidsSystem::createLevel1() {
 
 	//suciedad
 	Suciedades = new UniformSolidsGenerator(gPhysics, gScene,
-		{ 10, 20, 55 }, { 0,0, 0 }, 10, Type1Dirt(), 40, 20, 0);
-	int max = (rand() % 2) *100 -50;
+		{ posMuro.x,posMuro.y, posMuro.z + sizeMuro.z }, { 0,0, 0 }, 10, Type1Dirt(), sizeMuro.x, sizeMuro.y, 0);
+	putDirt(posMuro, sizeMuro, Type1Dirt(), 100);
+	putDirt(posMuro, sizeMuro, Type2Dirt(), 150);
+	putDirt(posMuro, sizeMuro, Type3Dirt(), 50);
+
+}
+
+void SolidsSystem::putDirt(Vector3 const& posMuro, Vector3 const& sizeMuro, SolidType tipeDirt, int minAmount) {
+	Suciedades->changePos({ posMuro.x,posMuro.y, posMuro.z + sizeMuro.z + tipeDirt.size.x });
+	Suciedades->changeSolidType(tipeDirt);
+	Suciedades->changefactors(sizeMuro.x, sizeMuro.y, 0);
+	int max = (rand() % 2) * minAmount;
 	//Parte alante/atrás
 	for (int i = 0; i < max; i++)
 	{
@@ -319,8 +332,8 @@ void SolidsSystem::createLevel1() {
 		d->getRigid()->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
 		dirt.push_back(d);
 	}
-	Suciedades->changePos({10, 20, 45});
-	 max = (rand() % 2) * 100 -50;
+	Suciedades->changePos({ posMuro.x,posMuro.y, posMuro.z - sizeMuro.z -  tipeDirt.size.x });
+	max = (rand() % 2) * minAmount;
 	for (int i = 0; i < max; i++)
 	{
 		Solids* d = Suciedades->addRigids();
@@ -328,18 +341,17 @@ void SolidsSystem::createLevel1() {
 		dirt.push_back(d);
 	}
 	//laterales
-	Suciedades->changePos({ -30,20,50 });
-	Suciedades->changefactors(0, 20, 5);
-	max = (rand() % 2) *10;
+	Suciedades->changePos({ posMuro.x - sizeMuro.x - tipeDirt.size.x,posMuro.y, posMuro.z });
+	Suciedades->changefactors(0, sizeMuro.y, sizeMuro.z);
+	max = (rand() % 2) * minAmount;
 	for (int i = 0; i < max; i++)
 	{
 		Solids* d = Suciedades->addRigids();
 		d->getRigid()->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
 		dirt.push_back(d);
 	}
-	Suciedades->changePos({ 50,20,50 });
-	Suciedades->changefactors(0, 20, 5);
-	 max = (rand() % 2) *10;
+	Suciedades->changePos({ posMuro.x + sizeMuro.x + tipeDirt.size.x,posMuro.y, posMuro.z });
+	max = (rand() % 2) * minAmount;
 	for (int i = 0; i < max; i++)
 	{
 		Solids* d = Suciedades->addRigids();

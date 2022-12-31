@@ -22,9 +22,23 @@ public:
 		Solids* particle1 = (Solids*)ac1->userData;
 		Solids* particle2 = (Solids*)ac2->userData;
 		if (particle1 != nullptr && particle2 != nullptr) {
-			if (particle1->getType().gst == Man1 && particle2->getType().gst == Dirt1)
+			generalSolidType gst1 = particle1->getType().gst;
+			generalSolidType gst2 = particle2->getType().gst;
+
+			//borrado dirt 1
+			if ((gst1 == Man1||gst1==Man3) && particle2->getType().gst == Dirt3)
 				particle2->kill();
-			if (particle2->getType().gst == Man1 && particle1->getType().gst == Dirt1)
+			if ((gst2== Man1||gst2==Man3) && particle1->getType().gst == Dirt3)
+				particle1->kill();
+			//borrado dirt 2
+			if ((gst1 == Man3) && particle2->getType().gst == Dirt2)
+				particle2->kill();
+			if ((gst2 == Man3) && particle1->getType().gst == Dirt2)
+				particle1->kill();
+			//borrado dirt 3
+			if ((gst1 == Man2) && particle2->getType().gst == Dirt1)
+				particle2->kill();
+			if ((gst2 == Man2) && particle1->getType().gst == Dirt1)
 				particle1->kill();
 		}
 

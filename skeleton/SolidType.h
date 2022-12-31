@@ -30,7 +30,7 @@ class Manguera1Features :public SolidType {
 public:
 	Manguera1Features()
 	{
-		size = { 0.3,0.3,0.3 };
+		size = { 0.5,0.5,0.5 };
 		colorHsv = { 185.0,0.93,0.20 };
 		transformColor();
 		fade = true;
@@ -42,7 +42,7 @@ class Manguera2Features :public SolidType {
 public:
 	Manguera2Features()
 	{
-		size = { 0.1,0.1,0.1 };
+		size = { 0.3,0.3,0.3 };
 		colorHsv = { 206.0,0.50,0.30 };
 		transformColor();
 		fade = true;
@@ -54,7 +54,7 @@ class Manguera3Features :public SolidType {
 public:
 	Manguera3Features()
 	{
-		size = { 0.5,0.5,0.5 };
+		size = { 0.7,0.7,0.7 };
 		colorHsv = { 166.0,0.93,0.25 };
 		transformColor();
 		fade = true;
@@ -72,5 +72,29 @@ public:
 		fade = false;
 		render = true;
 		gst = generalSolidType::Dirt1;
+	}
+};
+class Type2Dirt :public SolidType {
+public:
+	Type2Dirt()
+	{
+		size = { 1,1,1 };
+		colorHsv = { 68.0,0.47,0.30 };
+		transformColor();
+		fade = false;
+		render = true;
+		gst = generalSolidType::Dirt2;
+	}
+};
+class Type3Dirt :public SolidType {
+public:
+	Type3Dirt()
+	{
+		size = { 0.5,0.5,0.5 };
+		colorHsv = { 30.0,0.82,0.22 };
+		transformColor();
+		fade = false;
+		render = true;
+		gst = generalSolidType::Dirt3;
 	}
 };

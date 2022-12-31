@@ -85,6 +85,9 @@ public:
 	void setVel(Vector3 dir);
 	void changeDir(Vector3 dir);
 	void changefactors(int x, int y, int z);
+	void changeSolidType(SolidType t) {
+		type = t;
+	}
 };
 class FireworkGenerator : public ParticleGenerator
 {

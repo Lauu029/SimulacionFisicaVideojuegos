@@ -27,6 +27,7 @@ protected:
 	typeSolidSystem t;
 	Camera* cam = nullptr;
 	vector<Solids*> dirt;
+	MyPxSimulationEventCallback* callback = nullptr;
 	int level;
 public:
 	SolidsSystem(PxPhysics* gPhysics, PxScene* gScene, typeSolidSystem type, int l=0);
@@ -41,6 +42,7 @@ public:
 	void moveCharacter(Vector3 dir);
 	void keyPressed(unsigned char key);
 	void changeFontActive(int numFuente, bool act);
+	void putDirt(Vector3 const& posMuro, Vector3 const& sizeMuro, SolidType tipeDirt, int minAmount);
 	int getDirtAmount() { return dirt.size(); };
 	
 	~SolidsSystem();
