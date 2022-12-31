@@ -1,12 +1,13 @@
 #include "SolidsSystem.h"
 
-SolidsSystem::SolidsSystem(PxPhysics* _gPhysics, PxScene* _gScene, typeSolidSystem type) {
+SolidsSystem::SolidsSystem(PxPhysics* _gPhysics, PxScene* _gScene, typeSolidSystem type, int l) {
 	gPhysics = _gPhysics;
 	gScene = _gScene;
 	timeSinceLastAdding = 0;
 	sFR = new SolidsForceRegistry();
 	t = type;
 	cam = GetCamera();
+	level = l;
 }
 void SolidsSystem::initSystem() {
 
@@ -57,7 +58,7 @@ void SolidsSystem::createPWSystem()
 	item = new RenderItem(shape, floor, { col.r, col.g ,col.b, 1 });
 	gScene->addActor(*floor);
 	//Muro
-	createDirtWall();
+	createLevel1();
 	//Personaje
 	PxMaterial* mat;
 	mat = gPhysics->createMaterial(0.5, 0.5, 0.1);
@@ -71,7 +72,6 @@ void SolidsSystem::createPWSystem()
 	gScene->addActor(*newRigid);
 	//Mangueras
 	manguera1 = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 20,0, 0 }, 10, Manguera1Features());
-	manguera1->changeActive();
 	manguera2 = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 100,0, 0 }, 40, Manguera2Features());
 	manguera3 = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 1,0, 0 }, 10, Manguera3Features());
 }
@@ -297,7 +297,8 @@ void SolidsSystem::keyPressed(unsigned char key) {
 		break;
 	}
 }
-void SolidsSystem::createDirtWall() {
+
+void SolidsSystem::createLevel1() {
 	//Muro
 	wall = gPhysics->createRigidStatic(PxTransform(PxVec3(10, 20, 50)));
 	PxShape* shape = CreateShape(PxBoxGeometry(40, 20, 5));
@@ -310,15 +311,17 @@ void SolidsSystem::createDirtWall() {
 	//suciedad
 	Suciedades = new UniformSolidsGenerator(gPhysics, gScene,
 		{ 10, 20, 55 }, { 0,0, 0 }, 10, Type1Dirt(), 40, 20, 0);
+	int max = (rand() % 2) *100 -50;
 	//Parte alante/atrás
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < max; i++)
 	{
 		Solids* d = Suciedades->addRigids();
 		d->getRigid()->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
 		dirt.push_back(d);
 	}
 	Suciedades->changePos({10, 20, 45});
-	for (int i = 0; i < 100; i++)
+	 max = (rand() % 2) * 100 -50;
+	for (int i = 0; i < max; i++)
 	{
 		Solids* d = Suciedades->addRigids();
 		d->getRigid()->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
@@ -327,7 +330,8 @@ void SolidsSystem::createDirtWall() {
 	//laterales
 	Suciedades->changePos({ -30,20,50 });
 	Suciedades->changefactors(0, 20, 5);
-	for (int i = 0; i < 20; i++)
+	max = (rand() % 2) *10;
+	for (int i = 0; i < max; i++)
 	{
 		Solids* d = Suciedades->addRigids();
 		d->getRigid()->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
@@ -335,7 +339,8 @@ void SolidsSystem::createDirtWall() {
 	}
 	Suciedades->changePos({ 50,20,50 });
 	Suciedades->changefactors(0, 20, 5);
-	for (int i = 0; i < 20; i++)
+	 max = (rand() % 2) *10;
+	for (int i = 0; i < max; i++)
 	{
 		Solids* d = Suciedades->addRigids();
 		d->getRigid()->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);

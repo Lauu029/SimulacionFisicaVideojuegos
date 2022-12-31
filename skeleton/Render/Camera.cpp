@@ -163,7 +163,9 @@ namespace Snippets
 	{
 		mEye = eye;
 	}
-
+	void Camera::setDir(physx::PxVec3 const& dir) {
+		mDir = dir;
+	}
 	PxVec3 Camera::getDird() const
 	{
 		return mDird;

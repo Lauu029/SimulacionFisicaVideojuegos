@@ -57,6 +57,7 @@ namespace Snippets
 
 		void changeControl();
 		void setEye(physx::PxVec3 const& eye);
+		void setDir(physx::PxVec3 const& dir);
 		//void update(int x, int y);
 		//void setPos(physx::PxVec3 const& eye);
 	private:

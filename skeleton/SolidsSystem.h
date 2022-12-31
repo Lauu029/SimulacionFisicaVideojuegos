@@ -27,12 +27,13 @@ protected:
 	typeSolidSystem t;
 	Camera* cam = nullptr;
 	vector<Solids*> dirt;
+	int level;
 public:
-	SolidsSystem(PxPhysics* gPhysics, PxScene* gScene, typeSolidSystem type);
+	SolidsSystem(PxPhysics* gPhysics, PxScene* gScene, typeSolidSystem type, int l=0);
 	void initSystem();
 	void CreateNormalSystem();
 	void createPWSystem();
-	void createDirtWall();
+	void createLevel1();
 	void update(double t);
 	void addWind();
 	void changeWaterVel(bool inc);
@@ -40,6 +41,8 @@ public:
 	void moveCharacter(Vector3 dir);
 	void keyPressed(unsigned char key);
 	void changeFontActive(int numFuente, bool act);
+	int getDirtAmount() { return dirt.size(); };
+	
 	~SolidsSystem();
 	GaussianSolidsGenerator* getGen() { return generator; };
 };
