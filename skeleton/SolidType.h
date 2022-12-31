@@ -55,7 +55,7 @@ public:
 	Manguera3Features()
 	{
 		size = { 0.5,0.5,0.5 };
-		colorHsv = { 166.0,0.93,0.45 };
+		colorHsv = { 166.0,0.93,0.25 };
 		transformColor();
 		fade = true;
 		render = true;

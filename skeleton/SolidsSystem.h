@@ -1,6 +1,7 @@
 #pragma once
 #include "ParticleGenerator.h"
 #include "SolidsForceRegistry.h"
+#include "MyPxSimulationEventCallback.h"
 enum typeSolidSystem { PowerWash, NormalSolids };
 class SolidsSystem
 {

@@ -46,6 +46,8 @@ void SolidsSystem::CreateNormalSystem()
 
 void SolidsSystem::createPWSystem()
 {
+	MyPxSimulationEventCallback* callback = new MyPxSimulationEventCallback();
+	gScene->setSimulationEventCallback(callback);
 	hsv color = { 55.0,0.73,0.7 };
 	rgb col = hsv2rgb(color);
 	//suelo
@@ -130,6 +132,15 @@ void SolidsSystem::update(double t)
 			numParticles--;
 		}
 		else solidParticles[i]->update(t);
+	}
+	for (int i = 0; i < dirt.size(); i++)
+	{
+		if (!dirt[i]->isAlive()) {
+			gScene->removeActor(*dirt[i]->getRigid());
+			sFR->deleteSolid(dirt[i]);
+			delete dirt[i];
+			dirt.erase(dirt.begin() + i);
+		}
 	}
 	if (sFR != nullptr)
 		sFR->updateForces(t);

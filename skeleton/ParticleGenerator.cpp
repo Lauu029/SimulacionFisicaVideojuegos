@@ -405,9 +405,13 @@ Solids* UniformSolidsGenerator::addRigids()
 	//ac += distribution(gen) * 20;
 	PxReal size = 0.3;
 	Solids* rigids;
-	
+
+
 	PxMaterial* mat;
-	mat = gPhysics->createMaterial((float)(rand() % 11) / 10, (float)(rand() % 11) / 10, (float)(rand() % 101) / 100);
+	if (type.gst == generalSolidType::General)
+		mat = gPhysics->createMaterial((float)(rand() % 11) / 10, (float)(rand() % 11) / 10, (float)(rand() % 101) / 100);
+	else
+		mat = gPhysics->createMaterial(0.5, 0.5, 1);
 	PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform(newPos));
 	rigids = new Solids(meanPos, meanVel, gPhysics->createShape(PxSphereGeometry(type.size.x), *mat), newRigid, type);
 	gScene->addActor(*newRigid);

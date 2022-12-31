@@ -22,7 +22,7 @@ protected:
 	int time;
 	Vector3 force;
 	SolidType type;
-	generalSolidType gst = General;
+	generalSolidType gst;
 public:
 	Solids(Vector3 _meanPos, Vector3 _meanVel, PxShape* _gShape, PxRigidDynamic* rig, SolidType _t);
 	void update(double t);
@@ -35,6 +35,7 @@ public:
 	void move(Vector3 v);
 	void setMass(float m) { rigid->setMass(m); };
 	void setDir(Vector3 dir) { rigid->addTorque(dir); };
+	SolidType getType() { return type; };
 	~Solids();
 };
 
