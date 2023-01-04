@@ -25,11 +25,11 @@ void PWSimulator::updateScene(double t)
 		system->update(t);
 		if (system->getDirtAmount() <= 0 && shouldIChange) {
 			shouldIChange = false;
-			changeLevel();
+			clearLevel();
 			level++;
 		}
 	}
-	if (contadorFuegos >= 0) {
+	if (contadorFuegos > 0) {
 		if (contadorFuegos % 15 == 0)
 			pS->generateFireworkSystem(FireworkType::random, { (float)(rand() % 100),0,(float)(rand() % 100) });
 		if (contadorFuegos % 32 == 0)
@@ -39,8 +39,11 @@ void PWSimulator::updateScene(double t)
 		if (contadorFuegos % 23 == 0)
 			pS->generateFireworkSystem(FireworkType::circle, { (float)(rand() % 100),0,(float)(rand() % 100) });
 		contadorFuegos--;
-		if (contadorFuegos == 0)
+		if (contadorFuegos == 0) {
 			changeLevel();
+			shouldIChange = true;
+			contadorFuegos = -1;
+		}
 	}
 	if (pS != nullptr) {
 		pS->update(t);
@@ -62,6 +65,9 @@ void PWSimulator::changeLevel() {
 	{
 	case 2:
 		system->createLevel2();
+		break;
+	case 3: 
+		system->createLevel3();
 		break;
 	default:
 		break;

@@ -248,8 +248,7 @@ void setupDefaultWindow(const char *name)
 	char* argv[1] = { namestr };
 
 	glutInit(&argc, argv);
-	
-	glutInitWindowSize(512, 512);
+	glutInitWindowSize(1920	,1080);
 	glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE|GLUT_DEPTH);
 	int mainHandle = glutCreateWindow(name);
 	glutSetWindow(mainHandle);
@@ -261,7 +260,8 @@ void setupDefaultWindow(const char *name)
 void setupDefaultRenderState()
 {
 	// Setup default render states
-	glClearColor(0.69f, 0.99f,0.98f, 1.0);
+	//glClearColor(0.69f, 0.99f,0.98f, 1.0);
+	glClearColor(0.0f, 0.0f,0.0f, 1.0);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_COLOR_MATERIAL);
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

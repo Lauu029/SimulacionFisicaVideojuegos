@@ -80,7 +80,7 @@ void SolidsSystem::update(double t)
 {
 	if (generator != nullptr) {
 		timeSinceLastAdding++;
-		if (generator->isActive() && timeSinceLastAdding > 100)
+		if (generator->isActive() )
 		{
 			if (numParticles < maxParticles) {
 				solidParticles.push_back(generator->addRigids());
@@ -97,8 +97,11 @@ void SolidsSystem::update(double t)
 		{
 			manguera1->changePos({ pos.x, pos.y - 3, pos.z });
 			manguera1->setVel(cam->getDir());
-			if (solidParticles.size() < 100)
+			if (solidParticles.size() < 100) {
 				solidParticles.push_back(manguera1->addRigids());
+				if (wind != nullptr)
+					sFR->addRegistry(solidParticles.back(), wind);
+			}
 		}
 	}
 	if (manguera2 != nullptr) {
@@ -107,8 +110,11 @@ void SolidsSystem::update(double t)
 		{
 			manguera2->changePos({ pos.x, pos.y - 3, pos.z });
 			manguera2->setVel(cam->getDir() * 10);
-			if (solidParticles.size() < 100)
+			if (solidParticles.size() < 100) {
 				solidParticles.push_back(manguera2->addRigids());
+				if (wind != nullptr)
+					sFR->addRegistry(solidParticles.back(), wind);
+			}
 		}
 	}
 	if (manguera3 != nullptr) {
@@ -117,8 +123,11 @@ void SolidsSystem::update(double t)
 		{
 			manguera3->changePos({ pos.x, pos.y - 3, pos.z });
 			manguera3->setVel(cam->getDir() * 0.5);
-			if (solidParticles.size() < 100)
+			if (solidParticles.size() < 100) {
 				solidParticles.push_back(manguera3->addRigids());
+				if (wind != nullptr)
+					sFR->addRegistry(solidParticles.back(), wind);
+			}
 		}
 	}
 	for (int i = 0; i < solidParticles.size(); i++)
@@ -210,9 +219,9 @@ SolidsSystem::~SolidsSystem()
 	if (callback != nullptr)
 		delete callback;
 }
-void SolidsSystem::addWind()
+void SolidsSystem::addWind(float r, Vector3 v, Vector3 p)
 {
-	if (wind == nullptr) wind = new SolidsWindGenerator(100, { -50,20,0 }, { 70,50,5 });
+	if (wind == nullptr) wind = new SolidsWindGenerator(r,v,p);
 	for (auto p : solidParticles)
 	{
 		if (p != nullptr)
@@ -312,7 +321,7 @@ void SolidsSystem::createLevel1() {
 	itemWall = new RenderItem(shape, wall, { col.r, col.g ,col.b,1 });
 	objetos.push_back(wall);
 	gScene->addActor(*wall);
-
+	objetosRender.push_back(itemWall);
 	//suciedad
 	Suciedades = new UniformSolidsGenerator(gPhysics, gScene,
 		{ posMuro.x,posMuro.y, posMuro.z + sizeMuro.z }, { 0,0, 0 }, 10, Type1Dirt(), sizeMuro.x, sizeMuro.y, 0);
@@ -323,7 +332,7 @@ void SolidsSystem::createLevel1() {
 }
 void SolidsSystem::createLevel2() {
 	//Muro
-	Vector3 posMuro = {80, 10, -3 };
+	Vector3 posMuro = { 80, 10, -3 };
 	Vector3 sizeMuro = { 100, 10, 10 };
 	PxRigidStatic* wall = gPhysics->createRigidStatic(PxTransform(posMuro));
 	PxShape* shape = CreateShape(PxBoxGeometry(sizeMuro));
@@ -333,13 +342,68 @@ void SolidsSystem::createLevel2() {
 	itemWall = new RenderItem(shape, wall, { col.r, col.g ,col.b,1 });
 	objetos.push_back(wall);
 	gScene->addActor(*wall);
-
+	objetosRender.push_back(itemWall);
 	//suciedad
 	Suciedades = new UniformSolidsGenerator(gPhysics, gScene,
 		{ posMuro.x,posMuro.y, posMuro.z + sizeMuro.z }, { 0,0, 0 }, 10, Type1Dirt(), sizeMuro.x, sizeMuro.y, 0);
 	putDirt(posMuro, sizeMuro, Type1Dirt(), 100);
 	putDirt(posMuro, sizeMuro, Type2Dirt(), 70);
 	putDirt(posMuro, sizeMuro, Type3Dirt(), 30);
+
+
+	 posMuro = { -100, 60, 20 };
+	 sizeMuro = { 100, 60, 70 };
+	 addWind(200, { 30,30,10 }, { -50, 60, 15 });
+	 wall = gPhysics->createRigidStatic(PxTransform(posMuro));
+	 shape = CreateShape(PxBoxGeometry(sizeMuro));
+	wall->attachShape(*shape);
+	 color = { 57, 1.0 , 0.92 };
+	 col = hsv2rgb(color);
+	 itemWall = new RenderItem(shape, wall, { col.r, col.g ,col.b,1 });
+	objetos.push_back(wall);
+	gScene->addActor(*wall);
+	objetosRender.push_back(itemWall);
+	//suciedad
+	putDirt(posMuro, sizeMuro, Type1Dirt(), 100);
+	putDirt(posMuro, sizeMuro, Type2Dirt(), 70);
+	putDirt(posMuro, sizeMuro, Type3Dirt(), 30);
+
+	//Vector3 posMuro = { 80, 10, -3 };
+	//Vector3 sizeMuro = { 100, 10, 10 };
+	//PxRigidStatic* wall = gPhysics->createRigidStatic(PxTransform(posMuro));
+	//PxShape* shape = CreateShape(PxBoxGeometry(sizeMuro));
+	//wall->attachShape(*shape);
+	//hsv color = { 340, 1.0 , 1.0 };
+	//rgb col = hsv2rgb(color);
+	//RenderItem* itemWall = new RenderItem(shape, wall, { col.r, col.g ,col.b,1 });
+	//objetos.push_back(wall);
+	//gScene->addActor(*wall);
+
+	////suciedad
+	//Suciedades = new UniformSolidsGenerator(gPhysics, gScene,
+	//	{ posMuro.x,posMuro.y, posMuro.z + sizeMuro.z }, { 0,0, 0 }, 10, Type1Dirt(), sizeMuro.x, sizeMuro.y, 0);
+	//putDirt(posMuro, sizeMuro, Type1Dirt(), 100);
+	//putDirt(posMuro, sizeMuro, Type2Dirt(), 70);
+	//Vector3 posMuro = { 80, 10, -3 };
+	//Vector3 sizeMuro = { 100, 10, 10 };
+	//PxRigidStatic* wall = gPhysics->createRigidStatic(PxTransform(posMuro));
+	//PxShape* shape = CreateShape(PxBoxGeometry(sizeMuro));
+	//wall->attachShape(*shape);
+	//hsv color = { 340, 1.0 , 1.0 };
+	//rgb col = hsv2rgb(color);
+	//RenderItem* itemWall = new RenderItem(shape, wall, { col.r, col.g ,col.b,1 });
+	//objetos.push_back(wall);
+	//gScene->addActor(*wall);
+
+	////suciedad
+	//Suciedades = new UniformSolidsGenerator(gPhysics, gScene,
+	//	{ posMuro.x,posMuro.y, posMuro.z + sizeMuro.z }, { 0,0, 0 }, 10, Type1Dirt(), sizeMuro.x, sizeMuro.y, 0);
+	//putDirt(posMuro, sizeMuro, Type1Dirt(), 100);
+	//putDirt(posMuro, sizeMuro, Type2Dirt(), 70);
+
+	//putDirt(posMuro, sizeMuro, Type3Dirt(), 30);
+	//putDirt(posMuro, sizeMuro, Type3Dirt(), 30);
+
 
 }
 void SolidsSystem::createLevel3() {
@@ -354,7 +418,7 @@ void SolidsSystem::createLevel3() {
 	itemWall = new RenderItem(shape, wall, { col.r, col.g ,col.b,1 });
 	objetos.push_back(wall);
 	gScene->addActor(*wall);
-
+	objetosRender.push_back(itemWall);
 	//suciedad
 	Suciedades = new UniformSolidsGenerator(gPhysics, gScene,
 		{ posMuro.x,posMuro.y, posMuro.z + sizeMuro.z }, { 0,0, 0 }, 10, Type1Dirt(), sizeMuro.x, sizeMuro.y, 0);
@@ -411,9 +475,19 @@ void SolidsSystem::clearLevel() {
 		gScene->removeActor(*a);
 	}
 	objetos.clear();
-	//wall = nullptr;
-	if (itemWall != nullptr)
-		itemWall->release();
+	if (Suciedades != nullptr) {
+		delete Suciedades;
+		Suciedades = nullptr;
+	}
+	for (auto a : objetosRender)
+	{
+		a->release();
+	}
+	objetosRender.clear();
+	if (wind != nullptr) {
+		delete wind;
+		wind = nullptr;
+	}
 	//itemWall->release();
 
 }

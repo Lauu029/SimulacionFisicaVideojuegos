@@ -28,6 +28,7 @@ protected:
 	Camera* cam = nullptr;
 	vector<Solids*> dirt;
 	vector<PxRigidStatic*> objetos;
+	vector<RenderItem*> objetosRender;
 	MyPxSimulationEventCallback* callback = nullptr;
 	int level;
 public:
@@ -39,7 +40,7 @@ public:
 	void createLevel2();
 	void createLevel3();
 	void update(double t);
-	void addWind();
+	void addWind(float r, Vector3 v, Vector3 p);
 	void changeWaterVel(bool inc);
 	void deleteWind();
 	void moveCharacter(Vector3 dir);

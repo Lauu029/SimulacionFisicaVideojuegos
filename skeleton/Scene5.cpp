@@ -29,7 +29,7 @@ void Scene5::keyPressed(unsigned char key)
 		system->getGen()->changeActive();
 		break;
 	case'x':
-		system->addWind();
+		system->addWind(100, { -50,20,0 }, { 70,50,5 });
 		break;
 	case'c':
 		system->deleteWind();
