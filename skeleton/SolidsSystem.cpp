@@ -488,6 +488,4 @@ void SolidsSystem::clearLevel() {
 		delete wind;
 		wind = nullptr;
 	}
-	//itemWall->release();
-
 }
