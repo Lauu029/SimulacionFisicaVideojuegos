@@ -46,8 +46,13 @@ public:
 class GaussianParticleGenerator : public ParticleGenerator
 {
 protected:
+	bool lluvia;
+	Particle* model2 = nullptr;
+	Particle* model3 = nullptr;
 public:
-	GaussianParticleGenerator(Vector3 _meanPos, Vector3 _meanVel);
+	GaussianParticleGenerator(Vector3 _meanPos, Vector3 _meanVel, bool l, int nP=200);
+	void setParticle2(Particle* _m) { model2 = _m; };
+	void setParticle3(Particle* _m) { model3 = _m; };
 	Vector3 velWidth, posWidth;
 	list<Particle*> generateParticles() override;
 };

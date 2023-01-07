@@ -4,7 +4,7 @@ PWSimulator::PWSimulator(PxPhysics* gPhysics, PxScene* gScene) : Scene(gPhysics,
 {
 	level = 1;
 	pS = new ParticleSystem(typeParticleSystem::particleGenerators);
-	contadorFuegos = -1;
+	contadorFuegos = 100000;
 }
 
 PWSimulator::~PWSimulator()
@@ -29,22 +29,22 @@ void PWSimulator::updateScene(double t)
 			level++;
 		}
 	}
-	if (contadorFuegos > 0) {
+	if (contadorFuegos > 0&& contadorFuegos<201) {
 		if (contadorFuegos % 15 == 0)
-			pS->generateFireworkSystem(FireworkType::random, { (float)(rand() % 100),0,(float)(rand() % 100) });
+			pS->generateFireworkSystem(FireworkType::random, { -50 + (float)(rand() % 100),0, -50 + (float)(rand() % 100) });
 		if (contadorFuegos % 32 == 0)
-			pS->generateFireworkSystem(FireworkType::heart, { (float)(rand() % 100),0,(float)(rand() % 100) });
+			pS->generateFireworkSystem(FireworkType::heart, { -50 + (float)(rand() % 100),0, -50 + (float)(rand() % 100) });
 		if (contadorFuegos % 78 == 0)
-			pS->generateFireworkSystem(FireworkType::batFuego, { (float)(rand() % 100),0,(float)(rand() % 100) });
+			pS->generateFireworkSystem(FireworkType::batFuego, { -50 + (float)(rand() % 100),0, -50 + (float)(rand() % 100) });
 		if (contadorFuegos % 23 == 0)
-			pS->generateFireworkSystem(FireworkType::circle, { (float)(rand() % 100),0,(float)(rand() % 100) });
+			pS->generateFireworkSystem(FireworkType::circle, { -50 + (float)(rand() % 100),0, -50 + (float)(rand() % 100) });
 		contadorFuegos--;
-		if (contadorFuegos == 0) {
+	}
+	if (contadorFuegos <= 0 && pS->finishFireworks()) {
 			changeLevel();
 			shouldIChange = true;
-			contadorFuegos = -1;
+			contadorFuegos = 10000;
 		}
-	}
 	if (pS != nullptr) {
 		pS->update(t);
 	}
@@ -53,10 +53,16 @@ void PWSimulator::updateScene(double t)
 void PWSimulator::keyPressed(unsigned char key)
 {
 	system->keyPressed(key);
+	if (level == 3) {
+		if (tolower(key) == 'q') {
+			pS->addExplosion(GetCamera()->getEye());
+		}
+	}
 }
 
 void PWSimulator::clearLevel() {
 	system->clearLevel();
+	pS->ActivateNiebla(false);
 	contadorFuegos = 200;
 }
 
@@ -66,8 +72,9 @@ void PWSimulator::changeLevel() {
 	case 2:
 		system->createLevel2();
 		break;
-	case 3: 
+	case 3:
 		system->createLevel3();
+		pS->CreateLluvia(200);
 		break;
 	default:
 		break;

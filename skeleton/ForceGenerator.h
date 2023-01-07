@@ -54,6 +54,7 @@ public:
 	ExplosionGenerator(float r, Vector3 p);
 	virtual ~ExplosionGenerator();
 	virtual void updateForce(Particle* p, float t) override;
+	void setPos(Vector3 pos) { meanPose = pos; };
 protected:
 	float radius = 0;
 	float t = -1e10;

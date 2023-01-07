@@ -11,11 +11,11 @@ ParticleSystem::ParticleSystem(typeParticleSystem pt)
 		fuente = new UniformParticleGenerator({ 0,0,100 }, { 0,50,0 }, 10, true, 1);
 		fuente->setParticle(new Particle(Agua(), false));
 
-		niebla = new GaussianParticleGenerator({ 10,50,150 }, { 0,0,0 });
+		niebla = new GaussianParticleGenerator({ -20,50,100 }, { 0,0,0 }, false);
 		niebla->setParticle(new Particle(Nube(), false));
 
 		fireworks = new FireworkGenerator({ 0,20,10 }, { 0,200,0 });
-		fireworks->setParticle(new Firework(PresetFirework(200,{0,0,100}), 0, FireworkType::random, false));
+		fireworks->setParticle(new Firework(PresetFirework(200, { 0,0,100 }), 0, FireworkType::random, false));
 		break;
 	case ForceGenerators:
 		gravity = new GravityGenerator({ 0,-9.8,0 });
@@ -43,6 +43,21 @@ ParticleSystem::ParticleSystem(typeParticleSystem pt)
 	default:
 		break;
 	}
+}
+void ParticleSystem::CreateLluvia(int nP)
+{
+	if (niebla != nullptr) {
+		delete niebla;
+		niebla = new GaussianParticleGenerator({ -20,30,100 }, { 0,-10,0 },true,nP);
+		niebla->setParticle(new Particle(Lluvia1(), false));
+		niebla->setParticle2(new Particle(Lluvia2(), false));
+		niebla->setParticle3(new Particle(Lluvia3(), false));
+		niebla->setActive(true);
+	}
+}
+void ParticleSystem::ActivateNiebla(bool t)
+{
+	niebla->setActive(t);
 }
 void ParticleSystem::GenerateForceParticles(typeForceSystem tf)
 {
@@ -72,7 +87,7 @@ void ParticleSystem::update(double t)
 {
 	if (fg != nullptr)
 		fg->updateForces(t);
-	
+
 	for (int i = 0; i < particles.size(); i++)
 	{
 		if (particles[i]->particleDeath()) {
@@ -181,9 +196,10 @@ void ParticleSystem::deleteTorbellino()
 	delete torbellino;
 	torbellino = nullptr;
 }
-void ParticleSystem::addExplosion()
+void ParticleSystem::addExplosion(Vector3 pos)
 {
-	if (explosion == nullptr) explosion = new ExplosionGenerator(50, { 0,70,50 });
+	if (explosion == nullptr)
+		explosion = new ExplosionGenerator(50, pos);
 	for (Particle* p : particles)
 	{
 		fg->addRegistry(p, explosion);
@@ -357,7 +373,7 @@ void ParticleSystem::generateFireworkSystem(FireworkType t, Vector3 pos)
 		f.push_back(new Firework(PresetFirework(30, pos), 10, t, true));
 		break;
 	case circle:
-		f.push_back(new Firework(PresetFirework(70,pos), 20, t, true));
+		f.push_back(new Firework(PresetFirework(70, pos), 20, t, true));
 		break;
 	case batFuego:
 		f.push_back(new Firework(BatFireworks(50, pos), 50, t, true));

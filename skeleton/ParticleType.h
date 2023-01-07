@@ -340,3 +340,57 @@ public:
 		s = particleShape::box;
 	}
 };
+class Lluvia1 : public particleType {
+public:
+	Lluvia1() {
+		mass = 1.0f;
+		vel = { 0.0f,0.0f,0.0f };
+		ac = { 0.0f,0.0f, 0.0f };
+		damp = 0.8f;
+		remainingTime = 10;
+		size = { 0.5f,0.0f,0.0f };
+
+		col = { 214.0f,0.5f,0.92f };
+		rgb rgb = hsv2rgb(col);
+		color = { rgb.r,rgb.g,rgb.b,1.0 };
+
+		pose = physx::PxTransform{ 0.0 ,-10.0, 0.0 };
+		s = particleShape::Sphere;
+	}
+};
+class Lluvia2 : public particleType {
+public:
+	Lluvia2() {
+		mass = 0.1f;
+		vel = { 0.0f,0.0f,0.0f };
+		ac = { 0.0f,0.0f, 0.0f };
+		damp = 0.8f;
+		remainingTime = 10;
+		size = { 0.2f,0.0f,0.0f };
+
+		col = { 214.0f,0.4f,0.50f };
+		rgb rgb = hsv2rgb(col);
+		color = { rgb.r,rgb.g,rgb.b,1.0 };
+
+		pose = physx::PxTransform{ 0.0 ,-10.0, 0.0 };
+		s = particleShape::Sphere;
+	}
+};
+class Lluvia3 : public particleType {
+public:
+	Lluvia3() {
+		mass = 3.0f;
+		vel = { 0.0f,0.0f,0.0f };
+		ac = { 0.0f,0.0f, 0.0f };
+		damp = 0.8f;
+		remainingTime = 10;
+		size = { 1.0f,0.0f,0.0f };
+
+		col = { 220.0f,0.7f,1.0f };
+		rgb rgb = hsv2rgb(col);
+		color = { rgb.r,rgb.g,rgb.b,1.0 };
+
+		pose = physx::PxTransform{ 0.0 ,-10.0, 0.0 };
+		s = particleShape::Sphere;
+	}
+};

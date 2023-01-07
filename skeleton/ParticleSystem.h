@@ -46,9 +46,12 @@ public:
 	void deleteWind();
 	void addTorbellino();
 	void deleteTorbellino();
-	void addExplosion();
+	void addExplosion(Vector3 pos= { 0,70,50 });
 	void deleteExplosion();
 
+	void CreateLluvia(int nP);
+	void ActivateNiebla(bool t);
+	bool finishFireworks() { return f.size() == 0; };
 	void addMasa();
 	void quitaMasa();
 	void changeWind(Vector3 v) { if (wind != nullptr) wind->changeWindForce(v); };

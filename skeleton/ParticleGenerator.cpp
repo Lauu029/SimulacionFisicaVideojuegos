@@ -73,12 +73,13 @@ void UniformParticleGenerator::newParticleType()
 	}
 }
 //----------------------------------------------------------------------
-GaussianParticleGenerator::GaussianParticleGenerator(Vector3 _meanPos, Vector3 _meanVel)
+GaussianParticleGenerator::GaussianParticleGenerator(Vector3 _meanPos, Vector3 _meanVel, bool l, int nP)
 {
 	meanPos = _meanPos;
 	meanVel = _meanVel;
-	numParticles = 200;
+	numParticles = nP;
 	active = false;
+	lluvia = l;
 }
 
 list<Particle*> GaussianParticleGenerator::generateParticles()
@@ -90,16 +91,34 @@ list<Particle*> GaussianParticleGenerator::generateParticles()
 	for (size_t i = 0; i < numParticles; i++)
 	{
 		Vector3 newPos = meanPos;
-		newPos.x += dist(gen) * 10;
-		newPos.y += dist(gen) * 5;
-		newPos.z += dist(gen) * 10;
+		newPos.x += dist(gen) * 200;
+		newPos.y += dist(gen) * 100;
+		newPos.z += dist(gen) * 200;
 
 		Vector3 newVel = meanVel;
 		newVel.x += dist(gen) * .1;
 		newVel.y += dist(gen) * .1;
 		newVel.z += dist(gen) * .1;
-
-		Particle* newP = new Particle(model->getParticleType(), true);
+		Particle* newP = nullptr;
+		if (lluvia) {
+			int l = (rand() % 3);
+			switch (l)
+			{
+			case 0:
+				newP = new Particle(model->getParticleType(), true);
+				break;
+			case 1:
+				newP = new Particle(model2->getParticleType(), true);
+				break;
+			case 2:
+				newP = new Particle(model3->getParticleType(), true);
+				break;
+			default:
+				break;
+			}
+		}
+		else
+			newP = new Particle(model->getParticleType(), true);
 		newP->setPosition(newPos);
 		newP->setVelocity(newVel);
 
@@ -325,7 +344,7 @@ list<Particle*> FireworkGenerator::generateParticles()
 	return list<Particle*>();
 }
 
-GaussianSolidsGenerator::GaussianSolidsGenerator(PxPhysics* gP, PxScene* gS, Vector3 _meanPos, Vector3 _meanVel) : GaussianParticleGenerator(_meanPos, _meanVel)
+GaussianSolidsGenerator::GaussianSolidsGenerator(PxPhysics* gP, PxScene* gS, Vector3 _meanPos, Vector3 _meanVel) : GaussianParticleGenerator(_meanPos, _meanVel, 1)
 {
 	numParticles = 30;
 	gPhysics = gP;
