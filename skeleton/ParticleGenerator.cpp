@@ -82,6 +82,14 @@ GaussianParticleGenerator::GaussianParticleGenerator(Vector3 _meanPos, Vector3 _
 	lluvia = l;
 }
 
+GaussianParticleGenerator::~GaussianParticleGenerator()
+{
+	if (model2 != nullptr)
+		delete model2;
+	if (model3 != nullptr)
+		delete model3;
+}
+
 list<Particle*> GaussianParticleGenerator::generateParticles()
 {
 	list<Particle*> listParticles;
@@ -423,7 +431,7 @@ Solids* UniformSolidsGenerator::addRigids()
 
 	//ac += distribution(gen) * 20;
 	PxReal size = 0.3;
-	Solids* rigids;
+	Solids* rigids=nullptr;
 
 
 	PxMaterial* mat;
@@ -432,7 +440,21 @@ Solids* UniformSolidsGenerator::addRigids()
 	else
 		mat = gPhysics->createMaterial(0.5, 0.5, 1);
 	PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform(newPos));
-	rigids = new Solids(meanPos, meanVel, gPhysics->createShape(PxSphereGeometry(type.size.x), *mat), newRigid, type);
+	switch (type.gst)
+	{
+	case generalSolidType::Man1:
+		rigids = new Solids(meanPos, meanVel, gPhysics->createShape(PxSphereGeometry(type.size.x), *mat), newRigid, type);
+		break;
+	case generalSolidType::Man2:
+		rigids = new Solids(meanPos, meanVel, gPhysics->createShape(PxSphereGeometry(type.size.x), *mat), newRigid, type);
+		break;
+	case generalSolidType::Man3:
+		rigids = new Solids(meanPos, meanVel, gPhysics->createShape(PxCapsuleGeometry(type.size.x,type.size.x), *mat), newRigid, type);
+		break;
+	default:
+		rigids = new Solids(meanPos, meanVel, gPhysics->createShape(PxSphereGeometry(type.size.x), *mat), newRigid, type);
+		break;
+	}
 	gScene->addActor(*newRigid);
 	return rigids;
 }

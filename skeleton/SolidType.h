@@ -54,7 +54,7 @@ class Manguera3Features :public SolidType {
 public:
 	Manguera3Features()
 	{
-		size = { 0.7,0.7,0.7 };
+		size = { 0.5,0.7,0.7 };
 		colorHsv = { 166.0,0.93,0.25 };
 		transformColor();
 		fade = true;

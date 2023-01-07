@@ -347,8 +347,8 @@ public:
 		vel = { 0.0f,0.0f,0.0f };
 		ac = { 0.0f,0.0f, 0.0f };
 		damp = 0.8f;
-		remainingTime = 10;
-		size = { 0.5f,0.0f,0.0f };
+		remainingTime = 100;
+		size = { 1.5f,0.0f,0.0f };
 
 		col = { 214.0f,0.5f,0.92f };
 		rgb rgb = hsv2rgb(col);
@@ -365,8 +365,8 @@ public:
 		vel = { 0.0f,0.0f,0.0f };
 		ac = { 0.0f,0.0f, 0.0f };
 		damp = 0.8f;
-		remainingTime = 10;
-		size = { 0.2f,0.0f,0.0f };
+		remainingTime = 100;
+		size = { 0.7f,0.0f,0.0f };
 
 		col = { 214.0f,0.4f,0.50f };
 		rgb rgb = hsv2rgb(col);
@@ -383,8 +383,8 @@ public:
 		vel = { 0.0f,0.0f,0.0f };
 		ac = { 0.0f,0.0f, 0.0f };
 		damp = 0.8f;
-		remainingTime = 10;
-		size = { 1.0f,0.0f,0.0f };
+		remainingTime = 100;
+		size = { 3.0f,0.0f,0.0f };
 
 		col = { 220.0f,0.7f,1.0f };
 		rgb rgb = hsv2rgb(col);

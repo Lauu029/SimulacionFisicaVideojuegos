@@ -385,9 +385,9 @@ void SolidsSystem::createLevel3() {
 	//suciedad
 	Suciedades = new UniformSolidsGenerator(gPhysics, gScene,
 		{ posMuro.x,posMuro.y, posMuro.z + sizeMuro.z }, { 0,0, 0 }, 10, Type1Dirt(), sizeMuro.x, sizeMuro.y, 0);
-	putDirt(posMuro, sizeMuro, Type1Dirt(), 10);
-	putDirt(posMuro, sizeMuro, Type2Dirt(), 10);
-	putDirt(posMuro, sizeMuro, Type3Dirt(), 10);
+	putDirt(posMuro, sizeMuro, Type1Dirt(), 3);
+	putDirt(posMuro, sizeMuro, Type2Dirt(), 3);
+	putDirt(posMuro, sizeMuro, Type3Dirt(), 3);
 }
 
 void SolidsSystem::putDirt(Vector3 const& posMuro, Vector3 const& sizeMuro, SolidType tipeDirt, int minAmount) {

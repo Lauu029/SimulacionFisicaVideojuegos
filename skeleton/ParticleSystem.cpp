@@ -198,7 +198,9 @@ void ParticleSystem::deleteTorbellino()
 }
 void ParticleSystem::addExplosion(Vector3 pos)
 {
-	if (explosion == nullptr)
+	if (explosion != nullptr) {
+		deleteExplosion();
+	}
 		explosion = new ExplosionGenerator(50, pos);
 	for (Particle* p : particles)
 	{

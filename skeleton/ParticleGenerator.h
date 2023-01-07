@@ -24,7 +24,7 @@ public:
 	void changeActive() { active = !active; };
 	void setActive(bool act) { active = act; }
 	bool isActive() { return active; };
-	~ParticleGenerator();
+	virtual ~ParticleGenerator();
 	std::random_device rd;
 	std::default_random_engine gen;
 	std::uniform_real_distribution<> distribution{ -1,1 };
@@ -51,6 +51,7 @@ protected:
 	Particle* model3 = nullptr;
 public:
 	GaussianParticleGenerator(Vector3 _meanPos, Vector3 _meanVel, bool l, int nP=200);
+	virtual ~GaussianParticleGenerator() override;
 	void setParticle2(Particle* _m) { model2 = _m; };
 	void setParticle3(Particle* _m) { model3 = _m; };
 	Vector3 velWidth, posWidth;
