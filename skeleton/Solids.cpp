@@ -38,12 +38,6 @@ void Solids::update(double t) {
 	
 }
 
-void Solids::move(Vector3 v) {
-	if (rigid->getLinearVelocity().magnitude() < 10)
-		rigid->addForce(v, PxForceMode::eFORCE);
-	//rigid->addForce(v, PxForceMode::eFORCE);
-}
-
 Solids::~Solids()
 {
 	if(item!=nullptr)

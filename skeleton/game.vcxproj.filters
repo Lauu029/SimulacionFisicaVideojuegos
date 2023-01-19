@@ -60,7 +60,9 @@
     <ClCompile Include="SolidsSystem.cpp">
       <Filter>Solids</Filter>
     </ClCompile>
-    <ClCompile Include="MyPxSimulationEventCallback.cpp" />
+    <ClCompile Include="MyPxSimulationEventCallback.cpp">
+      <Filter>Solids</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -132,7 +134,9 @@
     <ClInclude Include="SolidType.h">
       <Filter>Solids</Filter>
     </ClInclude>
-    <ClInclude Include="MyPxSimulationEventCallback.h" />
+    <ClInclude Include="MyPxSimulationEventCallback.h">
+      <Filter>Solids</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
