@@ -76,6 +76,9 @@ void PWSimulator::changeLevel() {
 		system->createLevel3();
 		pS->CreateLluvia(50);
 		break;
+	case 4:
+		pS->addSlinky();
+		break;
 	default:
 		break;
 	}

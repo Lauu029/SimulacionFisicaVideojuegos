@@ -11,6 +11,9 @@ ParticleSystem::ParticleSystem(typeParticleSystem pt)
 		fuente = new UniformParticleGenerator({ 0,0,100 }, { 0,50,0 }, 10, true, 1);
 		fuente->setParticle(new Particle(Agua(), false));
 
+		gravity = new GravityGenerator({ 0,-9.8,0 });
+		drag = new ParticleDragGenerator(0.01, 0.01);
+
 		niebla = new GaussianParticleGenerator({ -20,50,100 }, { 0,0,0 }, false);
 		niebla->setParticle(new Particle(Nube(), false));
 
@@ -284,7 +287,7 @@ void ParticleSystem::GomaElastica()
 }
 void ParticleSystem::addSlinky()
 {
-	Vector3 pos = { -30.0,150.0,0.0 }, resta = { 0.0,5.0,0.0 };
+	Vector3 pos = { -30.0,300.0,-150.0 }, resta = { 0.0,5.0,0.0 };
 	hsv col = { 10.0,0.7,0.7 };
 	float inc = 20.0;
 	rgb colorRGB = hsv2rgb(col);
@@ -300,7 +303,6 @@ void ParticleSystem::addSlinky()
 		}
 		else {
 			fg->addRegistry(p1, gravity);
-
 		}
 		fg->addRegistry(p1, drag);
 
@@ -319,6 +321,7 @@ void ParticleSystem::addSlinky()
 		springGenerators.push_back(sf);
 		springGenerators.push_back(sf2);
 	}
+
 }
 void ParticleSystem::FlotationSim()
 {

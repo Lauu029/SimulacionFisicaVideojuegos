@@ -59,17 +59,6 @@ void SolidsSystem::createPWSystem()
 	gScene->addActor(*floor);
 	//Muro
 	createLevel1();
-	//Personaje
-	PxMaterial* mat;
-	mat = gPhysics->createMaterial(0.5, 0.5, 0.1);
-	PxRigidDynamic* newRigid = gPhysics->createRigidDynamic(PxTransform({ 0,2,0 }));
-
-	mainCharacter = new Solids({ 0,10,0 }, { 0,0,0 },
-		gPhysics->createShape(PxBoxGeometry(10, 10, 10), *mat), newRigid, PWSCharacter());
-	mainCharacter->getRigid()->setMass(15);
-	mainCharacter->getRigid()->setMassSpaceInertiaTensor(PxVec3(0.0f, 0.0f, 0.0f));
-	mainCharacter->getRigid()->setAngularDamping(0.2);
-	gScene->addActor(*newRigid);
 	//Mangueras
 	manguera1 = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 20,0, 0 }, 10, Manguera1Features());
 	manguera2 = new UniformSolidsGenerator(gPhysics, gScene, { 0, 20, 100 }, { 50,0, 0 }, 100, Manguera2Features());
@@ -153,9 +142,7 @@ void SolidsSystem::update(double t)
 	if (sFR != nullptr)
 		sFR->updateForces(t);
 	if (mainCharacter != nullptr) {
-		//GetCamera()->setEye(mainCharacter->getPos() + Vector3(200, 0, 0));
 		Vector3 playerPos = mainCharacter->getPos();
-		//cam->setEye({ playerPos.x+10, playerPos.y + 10.0f, playerPos.z });
 	}
 }
 
@@ -228,10 +215,6 @@ void SolidsSystem::addWind(float r, Vector3 v, Vector3 p)
 			sFR->addRegistry(p, wind);
 	}
 }
-void SolidsSystem::changeWaterVel(bool inc)
-{
-	manguera1->changeVel(inc);
-}
 void SolidsSystem::deleteWind()
 {
 	for (auto p : solidParticles)
@@ -242,10 +225,6 @@ void SolidsSystem::deleteWind()
 	wind = nullptr;
 }
 
-void SolidsSystem::moveCharacter(Vector3 dir)
-{
-	mainCharacter->move(dir);
-}
 void SolidsSystem::keyPressed(unsigned char key) {
 	switch (key)
 	{
@@ -279,9 +258,6 @@ void SolidsSystem::keyPressed(unsigned char key) {
 		mainCharacter->addForce(force);
 		break;
 	}
-	case ' ':
-		moveCharacter(Vector3(0, 10000, 0));
-		break;
 	case 'z':
 		changeFontActive(1, !manguera1->isActive());
 		changeFontActive(2, false);
@@ -332,7 +308,7 @@ void SolidsSystem::createLevel1() {
 }
 void SolidsSystem::createLevel2() {
 	//Muro
-	Vector3 posMuro = { 80, 10, -3 };
+	Vector3 posMuro = { 150, 10, -3 };
 	Vector3 sizeMuro = { 100, 10, 10 };
 	PxRigidStatic* wall = gPhysics->createRigidStatic(PxTransform(posMuro));
 	PxShape* shape = CreateShape(PxBoxGeometry(sizeMuro));
@@ -371,12 +347,12 @@ void SolidsSystem::createLevel2() {
 }
 void SolidsSystem::createLevel3() {
 	//Muro
-	Vector3 posMuro = { 10, 20, 50 };
-	Vector3 sizeMuro = { 40, 20, 10 };
+	Vector3 posMuro = { 0, 10, 50 };
+	Vector3 sizeMuro = { 100, 10 , 100 };
 	wall = gPhysics->createRigidStatic(PxTransform(posMuro));
 	PxShape* shape = CreateShape(PxBoxGeometry(sizeMuro));
 	wall->attachShape(*shape);
-	hsv color = { 154.0,0.73,0.7 };
+	hsv color = { 250.0,0.9,0.9 };
 	rgb col = hsv2rgb(color);
 	itemWall = new RenderItem(shape, wall, { col.r, col.g ,col.b,1 });
 	objetos.push_back(wall);

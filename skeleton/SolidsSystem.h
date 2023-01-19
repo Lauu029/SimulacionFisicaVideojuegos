@@ -41,9 +41,7 @@ public:
 	void createLevel3();
 	void update(double t);
 	void addWind(float r, Vector3 v, Vector3 p);
-	void changeWaterVel(bool inc);
 	void deleteWind();
-	void moveCharacter(Vector3 dir);
 	void keyPressed(unsigned char key);
 	void changeFontActive(int numFuente, bool act);
 	void putDirt(Vector3 const& posMuro, Vector3 const& sizeMuro, SolidType tipeDirt, int minAmount);
